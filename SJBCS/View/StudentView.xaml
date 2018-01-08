@@ -1,0 +1,217 @@
+﻿<UserControl x:Class="SJBCS.View.StudentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SJBCS.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+             xmlns:model="clr-namespace:SJBCS.Model"
+             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1200">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"
+                                                                   TrueValue="Collapsed"
+                                                                   FalseValue="Visible" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="50">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <ScrollViewer HorizontalScrollBarVisibility="Visible">
+                <ListView  ItemsSource="{Binding StudentList}"
+                           Height="500"
+                           Width="800">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding STUDENTID}"
+                                            Width="200">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Student ID" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding STUDENTNAME}"
+                                            Width="200">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Student Name" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding GRADELEVEL}"
+                                            Width="200">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Grade" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding SECTIONNAME}"
+                                            Width="200">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Section" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <materialDesign:Card Grid.Row="1"
+                                 Margin="10"
+                                 Background="{DynamicResource MaterialDesignBackground}">
+                <StackPanel Margin="50">
+                    <Expander HorizontalAlignment="Stretch"
+                              Header="Student Information">
+                        <StackPanel Margin="24,8,24,16"
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                            <TextBox materialDesign:HintAssist.Hint="Last Name"
+                                     Margin="10">
+                                <TextBox.Text>
+                                    <Binding Path="LastName"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="First Name"
+                                     Margin="10">
+                                <TextBox.Text>
+                                    <Binding Path="FirstName"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Middle Name"
+                                     Margin="10">
+                                <TextBox.Text>
+                                    <Binding Path="MiddleName"
+                                             UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <DatePicker Width="100"
+                                        Margin="10"
+                                        HorizontalAlignment="Left"
+                                        materialDesign:HintAssist.Hint="Pick Date"
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton VerticalAlignment="Center"
+                                             Style="{StaticResource MaterialDesignRadioButton}"
+                                             Tag="True"
+                                             Content="Male"
+                                             IsChecked="True"
+                                             Margin="10">
+                                </RadioButton>
+                                <RadioButton VerticalAlignment="Center"
+                                             Style="{StaticResource MaterialDesignRadioButton}"
+                                             Tag="True"
+                                             Content="Female"
+                                             Margin="10">
+                                </RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox materialDesign:HintAssist.Hint="Street"
+                                         Margin="10"
+                                         Width="100">
+                                    <TextBox.Text>
+                                        <Binding Path="Street"
+                                                 UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <TextBox materialDesign:HintAssist.Hint="City"
+                                         Margin="10"
+                                         Width="100">
+                                    <TextBox.Text>
+                                        <Binding Path="City"
+                                                 UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <TextBox materialDesign:HintAssist.Hint="State"
+                                         Margin="10"
+                                         Width="100">
+                                    <TextBox.Text>
+                                        <Binding Path="State"
+                                                 UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </StackPanel>
+                            <ComboBox materialDesign:HintAssist.Hint="Grade Level"
+                                      Margin="10">
+                                <ComboBoxItem>Apple</ComboBoxItem>
+                                <ComboBoxItem>Banana</ComboBoxItem>
+                                <ComboBoxItem>Pear</ComboBoxItem>
+                                <ComboBoxItem>Orange</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox materialDesign:HintAssist.Hint="Section"
+                                      Margin="10">
+                                <ComboBoxItem>Apple</ComboBoxItem>
+                                <ComboBoxItem>Banana</ComboBoxItem>
+                                <ComboBoxItem>Pear</ComboBoxItem>
+                                <ComboBoxItem>Orange</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                    </Expander>
+                    <Border Height="1"
+                            HorizontalAlignment="Stretch"
+                            Background="{DynamicResource MaterialDesignDivider}"
+                            SnapsToDevicePixels="True" />
+                    <Expander HorizontalAlignment="Stretch"
+                              Header="Contact Information">
+                        <StackPanel Margin="24,8,24,16"
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                            <TextBlock Text="Your Content" />
+                        </StackPanel>
+                    </Expander>
+                    <Border Height="1"
+                            HorizontalAlignment="Stretch"
+                            Background="{DynamicResource MaterialDesignDivider}"
+                            SnapsToDevicePixels="True" />
+                    <Expander HorizontalAlignment="Stretch"
+                              Header="Clubs and Organization">
+                        <StackPanel Margin="24,8,24,16"
+                                    Orientation="Vertical"
+                                    TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                            <TextBlock Text="Your Content" />
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
+    </Grid>
+</UserControl>

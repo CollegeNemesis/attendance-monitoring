@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Attendance">
+    <Key>
+      <PropertyRef Name="AttendanceID" />
+    </Key>
+    <Property Name="AttendanceID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="TimeOut" Type="DateTime" Precision="0" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsNotified" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="Guid" Nullable="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Contact_Student" FromRole="Contact" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="DistributionList">
+    <Key>
+      <PropertyRef Name="DistributionListID" />
+    </Key>
+    <Property Name="DistributionListID" Type="Guid" Nullable="false" />
+    <Property Name="DistributionListName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="RelDistributionLists" Relationship="Self.FK_RelDistributionList_DistributionList" FromRole="DistributionList" ToRole="RelDistributionList" />
+  </EntityType>
+  <EntityType Name="Level">
+    <Key>
+      <PropertyRef Name="LevelID" />
+    </Key>
+    <Property Name="LevelID" Type="Guid" Nullable="false" />
+    <Property Name="GradeLevel" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Level" FromRole="Level" ToRole="Section" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_Level" FromRole="Level" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="OrganizationID" />
+    </Key>
+    <Property Name="OrganizationID" Type="Guid" Nullable="false" />
+    <Property Name="OrganizationName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Organization" FromRole="Organization" ToRole="RelOrganization" />
+  </EntityType>
+  <EntityType Name="RelDistributionList">
+    <Key>
+      <PropertyRef Name="RelDistributionListID" />
+    </Key>
+    <Property Name="RelDistributionListID" Type="Guid" Nullable="false" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DistributionListID" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="DistributionList" Relationship="Self.FK_RelDistributionList_DistributionList" FromRole="RelDistributionList" ToRole="DistributionList" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_RelDistributionList_Student" FromRole="RelDistributionList" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="RelOrganization">
+    <Key>
+      <PropertyRef Name="RelOrganizationID" />
+    </Key>
+    <Property Name="RelOrganizationID" Type="Guid" Nullable="false" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OrganizationID" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="Organization" Relationship="Self.FK_RelOrganization_Organization" FromRole="RelOrganization" ToRole="Organization" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_RelOrganization_Student" FromRole="RelOrganization" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="SectionID" />
+    </Key>
+    <Property Name="SectionID" Type="Guid" Nullable="false" />
+    <Property Name="SectionName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="LevelID" Type="Guid" Nullable="false" />
+    <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+    <NavigationProperty Name="Level" Relationship="Self.FK_Section_Level" FromRole="Section" ToRole="Level" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_Section" FromRole="Section" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BirthDate" Type="DateTime" Precision="0" />
+    <Property Name="ImageData" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SectionID" Type="Guid" Nullable="false" />
+    <Property Name="LevelID" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
+    <NavigationProperty Name="Contacts" Relationship="Self.FK_Contact_Student" FromRole="Student" ToRole="Contact" />
+    <NavigationProperty Name="Level" Relationship="Self.FK_Student_Level" FromRole="Student" ToRole="Level" />
+    <NavigationProperty Name="RelDistributionLists" Relationship="Self.FK_RelDistributionList_Student" FromRole="Student" ToRole="RelDistributionList" />
+    <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Student" FromRole="Student" ToRole="RelOrganization" />
+    <NavigationProperty Name="Section" Relationship="Self.FK_Student_Section" FromRole="Student" ToRole="Section" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Attendance_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Attendance">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Contact_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Contact">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelDistributionList_DistributionList">
+    <End Role="DistributionList" Type="Self.DistributionList" Multiplicity="1" />
+    <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DistributionList">
+        <PropertyRef Name="DistributionListID" />
+      </Principal>
+      <Dependent Role="RelDistributionList">
+        <PropertyRef Name="DistributionListID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Section_Level">
+    <End Role="Level" Type="Self.Level" Multiplicity="1" />
+    <End Role="Section" Type="Self.Section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Level">
+        <PropertyRef Name="LevelID" />
+      </Principal>
+      <Dependent Role="Section">
+        <PropertyRef Name="LevelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Level">
+    <End Role="Level" Type="Self.Level" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Level">
+        <PropertyRef Name="LevelID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="LevelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelOrganization_Organization">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrganizationID" />
+      </Principal>
+      <Dependent Role="RelOrganization">
+        <PropertyRef Name="OrganizationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelDistributionList_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelDistributionList">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelOrganization_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelOrganization">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Section">
+    <End Role="Section" Type="Self.Section" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Section">
+        <PropertyRef Name="SectionID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="SectionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AMSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Attendances" EntityType="Self.Attendance" />
+    <EntitySet Name="Contacts" EntityType="Self.Contact" />
+    <EntitySet Name="DistributionLists" EntityType="Self.DistributionList" />
+    <EntitySet Name="Levels" EntityType="Self.Level" />
+    <EntitySet Name="Organizations" EntityType="Self.Organization" />
+    <EntitySet Name="RelDistributionLists" EntityType="Self.RelDistributionList" />
+    <EntitySet Name="RelOrganizations" EntityType="Self.RelOrganization" />
+    <EntitySet Name="Sections" EntityType="Self.Section" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Attendance" EntitySet="Attendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Contact_Student" Association="Self.FK_Contact_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Contact" EntitySet="Contacts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelDistributionList_DistributionList" Association="Self.FK_RelDistributionList_DistributionList">
+      <End Role="DistributionList" EntitySet="DistributionLists" />
+      <End Role="RelDistributionList" EntitySet="RelDistributionLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Section_Level" Association="Self.FK_Section_Level">
+      <End Role="Level" EntitySet="Levels" />
+      <End Role="Section" EntitySet="Sections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Level" Association="Self.FK_Student_Level">
+      <End Role="Level" EntitySet="Levels" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelOrganization_Organization" Association="Self.FK_RelOrganization_Organization">
+      <End Role="Organization" EntitySet="Organizations" />
+      <End Role="RelOrganization" EntitySet="RelOrganizations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelDistributionList_Student" Association="Self.FK_RelDistributionList_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="RelDistributionList" EntitySet="RelDistributionLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelOrganization_Student" Association="Self.FK_RelOrganization_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="RelOrganization" EntitySet="RelOrganizations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Section" Association="Self.FK_Student_Section">
+      <End Role="Section" EntitySet="Sections" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <FunctionImport Name="SP_ListSection" ReturnType="Collection(AMSModel.SP_ListSection_Result)" />
+    <FunctionImport Name="SP_ListStudent" ReturnType="Collection(AMSModel.SP_ListStudent_Result)" />
+    <FunctionImport Name="ListSection" ReturnType="Collection(AMSModel.SP_ListSection_Result)" />
+    <FunctionImport Name="ListStudent" ReturnType="Collection(AMSModel.SP_ListStudent_Result)" />
+  </EntityContainer>
+  <ComplexType Name="SP_ListSection_Result">
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
+    <Property Type="Time" Name="StartTime" Nullable="false" />
+    <Property Type="Time" Name="EndTime" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="SP_ListStudent_Result">
+    <Property Type="String" Name="STUDENTID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="STUDENTNAME" Nullable="false" MaxLength="102" />
+    <Property Type="String" Name="GRADELEVEL" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="SECTIONNAME" Nullable="true" MaxLength="10" />
+  </ComplexType>
+</Schema>

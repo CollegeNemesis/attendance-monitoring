@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Attendance">
+    <Key>
+      <PropertyRef Name="AttendanceID" />
+    </Key>
+    <Property Name="AttendanceID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="TimeIn" Type="smalldatetime" Nullable="false" />
+    <Property Name="TimeOut" Type="smalldatetime" />
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsNotified" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ContactNumber" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DistributionList">
+    <Key>
+      <PropertyRef Name="DistributionListID" />
+    </Key>
+    <Property Name="DistributionListID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DistributionListName" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Level">
+    <Key>
+      <PropertyRef Name="LevelID" />
+    </Key>
+    <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="GradeLevel" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="OrganizationID" />
+    </Key>
+    <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="OrganizationName" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RelDistributionList">
+    <Key>
+      <PropertyRef Name="RelDistributionListID" />
+    </Key>
+    <Property Name="RelDistributionListID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DistributionListID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RelOrganization">
+    <Key>
+      <PropertyRef Name="RelOrganizationID" />
+    </Key>
+    <Property Name="RelOrganizationID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Section">
+    <Key>
+      <PropertyRef Name="SectionID" />
+    </Key>
+    <Property Name="SectionID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="SectionName" Type="nchar" MaxLength="10" />
+    <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+    <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BirthDate" Type="smalldatetime" />
+    <Property Name="ImageData" Type="nvarchar" MaxLength="50" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="50" />
+    <Property Name="Street" Type="nvarchar" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="SectionID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Attendance_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Attendance">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Contact_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Contact">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelDistributionList_DistributionList">
+    <End Role="DistributionList" Type="Self.DistributionList" Multiplicity="1" />
+    <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DistributionList">
+        <PropertyRef Name="DistributionListID" />
+      </Principal>
+      <Dependent Role="RelDistributionList">
+        <PropertyRef Name="DistributionListID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelDistributionList_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelDistributionList">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelOrganization_Organization">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrganizationID" />
+      </Principal>
+      <Dependent Role="RelOrganization">
+        <PropertyRef Name="OrganizationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelOrganization_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelOrganization">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Section_Level">
+    <End Role="Level" Type="Self.Level" Multiplicity="1" />
+    <End Role="Section" Type="Self.Section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Level">
+        <PropertyRef Name="LevelID" />
+      </Principal>
+      <Dependent Role="Section">
+        <PropertyRef Name="LevelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Level">
+    <End Role="Level" Type="Self.Level" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Level">
+        <PropertyRef Name="LevelID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="LevelID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Section">
+    <End Role="Section" Type="Self.Section" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Section">
+        <PropertyRef Name="SectionID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="SectionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="SP_ListSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SP_ListStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="AMSModelStoreContainer">
+    <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DistributionList" EntityType="Self.DistributionList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RelDistributionList" EntityType="Self.RelDistributionList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RelOrganization" EntityType="Self.RelOrganization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Attendance" EntitySet="Attendance" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Contact_Student" Association="Self.FK_Contact_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Contact" EntitySet="Contact" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelDistributionList_DistributionList" Association="Self.FK_RelDistributionList_DistributionList">
+      <End Role="DistributionList" EntitySet="DistributionList" />
+      <End Role="RelDistributionList" EntitySet="RelDistributionList" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelDistributionList_Student" Association="Self.FK_RelDistributionList_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="RelDistributionList" EntitySet="RelDistributionList" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelOrganization_Organization" Association="Self.FK_RelOrganization_Organization">
+      <End Role="Organization" EntitySet="Organization" />
+      <End Role="RelOrganization" EntitySet="RelOrganization" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelOrganization_Student" Association="Self.FK_RelOrganization_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="RelOrganization" EntitySet="RelOrganization" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Section_Level" Association="Self.FK_Section_Level">
+      <End Role="Level" EntitySet="Level" />
+      <End Role="Section" EntitySet="Section" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Level" Association="Self.FK_Student_Level">
+      <End Role="Level" EntitySet="Level" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Section" Association="Self.FK_Student_Section">
+      <End Role="Section" EntitySet="Section" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

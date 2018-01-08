@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="SJBCS.View.ClubOrgView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SJBCS.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+             xmlns:model="clr-namespace:SJBCS.Model"
+             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1100">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"
+                                                                   TrueValue="Collapsed"
+                                                                   FalseValue="Visible" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Visible">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <materialDesign:Card HorizontalAlignment="Center"
+                                 VerticalAlignment="Stretch"
+                                 Margin="10,10,10,10">
+                <StackPanel Margin="10,10,10,10">
+                    <TextBlock FontWeight="Bold"
+                               FontSize="24"
+                               Text="List of Clubs and Organizations" />
+                    <Separator />
+                    <ListBox>
+                        <TextBlock>Plain</TextBlock>
+                        <TextBlock>Old</TextBlock>
+                        <TextBlock>ListBox</TextBlock>
+                        <TextBlock>Full of junk</TextBlock>
+                    </ListBox>
+                </StackPanel>
+            </materialDesign:Card>
+            
+            <materialDesign:Card Grid.Row="1"
+                                 HorizontalAlignment="Center">
+
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="350"
+                            Margin="10,10,10,10">
+                    <TextBlock FontWeight="Bold"
+                               FontSize="24"
+                               Text="Add a Club/Organization" />
+                    <Separator />
+                    <TextBox x:Name="NameTextBox"
+                             materialDesign:HintAssist.Hint="Club/Organization Name"
+                             Margin="10,10,0,0"
+                             Style="{StaticResource MaterialDesignTextFieldBoxTextBox}">
+                        <TextBox.Text>
+                            <Binding Path="Name"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <model:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="20">
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Content="ADD">
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
