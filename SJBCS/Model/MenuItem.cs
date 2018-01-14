@@ -12,14 +12,16 @@ namespace SJBCS.Model
     public class MenuItem : INotifyPropertyChanged
     {
         private string _name;
+        private string _path;
         private object _content;
         private ScrollBarVisibility _horizontalScrollBarVisibilityRequirement;
         private ScrollBarVisibility _verticalScrollBarVisibilityRequirement;
         private Thickness _marginRequirement = new Thickness(16);
 
-        public MenuItem(string name, object content)
+        public MenuItem(string name, string path, object content)
         {
             _name = name;
+            _path = path;
             Content = content;
         }
 
@@ -28,7 +30,11 @@ namespace SJBCS.Model
             get { return _name; }
             set { this.MutateVerbose(ref _name, value, RaisePropertyChanged()); }
         }
-
+        public string SourcePath
+        {
+            get { return _path; }
+            set { this.MutateVerbose(ref _path, value, RaisePropertyChanged()); }
+        }
         public object Content
         {
             get { return _content; }

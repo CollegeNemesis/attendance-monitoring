@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:codedisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+        xmlns:domain="clr-namespace:SJBCS.ViewModel"
+        xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
         xmlns:local="clr-namespace:SJBCS.View"
         mc:Ignorable="d"
         Title="SJBCS"
         Height="800"
         Width="1100"
-        Icon="/SJBCS;component/Resources/Images/53f1fa17c0292fa4f58f7b90dae43e52.gif"
+        Icon="/SJBCS;component/Resources/Images/User_Administrator_4.png"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        ResizeMode="CanMinimize"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -28,89 +30,74 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- data template used for the dialogs example, defines a View for a ViewModel of type DateTime  -->
-            <DataTemplate DataType="{x:Type system:DateTime}">
-                <StackPanel Margin="16">
-                    <TextBlock>England win the World Cup:</TextBlock>
-                    <TextBlock Margin="0 8 0 0"
-                               Text="{Binding }" />
-                    <TextBlock Margin="0 8 0 0">You will never see that again.</TextBlock>
-                    <Button  Margin="0 8 0 0"
-                             IsDefault="True"
-                             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                             Style="{DynamicResource MaterialDesignFlatButton}">AWESOME</Button>
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
-
     <materialDesign:DialogHost Identifier="RootDialog"
                                SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <DockPanel MinWidth="212">
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  DockPanel.Dock="Top"
-                                  HorizontalAlignment="Right"
-                                  Margin="16"
-                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                    <ListBox x:Name="MenuItemsListBox"
-                             Margin="0 16 0 16"
-                             SelectedIndex="0"
-                             ItemsSource="{Binding MenuItems}"
-                             PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25*" />
+                <RowDefinition Height="30*" />
+                <RowDefinition Height="600*" />
+                <RowDefinition Height="50*" />
+            </Grid.RowDefinitions>
+
+            <materialDesign:ColorZone Grid.Row="0"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Mode="PrimaryMid" />
+            <materialDesign:ColorZone Grid.Row="1"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Mode="PrimaryMid" />
+            <materialDesign:ColorZone Grid.Row="3"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch" />
+            <Grid Grid.Row="2"
+                  Background="#E9EBEE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="447*" />
+                </Grid.ColumnDefinitions>
+                <Border Background="White">
+                    <ListBox x:Name="MenuItemListBox"
+                             Grid.Column="0"
+                             Margin="0,5,0,0"
+                             ItemsSource="{Binding MenuItems}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="domain:MenuItem">
-                                <TextBlock Text="{Binding Name}"
-                                           Margin="32 0 32 0" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding SourcePath}"
+                                           Height="25"
+                                           Stretch="UniformToFill" />
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="12"
+                                               FontFamily="Segoe UI"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </DockPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel>
-                <materialDesign:ColorZone Padding="16"
-                                          materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          Mode="PrimaryMid"
-                                          DockPanel.Dock="Top">
-                    <DockPanel>
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                      IsChecked="False"
-                                      x:Name="MenuToggleButton" />
-                        <materialDesign:PopupBox DockPanel.Dock="Right"
-                                                 PlacementMode="BottomAndAlignRightEdges"
-                                                 StaysOpen="False">
-                            <StackPanel>
-                                <Button Content="Settings"/>
-                                <Button Content="Profile"
-                                        IsEnabled="False"/>
-                                <Separator />
-                                <Button Content="Log Out"/>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="22">SJBCS Attendance Monitoring System</TextBlock>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="1"
-                                  HorizontalScrollBarVisibility="{Binding ElementName=MenuItemsListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
-                                  VerticalScrollBarVisibility="{Binding ElementName=MenuItemsListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}"
-                                  Padding="{Binding ElementName=MenuItemsListBox, Path=SelectedItem.MarginRequirement}">
-                        <codedisplayer:XamlDisplayerHost Content="{Binding ElementName=MenuItemsListBox, Path=SelectedItem.Content}" />
+                </Border>
+                <StackPanel Grid.Column="1"
+                            Margin="5"
+                            Orientation="Horizontal">
+                    <ScrollViewer HorizontalScrollBarVisibility="{Binding ElementName=MenuItemListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
+                                  VerticalScrollBarVisibility="{Binding ElementName=MenuItemListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}"
+                                  Padding="{Binding ElementName=MenuItemListBox, Path=SelectedItem.MarginRequirement}">
+                        <codeDisplayer:XamlDisplayerHost Content="{Binding ElementName=MenuItemListBox, Path=SelectedItem.Content}" />
                     </ScrollViewer>
+                    <codeDisplayer:XamlDisplayerHost Margin="5,0,0,0"
+                                                     Content="{Binding Content}" />
+                </StackPanel>
 
-                    <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}"
-                                             x:Name="MainSnackbar"
-                                             Grid.Row="1" />
-                </Grid>
-            </DockPanel>
-        </materialDesign:DrawerHost>
+
+                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}"
+                                         x:Name="MainSnackbar"
+                                         Grid.Row="1" />
+            </Grid>
+        </Grid>
     </materialDesign:DialogHost>
+
 </Window>

@@ -19,6 +19,7 @@ namespace SJBCS.Model
         {
             this.Attendances = new HashSet<Attendance>();
             this.Contacts = new HashSet<Contact>();
+            this.RelBiometrics = new HashSet<RelBiometric>();
             this.RelDistributionLists = new HashSet<RelDistributionList>();
             this.RelOrganizations = new HashSet<RelOrganization>();
         }
@@ -41,6 +42,8 @@ namespace SJBCS.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual Level Level { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RelBiometric> RelBiometrics { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RelDistributionList> RelDistributionLists { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

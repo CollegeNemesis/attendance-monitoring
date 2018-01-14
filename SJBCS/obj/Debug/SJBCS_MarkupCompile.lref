@@ -1,10 +1,16 @@
 ﻿
-FC:\Users\arroj\source\repos\AMS\SJBCS\App.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\ClubOrgView.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\HomeView.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\MainWindow.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\ReportView.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\SectionView.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\SMSView.xaml;;
-FC:\Users\arroj\source\repos\AMS\SJBCS\View\StudentView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\App.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AddStudentView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AdminMenuView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AttendanceView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\ClubOrgView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\DefaultLayoutView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\EnrollStudentBiometricsView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\HomeView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\MainWindow.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\ReportView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\SectionView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\SMSView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\StudentView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\TestWindow.xaml;;
 

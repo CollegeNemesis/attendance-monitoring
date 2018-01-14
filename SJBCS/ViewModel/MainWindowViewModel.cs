@@ -11,21 +11,23 @@ namespace SJBCS.ViewModel
 {
     class MainWindowViewModel
     {
-        public MainWindowViewModel(ISnackbarMessageQueue snackbarMessageQueue)
-        {
-            if (snackbarMessageQueue == null) throw new ArgumentNullException(nameof(snackbarMessageQueue));
+        public MenuItem[] MenuItems { get; }
+        public object _content;
+        public object Content => _content;
 
+        public MainWindowViewModel()
+        {
             MenuItems = new[]
             {
-                new MenuItem("Home", new HomeView{DataContext = new HomeViewModel()}),
-                new MenuItem("SMS Simulcast", new SMSView()),
-                new MenuItem("Students", new StudentView{DataContext = new StudentViewModel() }),
-                new MenuItem("Sections", new SectionView{DataContext = new SectionViewModel()}),
-                new MenuItem("Clubs and Organizations", new ClubOrgView()),
-                new MenuItem("Reports", new ReportView())
+                new MenuItem("Attendance", "/SJBCS;component/Resources/Images/Attendance-icon.png", new AttendanceView{ DataContext = new AttendanceViewModel()}),
+                new MenuItem("Student", "/SJBCS;component/Resources/Images/Student-icon.png", new StudentView{ DataContext = new StudentViewModel()}),
+                new MenuItem("Section", "/SJBCS;component/Resources/Images/Section-icon.png", new StudentView()),
+                new MenuItem("Organization", "/SJBCS;component/Resources/Images/Organization-icon.png", new StudentView()),
+                new MenuItem("Reports", "/SJBCS;component/Resources/Images/Report-icon.png", new StudentView()),
+                new MenuItem("Settings", "/SJBCS;component/Resources/Images/Settings-icon.png", new StudentView())
             };
-        }
 
-        public MenuItem[] MenuItems { get; }
+            _content = null;
+        }
     }
 }

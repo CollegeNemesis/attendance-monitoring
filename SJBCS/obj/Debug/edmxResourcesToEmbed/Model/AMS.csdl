@@ -11,12 +11,20 @@
     <Property Name="IsNotified" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
   </EntityType>
+  <EntityType Name="Biometric">
+    <Key>
+      <PropertyRef Name="FingerID" />
+    </Key>
+    <Property Name="FingerID" Type="Guid" Nullable="false" />
+    <Property Name="FingerPrintTemplate" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="RelBiometrics" Relationship="Self.FK_RelBiometric_Biometric" FromRole="Biometric" ToRole="RelBiometric" />
+  </EntityType>
   <EntityType Name="Contact">
     <Key>
       <PropertyRef Name="ContactID" />
     </Key>
     <Property Name="ContactID" Type="Guid" Nullable="false" />
-    <Property Name="ContactNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Contact_Student" FromRole="Contact" ToRole="Student" />
   </EntityType>
@@ -44,6 +52,16 @@
     <Property Name="OrganizationID" Type="Guid" Nullable="false" />
     <Property Name="OrganizationName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Organization" FromRole="Organization" ToRole="RelOrganization" />
+  </EntityType>
+  <EntityType Name="RelBiometric">
+    <Key>
+      <PropertyRef Name="RelBiometricID" />
+    </Key>
+    <Property Name="RelBiometricID" Type="Guid" Nullable="false" />
+    <Property Name="FingerID" Type="Guid" Nullable="false" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Biometric" Relationship="Self.FK_RelBiometric_Biometric" FromRole="RelBiometric" ToRole="Biometric" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_RelBiometric_Student" FromRole="RelBiometric" ToRole="Student" />
   </EntityType>
   <EntityType Name="RelDistributionList">
     <Key>
@@ -96,6 +114,7 @@
     <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
     <NavigationProperty Name="Contacts" Relationship="Self.FK_Contact_Student" FromRole="Student" ToRole="Contact" />
     <NavigationProperty Name="Level" Relationship="Self.FK_Student_Level" FromRole="Student" ToRole="Level" />
+    <NavigationProperty Name="RelBiometrics" Relationship="Self.FK_RelBiometric_Student" FromRole="Student" ToRole="RelBiometric" />
     <NavigationProperty Name="RelDistributionLists" Relationship="Self.FK_RelDistributionList_Student" FromRole="Student" ToRole="RelDistributionList" />
     <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Student" FromRole="Student" ToRole="RelOrganization" />
     <NavigationProperty Name="Section" Relationship="Self.FK_Student_Section" FromRole="Student" ToRole="Section" />
@@ -119,6 +138,18 @@
       </Principal>
       <Dependent Role="Attendance">
         <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelBiometric_Biometric">
+    <End Role="Biometric" Type="Self.Biometric" Multiplicity="1" />
+    <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Biometric">
+        <PropertyRef Name="FingerID" />
+      </Principal>
+      <Dependent Role="RelBiometric">
+        <PropertyRef Name="FingerID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -182,6 +213,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_RelBiometric_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelBiometric">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_RelDistributionList_Student">
     <End Role="Student" Type="Self.Student" Multiplicity="1" />
     <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
@@ -220,10 +263,12 @@
   </Association>
   <EntityContainer Name="AMSEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Attendances" EntityType="Self.Attendance" />
+    <EntitySet Name="Biometrics" EntityType="Self.Biometric" />
     <EntitySet Name="Contacts" EntityType="Self.Contact" />
     <EntitySet Name="DistributionLists" EntityType="Self.DistributionList" />
     <EntitySet Name="Levels" EntityType="Self.Level" />
     <EntitySet Name="Organizations" EntityType="Self.Organization" />
+    <EntitySet Name="RelBiometrics" EntityType="Self.RelBiometric" />
     <EntitySet Name="RelDistributionLists" EntityType="Self.RelDistributionList" />
     <EntitySet Name="RelOrganizations" EntityType="Self.RelOrganization" />
     <EntitySet Name="Sections" EntityType="Self.Section" />
@@ -232,6 +277,10 @@
     <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
       <End Role="Student" EntitySet="Students" />
       <End Role="Attendance" EntitySet="Attendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelBiometric_Biometric" Association="Self.FK_RelBiometric_Biometric">
+      <End Role="Biometric" EntitySet="Biometrics" />
+      <End Role="RelBiometric" EntitySet="RelBiometrics" />
     </AssociationSet>
     <AssociationSet Name="FK_Contact_Student" Association="Self.FK_Contact_Student">
       <End Role="Student" EntitySet="Students" />
@@ -253,6 +302,10 @@
       <End Role="Organization" EntitySet="Organizations" />
       <End Role="RelOrganization" EntitySet="RelOrganizations" />
     </AssociationSet>
+    <AssociationSet Name="FK_RelBiometric_Student" Association="Self.FK_RelBiometric_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="RelBiometric" EntitySet="RelBiometrics" />
+    </AssociationSet>
     <AssociationSet Name="FK_RelDistributionList_Student" Association="Self.FK_RelDistributionList_Student">
       <End Role="Student" EntitySet="Students" />
       <End Role="RelDistributionList" EntitySet="RelDistributionLists" />
@@ -265,11 +318,51 @@
       <End Role="Section" EntitySet="Sections" />
       <End Role="Student" EntitySet="Students" />
     </AssociationSet>
-    <FunctionImport Name="SP_ListSection" ReturnType="Collection(AMSModel.SP_ListSection_Result)" />
-    <FunctionImport Name="SP_ListStudent" ReturnType="Collection(AMSModel.SP_ListStudent_Result)" />
-    <FunctionImport Name="ListSection" ReturnType="Collection(AMSModel.SP_ListSection_Result)" />
-    <FunctionImport Name="ListStudent" ReturnType="Collection(AMSModel.SP_ListStudent_Result)" />
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(AMSModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(AMSModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ListSection" EntitySet="Students" ReturnType="Collection(AMSModel.Student)" />
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="SP_ListStudentContact" ReturnType="Collection(AMSModel.SP_ListStudentContact_Result)" />
+    <FunctionImport Name="ListStudent" ReturnType="Collection(AMSModel.ListStudent_Result)" />
   </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
   <ComplexType Name="SP_ListSection_Result">
     <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
     <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
@@ -277,9 +370,43 @@
     <Property Type="Time" Name="EndTime" Nullable="false" />
   </ComplexType>
   <ComplexType Name="SP_ListStudent_Result">
-    <Property Type="String" Name="STUDENTID" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="STUDENTNAME" Nullable="false" MaxLength="102" />
-    <Property Type="String" Name="GRADELEVEL" Nullable="false" MaxLength="10" />
-    <Property Type="String" Name="SECTIONNAME" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="StudentName" Nullable="false" MaxLength="153" />
+    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
+  </ComplexType>
+  <ComplexType Name="ListStudent_Result">
+    <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+    <Property Type="String" Name="ImageData" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Gender" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Street" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="State" Nullable="true" MaxLength="50" />
+    <Property Type="Guid" Name="SectionID" Nullable="false" />
+    <Property Type="Guid" Name="LevelID" Nullable="false" />
+    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
+  </ComplexType>
+  <ComplexType Name="SP_ListStudentContact_Result">
+    <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
+    <Property Type="String" Name="ImageData" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Gender" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Street" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="State" Nullable="true" MaxLength="50" />
+    <Property Type="Guid" Name="SectionID" Nullable="false" />
+    <Property Type="Guid" Name="LevelID" Nullable="false" />
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
+    <Property Type="Guid" Name="ContactID" Nullable="false" />
+    <Property Type="String" Name="ContactNumber" Nullable="false" MaxLength="50" />
   </ComplexType>
 </Schema>

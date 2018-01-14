@@ -13,9 +13,9 @@ namespace SJBCS.Model
     
     public partial class SP_ListStudent_Result
     {
-        public string STUDENTID { get; set; }
-        public string STUDENTNAME { get; set; }
-        public string GRADELEVEL { get; set; }
-        public string SECTIONNAME { get; set; }
+        public string StudentID { get; set; }
+        public string StudentName { get; set; }
+        public string GradeLevel { get; set; }
+        public string SectionName { get; set; }
     }
 }

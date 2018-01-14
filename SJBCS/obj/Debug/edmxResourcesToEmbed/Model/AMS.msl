@@ -12,6 +12,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Biometrics">
+      <EntityTypeMapping TypeName="AMSModel.Biometric">
+        <MappingFragment StoreEntitySet="Biometric">
+          <ScalarProperty Name="FingerID" ColumnName="FingerID" />
+          <ScalarProperty Name="FingerPrintTemplate" ColumnName="FingerPrintTemplate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Contacts">
       <EntityTypeMapping TypeName="AMSModel.Contact">
         <MappingFragment StoreEntitySet="Contact">
@@ -42,6 +50,15 @@
         <MappingFragment StoreEntitySet="Organization">
           <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
           <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelBiometrics">
+      <EntityTypeMapping TypeName="AMSModel.RelBiometric">
+        <MappingFragment StoreEntitySet="RelBiometric">
+          <ScalarProperty Name="RelBiometricID" ColumnName="RelBiometricID" />
+          <ScalarProperty Name="FingerID" ColumnName="FingerID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -103,43 +120,70 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="SP_ListSection" FunctionName="AMSModel.Store.SP_ListSection">
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMSModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMSModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMSModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMSModel.Store.sp_helpdiagramdefinition">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="AMSModel.SP_ListSection_Result">
-          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
-          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
-          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+        <ComplexTypeMapping TypeName="AMSModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="SP_ListStudent" FunctionName="AMSModel.Store.SP_ListStudent">
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMSModel.Store.sp_helpdiagrams">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="AMSModel.SP_ListStudent_Result">
-          <ScalarProperty Name="STUDENTID" ColumnName="STUDENTID" />
-          <ScalarProperty Name="STUDENTNAME" ColumnName="STUDENTNAME" />
-          <ScalarProperty Name="GRADELEVEL" ColumnName="GRADELEVEL" />
-          <ScalarProperty Name="SECTIONNAME" ColumnName="SECTIONNAME" />
+        <ComplexTypeMapping TypeName="AMSModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="ListSection" FunctionName="AMSModel.Store.SP_ListSection">
+    <FunctionImportMapping FunctionImportName="ListSection" FunctionName="AMSModel.Store.SP_ListSection" />
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMSModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMSModel.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="SP_ListStudentContact" FunctionName="AMSModel.Store.SP_ListStudentContact">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="AMSModel.SP_ListSection_Result">
+        <ComplexTypeMapping TypeName="AMSModel.SP_ListStudentContact_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
           <ScalarProperty Name="SectionName" ColumnName="SectionName" />
           <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
-          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="ListStudent" FunctionName="AMSModel.Store.SP_ListStudent">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="AMSModel.SP_ListStudent_Result">
-          <ScalarProperty Name="STUDENTID" ColumnName="STUDENTID" />
-          <ScalarProperty Name="STUDENTNAME" ColumnName="STUDENTNAME" />
-          <ScalarProperty Name="GRADELEVEL" ColumnName="GRADELEVEL" />
-          <ScalarProperty Name="SECTIONNAME" ColumnName="SECTIONNAME" />
+        <ComplexTypeMapping TypeName="AMSModel.ListStudent_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

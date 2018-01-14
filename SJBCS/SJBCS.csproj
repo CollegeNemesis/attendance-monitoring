@@ -37,6 +37,40 @@
     <Reference Include="CodeDisplayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\XamlDisplayerPackage.1.0.6\lib\net45\CodeDisplayer.dll</HintPath>
     </Reference>
+    <Reference Include="DPFPCtlXTypeLibNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=c0c98f712d5392a7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPCtlXTypeLibNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPCtlXWrapperNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=c0c98f712d5392a7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPCtlXWrapperNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPDevNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=696774c42ee28c57, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPDevNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPEngNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=7fe76e7adf19964b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPEngNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPGuiNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=d4f4a0bd9c559145, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPGuiNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPShrNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=d902fe275a8d6cf2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPShrNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPShrXTypeLibNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=c0c98f712d5392a7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPShrXTypeLibNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPVerNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=4de0a9c4dcc83984, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\DigitalPersona\One Touch SDK\.NET\Bin\DPFPVerNET.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -52,6 +86,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -94,6 +129,9 @@
     <Compile Include="Model\Attendance.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Biometric.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CommandImplementation.cs" />
     <Compile Include="Model\Contact.cs">
       <DependentUpon>AMS.tt</DependentUpon>
@@ -102,13 +140,21 @@
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EntityModel.cs" />
+    <Compile Include="Model\FingerScanner.cs" />
     <Compile Include="Model\Level.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ListStudent_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Model\NotEmptyValidationRule.cs" />
     <Compile Include="Model\NotifyPropertyChangedExtension.cs" />
+    <Compile Include="Model\OnTemplateEventHandler.cs" />
     <Compile Include="Model\Organization.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RelBiometric.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RelDistributionList.cs">
@@ -120,7 +166,16 @@
     <Compile Include="Model\Section.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_helpdiagrams_Result.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SP_ListSection_Result.cs">
+      <DependentUpon>AMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SP_ListStudentContact_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SP_ListStudent_Result.cs">
@@ -132,12 +187,31 @@
     <Compile Include="Model\sysdiagram.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AddStudentViewModel.cs" />
+    <Compile Include="ViewModel\AttendanceViewModel.cs" />
+    <Compile Include="ViewModel\EnrollStudentBiometricsViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\SectionViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
+    <Compile Include="ViewModel\TestWindowViewModel.cs" />
+    <Compile Include="View\AddStudentView.xaml.cs">
+      <DependentUpon>AddStudentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AdminMenuView.xaml.cs">
+      <DependentUpon>AdminMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AttendanceView.xaml.cs">
+      <DependentUpon>AttendanceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ClubOrgView.xaml.cs">
       <DependentUpon>ClubOrgView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DefaultLayoutView.xaml.cs">
+      <DependentUpon>DefaultLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EnrollStudentBiometricsView.xaml.cs">
+      <DependentUpon>EnrollStudentBiometricsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
@@ -157,7 +231,11 @@
     <Compile Include="View\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrapper\AttendanceWrapper.cs" />
+    <Compile Include="Wrapper\BiometricWrapper.cs" />
     <Compile Include="Wrapper\LevelWrapper.cs" />
     <Compile Include="Wrapper\SectionWrapper.cs" />
     <Compile Include="Wrapper\StudentWrapper.cs" />
@@ -197,10 +275,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\53f1fa17c0292fa4f58f7b90dae43e52.gif" />
-  </ItemGroup>
-  <ItemGroup>
+    <Page Include="View\AddStudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AdminMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AttendanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ClubOrgView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DefaultLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EnrollStudentBiometricsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,9 +323,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\fpt\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Model\AMS.Context.tt">
@@ -243,6 +345,16 @@
       <DependentUpon>AMS.edmx</DependentUpon>
       <LastGenOutput>AMS.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Images\Calendar-icon.png" />
+    <Resource Include="Resources\Images\Attendance-icon.png" />
+    <Resource Include="Resources\Images\Add-icon.png" />
+    <Resource Include="Resources\Images\Organization-icon.png" />
+    <Resource Include="Resources\Images\Report-icon.png" />
+    <Resource Include="Resources\Images\Section-icon.png" />
+    <Resource Include="Resources\Images\Settings-icon.png" />
+    <Resource Include="Resources\Images\Student-icon.png" />
+    <Resource Include="Resources\ProfilePic\5210299.jpg" />
+    <Resource Include="Resources\Images\User_Administrator_4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

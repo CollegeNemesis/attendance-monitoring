@@ -7,119 +7,76 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              xmlns:model="clr-namespace:SJBCS.Model"
-             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+             xmlns:codedisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
              mc:Ignorable="d"
-             d:DesignHeight="800"
-             d:DesignWidth="1200">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"
-                                                                   TrueValue="Collapsed"
-                                                                   FalseValue="Visible" />
-        </ResourceDictionary>
-    </UserControl.Resources>
-    <Grid Margin="50">
+             d:DesignHeight="900"
+             d:DesignWidth="900">
+    <Grid Width="800"
+          Height="600"
+          Margin="10"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width=".75*" />
+            <ColumnDefinition Width=".5*" />
         </Grid.ColumnDefinitions>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible">
-
-            <ListView  ItemsSource="{Binding SectionList}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding SectionName}"
-                                        Width="200">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Content="Section" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding GradeLevel}"
-                                        Width="200">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Content="Grade Level" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding StartTime}"
-                                        Width="200">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Content="Start Time" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding EndTime}"
-                                        Width="200">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Content="End Time" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </ScrollViewer>
+        <StackPanel Grid.Column="0">
+            <Border Background="{DynamicResource MaterialDesignBackground}">
+                <ListView  ItemsSource="{Binding SectionList}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding SectionName}"
+                                            Width="120">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Section" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding GradeLevel}"
+                                            Width="200">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Grade Level" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding StartTime}"
+                                            Width="100">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="Start Time" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding EndTime}"
+                                            Width="100">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="End Time" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+        </StackPanel>
         <StackPanel Grid.Column="1">
-            <materialDesign:Card Grid.Column="1"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center">
-
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="300"
-                            Margin="10,10,10,10">
-                    <TextBox materialDesign:HintAssist.Hint="Section"
-                             Margin="10,10,0,0">
-                        <TextBox.Text>
-                            <Binding Path="SectionName"
-                                     UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <model:NotEmptyValidationRule ValidationStep="CommittedValue" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <ComboBox materialDesign:HintAssist.Hint="Grade Level"
-                              IsEditable="True"
-                              Margin="10,10,0,0"
-                              ItemsSource="{Binding LevelList}"
-                              DisplayMemberPath="GradeLevel"
-                              SelectedItem="{Binding GradeLevel}">
-                    </ComboBox>
-                    <materialDesign:TimePicker Width="100"
-                                               Margin="10,10,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               Is24Hours="False"
-                                               SelectedTimeFormat="Short"
-                                               SelectedTime="{Binding StartTime}" />
-                    <materialDesign:TimePicker Width="100"
-                                               Margin="10,10,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               Is24Hours="False"
-                                               SelectedTimeFormat="Short"
-                                               SelectedTime="{Binding EndTime}" />
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="20">
-                        <Button x:Name="ButtonAdd"
-                                Style="{StaticResource MaterialDesignFlatButton}"
-                                Content="ADD"
-                                Command="{Binding AddCommand}">
-                        </Button>
+            <Border  Background="{DynamicResource MaterialDesignBackground}">
+                <GroupBox Margin="16"
+                          Header=""
+                          SnapsToDevicePixels="True"
+                          Style="{DynamicResource MaterialDesignGroupBox}"
+                          UseLayoutRounding="True">
+                    <StackPanel>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="10"
+                                Content="Search Section" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="10"
+                                Content="Add Section" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="10"
+                                Content="Update Section" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="10"
+                                Content="Delete Section" />
                     </StackPanel>
-                    <materialDesign:Snackbar IsActive="{Binding ElementName=ButtonAdd, Path=IsFocused}"
-                                             Message="{Binding Status}" />
-                </StackPanel>
-            </materialDesign:Card>
+                </GroupBox>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>

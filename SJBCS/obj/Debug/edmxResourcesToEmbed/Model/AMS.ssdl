@@ -10,12 +10,19 @@
     <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="IsNotified" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="Biometric">
+    <Key>
+      <PropertyRef Name="FingerID" />
+    </Key>
+    <Property Name="FingerID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FingerPrintTemplate" Type="varbinary(max)" Nullable="false" />
+  </EntityType>
   <EntityType Name="Contact">
     <Key>
       <PropertyRef Name="ContactID" />
     </Key>
     <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="ContactNumber" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ContactNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="DistributionList">
@@ -38,6 +45,14 @@
     </Key>
     <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="OrganizationName" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RelBiometric">
+    <Key>
+      <PropertyRef Name="RelBiometricID" />
+    </Key>
+    <Property Name="RelBiometricID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FingerID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="RelDistributionList">
     <Key>
@@ -112,6 +127,30 @@
         <PropertyRef Name="StudentID" />
       </Principal>
       <Dependent Role="Contact">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelBiometric_Biometric">
+    <End Role="Biometric" Type="Self.Biometric" Multiplicity="1" />
+    <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Biometric">
+        <PropertyRef Name="FingerID" />
+      </Principal>
+      <Dependent Role="RelBiometric">
+        <PropertyRef Name="FingerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RelBiometric_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="RelBiometric">
         <PropertyRef Name="StudentID" />
       </Dependent>
     </ReferentialConstraint>
@@ -200,14 +239,48 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
   <Function Name="SP_ListSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_ListStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SP_ListStudentContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="AMSModelStoreContainer">
     <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DistributionList" EntityType="Self.DistributionList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RelBiometric" EntityType="Self.RelBiometric" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RelDistributionList" EntityType="Self.RelDistributionList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RelOrganization" EntityType="Self.RelOrganization" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
@@ -220,6 +293,14 @@
     <AssociationSet Name="FK_Contact_Student" Association="Self.FK_Contact_Student">
       <End Role="Student" EntitySet="Student" />
       <End Role="Contact" EntitySet="Contact" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelBiometric_Biometric" Association="Self.FK_RelBiometric_Biometric">
+      <End Role="Biometric" EntitySet="Biometric" />
+      <End Role="RelBiometric" EntitySet="RelBiometric" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RelBiometric_Student" Association="Self.FK_RelBiometric_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="RelBiometric" EntitySet="RelBiometric" />
     </AssociationSet>
     <AssociationSet Name="FK_RelDistributionList_DistributionList" Association="Self.FK_RelDistributionList_DistributionList">
       <End Role="DistributionList" EntitySet="DistributionList" />

@@ -3,130 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:SJBCS.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+             xmlns:model="clr-namespace:SJBCS.Model"
+             xmlns:codedisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
              mc:Ignorable="d"
-             d:DesignHeight="800"
-             d:DesignWidth="1100">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-                <!-- throw in some extra colour for our floating action button -->
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.Named.Primary.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+             d:DesignHeight="900"
+             d:DesignWidth="900">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width=".5*" />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="1"
-                    Margin="10">
-            <materialDesign:Card Width="420"
-                                 Margin="4,4,0,0"
-                                 Padding="0"
-                                 Background="#03a9f4"
-                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"
-                               Margin="16,16,16,4"
-                               TextAlignment="Center"
-                               Text="{Binding Path=DigitalClock}"
-                               Style="{StaticResource MaterialDesignHeadlineTextBlock}">
-                    </TextBlock>
-                    <Separator Grid.Row="1"
-                               Style="{StaticResource MaterialDesignLightSeparator}" />
-                    <TextBlock Grid.Row="2"
-                               Margin="16,0,16,8"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="{Binding Path=DigitalCalendar}"
-                               Style="{StaticResource MaterialDesignBody2TextBlock}">
-                    </TextBlock>
-                </Grid>
-            </materialDesign:Card>
-            <materialDesign:Card Grid.Row="1"
-                                 Width="420"
-                                 Margin="4,4,0,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="200"
-                               Height="200"
-                               Source="/SJBCS;component/Resources/Images/53f1fa17c0292fa4f58f7b90dae43e52.gif" />
-                        <StackPanel>
-                            <materialDesign:Card Width="200">
-                                <materialDesign:ColorZone Padding="6"
-                                                          Mode="PrimaryLight">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button HorizontalAlignment="Left"
-                                                Style="{StaticResource MaterialDesignToolForegroundButton}">
-                                            <materialDesign:PackIcon HorizontalAlignment="Right"
-                                                                     Kind="AccountBox" />
-                                        </Button>
-                                        <TextBlock Margin="8,0,0,0"
-                                                   VerticalAlignment="Center">Student Information</TextBlock>
-                                    </StackPanel>
-                                </materialDesign:ColorZone>
-                            </materialDesign:Card>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </materialDesign:Card>
-            <Button Margin="10,10,10,10"
-                    Width="200"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                    Content="Sample Finger Scan" />
-
-        </StackPanel>
-        <StackPanel Grid.Column="0"
-                    Margin="10,10,10,10">
-            <Grid Height="500"
-                      Width="750">
-                    <ListView  ItemsSource="{Binding Items1}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Code}"
-                                                Width="150">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Content="Student No." />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Code}"
-                                                Width="300">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Content="Name" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Code}"
-                                                Width="150">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Content="Time" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Code}"
-                                                Width="150">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Content="Notification" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
+        <codedisplayer:XamlDisplayerHost Content="{Binding Content}" />
+        <StackPanel Orientation="Horizontal">
+            <Expander Header="SMS Simulcast">
+                <StackPanel Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                    <ListBox>
+                        <ListBoxItem>General Announcement</ListBoxItem>
+                        <ListBoxItem>Billing Simulcast</ListBoxItem>
+                        <ListBoxItem>SMS Settings</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Manage Records">
+                <StackPanel Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                    <ListBox>
+                        <ListBoxItem>Students</ListBoxItem>
+                        <ListBoxItem>Section</ListBoxItem>
+                        <ListBoxItem>Grade</ListBoxItem>
+                        <ListBoxItem>Students</ListBoxItem>
+                        <ListBoxItem>Users</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Reports">
+                <StackPanel Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                    <ListBox>
+                        <ListBoxItem>Sample Report A</ListBoxItem>
+                        <ListBoxItem>Sample Report B</ListBoxItem>
+                        <ListBoxItem>Sample Report C</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </Expander>
+            <materialDesign:PopupBox Margin="10"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Top"
+                                     PlacementMode="BottomAndAlignRightEdges">
+                <ListBox>
+                    <ListBoxItem>Log Out</ListBoxItem>
+                </ListBox>
+            </materialDesign:PopupBox>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using SJBCS.ViewModel;
+﻿using SJBCS.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,27 +20,10 @@ namespace SJBCS.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Snackbar Snackbar;
         public MainWindow()
         {
             InitializeComponent();
-            MainSnackbar.MessageQueue.Enqueue("Welcome to Attendance Monitoring System");
-            DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue);
-
-            Snackbar = this.MainSnackbar;
-        }
-
-        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //until we had a StaysOpen glag to Drawer, this will help with scroll bars
-            var dependencyObject = Mouse.Captured as DependencyObject;
-            while (dependencyObject != null)
-            {
-                if (dependencyObject is ScrollBar) return;
-                dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
-            }
-
-            MenuToggleButton.IsChecked = false;
+            DataContext = new MainWindowViewModel();
         }
     }
 }

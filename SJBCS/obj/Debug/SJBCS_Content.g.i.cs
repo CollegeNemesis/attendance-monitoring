@@ -10,5 +10,6 @@
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("model/ams.context.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("model/ams.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/images/calendar-icon.png")]
 
 

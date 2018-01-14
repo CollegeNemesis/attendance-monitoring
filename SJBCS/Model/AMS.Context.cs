@@ -28,34 +28,139 @@ namespace SJBCS.Model
         }
     
         public virtual DbSet<Attendance> Attendances { get; set; }
+        public virtual DbSet<Biometric> Biometrics { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<DistributionList> DistributionLists { get; set; }
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Organization> Organizations { get; set; }
+        public virtual DbSet<RelBiometric> RelBiometrics { get; set; }
         public virtual DbSet<RelDistributionList> RelDistributionLists { get; set; }
         public virtual DbSet<RelOrganization> RelOrganizations { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
-        public virtual ObjectResult<SP_ListSection_Result> SP_ListSection()
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ListSection_Result>("SP_ListSection");
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     
-        public virtual ObjectResult<SP_ListStudent_Result> SP_ListStudent()
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ListStudent_Result>("SP_ListStudent");
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     
-        public virtual ObjectResult<SP_ListSection_Result> ListSection()
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ListSection_Result>("ListSection");
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
-        public virtual ObjectResult<SP_ListStudent_Result> ListStudent()
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ListStudent_Result>("ListStudent");
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<Student> ListSection()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Student>("ListSection");
+        }
+    
+        public virtual ObjectResult<Student> ListSection(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Student>("ListSection", mergeOption);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<SP_ListStudentContact_Result> SP_ListStudentContact()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ListStudentContact_Result>("SP_ListStudentContact");
+        }
+    
+        public virtual ObjectResult<ListStudent_Result> ListStudent()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ListStudent_Result>("ListStudent");
         }
     }
 }
