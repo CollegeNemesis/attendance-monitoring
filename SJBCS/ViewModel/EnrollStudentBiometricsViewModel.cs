@@ -19,15 +19,10 @@ namespace SJBCS.ViewModel
     class EnrollStudentBiometricsViewModel : FingerScanner, INotifyPropertyChanged
     {
         delegate void Function();
-
-        private bool _canShowNotification;
-        private bool _canSave;
+        
         private int _indicator;
-        private Enrollment _enroller;
-        private Bitmap _fingerScanImage;
-        private String _notification;
         private DPFP.Template Template;
-        private SampleConversion _converter;
+        private DPFP.Processing.Enrollment Enroller;
         private Biometric _bio;
         private static AMSEntities DBContext = new AMSEntities();
         private BiometricWrapper _biometricWrapper;
@@ -36,18 +31,16 @@ namespace SJBCS.ViewModel
         
         public EnrollStudentBiometricsViewModel()
         {
+
+            
             _indicator = 0;
-            _canShowNotification = false;
-            _enroller = new Enrollment();
-            _converter = new SampleConversion();
             _bio = new Biometric();
             _biometricWrapper = new BiometricWrapper();
             Start();
+            Enroller = new DPFP.Processing.Enrollment();            // Create an enrollment.
 
         }
 
-        public Object FingerScanImage => _fingerScanImage;
-        public String Notification => _notification;
         public int Indicator
         {
             get
@@ -60,17 +53,9 @@ namespace SJBCS.ViewModel
             }
         }
 
-        public bool CanShowNotification => _canShowNotification;
-        public bool CanSave => _canSave;
-
-
         protected override void Process(DPFP.Sample Sample)
         {
             base.Process(Sample);
-            Bitmap bitmap = null;
-            _converter.ConvertToPicture(Sample, ref bitmap);
-            _fingerScanImage = bitmap;
-            RaisePropertyChanged("FingerScanImage");
 
             // Process the sample and create a feature set for the enrollment purpose.
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
@@ -78,10 +63,7 @@ namespace SJBCS.ViewModel
             // Check quality of the sample and add to enroller if it's good
             if (features != null) try
                 {
-
-                    _enroller.AddFeatures(features);     // Add feature set to template.
-                    _notification = "The fingerprint feature set was created.";
-                    _canShowNotification = true;
+                    Enroller.AddFeatures(features);     // Add feature set to template.
                     _indicator += 25;
                     RaisePropertyChanged(null);
                 }
@@ -90,21 +72,17 @@ namespace SJBCS.ViewModel
                     //UpdateStatus();
 
                     // Check if template has been created.
-                    switch (_enroller.TemplateStatus)
+                    switch (Enroller.TemplateStatus)
                     {
                         case DPFP.Processing.Enrollment.Status.Ready:   // report success and stop capturing
-                            OnTemplate(_enroller.Template);
-                            _notification = "Finger scan completed.!!";
-                            _canShowNotification = true;
+                            OnTemplate(Enroller.Template);
                             RaisePropertyChanged(null);
                             Stop();
                             break;
 
                         case DPFP.Processing.Enrollment.Status.Failed:  // report failure and restart capturing
-                            _enroller.Clear();
+                            Enroller.Clear();
                             Stop();
-                            _notification = "Keep on pressing. . .";
-                            _canShowNotification = true;
                             RaisePropertyChanged(null);
                             OnTemplate(null);
                             Start();
@@ -116,10 +94,8 @@ namespace SJBCS.ViewModel
         private void OnTemplate(DPFP.Template template)
         {
             Template = template;
-            _canSave = (Template != null);
             if (Template != null)
             {
-                _notification = "The fingerprint template is ready for fingerprint verification.";
                 Console.WriteLine("The fingerprint template is ready for fingerprint verification.");
                 MemoryStream fingerprintData = new MemoryStream();
                 Template.Serialize(fingerprintData);
@@ -131,7 +107,7 @@ namespace SJBCS.ViewModel
                 _biometricWrapper.Add(DBContext,_bio);
             }
             else
-                _notification = "The fingerprint template is not valid. Repeat fingerprint enrollment.";
+                Console.WriteLine("The fingerprint template is not valid. Repeat fingerprint enrollment.");
             RaisePropertyChanged(null);
         }
 

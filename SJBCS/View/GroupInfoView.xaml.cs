@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SJBCS.View
 {
     /// <summary>
-    /// Interaction logic for ClubOrgView.xaml
+    /// Interaction logic for GroupInfoView.xaml
     /// </summary>
-    public partial class ClubOrgView : UserControl
+    public partial class GroupInfoView : UserControl
     {
-        public ClubOrgView()
+        public GroupInfoView()
         {
             InitializeComponent();
         }

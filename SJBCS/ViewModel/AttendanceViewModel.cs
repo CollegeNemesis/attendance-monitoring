@@ -75,21 +75,31 @@ namespace SJBCS.ViewModel
                 MemoryStream fingerprintData = null;
                 Result result = null;
                 // Loop on the FPT List from DB to Compare the feature set with the DB templates
+                int counter = 0;
                 foreach (var temp in _fptList)
                 {
+                    counter++;
                     Biometric biometric = (Biometric)temp;
+                    Console.WriteLine(biometric.FingerPrintTemplate);
                     fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
                     Template = new Template(fingerprintData);
                     result = new Result();
                     Verificator.Verify(features, Template, ref result);
 
                     if (result.Verified)
+                    {
                         _status = "VERIFIED.";
+                        Verificator = new DPFP.Verification.Verification();
+                    }
 
                     else
+                    {
                         _status = "NOT VERIFIED.";
+                        Verificator = new DPFP.Verification.Verification();
+                    }
                     RaisePropertyChanged(null);
                 }
+                Console.WriteLine(counter);
                 
             }
         }

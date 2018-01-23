@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SJBCS.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              xmlns:model="clr-namespace:SJBCS.Model"
              xmlns:codedisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
@@ -24,260 +25,254 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*" />
-            <RowDefinition Height="351*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0"
-              Grid.Column="0"
-              VerticalAlignment="Stretch"
-              HorizontalAlignment="Stretch"
-              Background="White"
-              Margin="0,0,0,0">
-            <materialDesign:ColorZone Padding="16"
-                                      Mode="PrimaryMid"
-                                      VerticalAlignment="Center">
-                <DockPanel>
-                    <StackPanel materialDesign:RippleAssist.IsCentered="True"
-                                Orientation="Horizontal">
-                        <materialDesign:ColorZone Margin="16,0,0,0"
-                                                  Padding="8,4,8,4"
-                                                  Panel.ZIndex="1"
-                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                                  CornerRadius="2"
-                                                  Mode="Standard"
-                                                  HorizontalAlignment="Stretch">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Button Style="{DynamicResource MaterialDesignToolButton}">
-                                    <materialDesign:PackIcon Kind="Magnify"
-                                                             Opacity=".56" />
-                                </Button>
-                                <TextBox Grid.Column="1"
-                                         MinWidth="200"
-                                         Margin="8,0,0,0"
-                                         VerticalAlignment="Center"
-                                         materialDesign:HintAssist.Hint="Search Student"
-                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                         BorderThickness="0"
-                                         FontSize="12"
-                                         FontFamily="Segoe UI" />
-                                <Button Grid.Column="2"
-                                        Style="{DynamicResource MaterialDesignToolButton}">
-                                    <materialDesign:PackIcon Margin="8,0,0,0"
-                                                             Kind="Filter"
-                                                             Opacity=".56" />
-                                </Button>
-                            </Grid>
-                        </materialDesign:ColorZone>
-                    </StackPanel>
-                </DockPanel>
-            </materialDesign:ColorZone>
-
-        </Grid>
-        <Grid Grid.Row="1"
-              Grid.Column="0"
-              VerticalAlignment="Stretch"
-              HorizontalAlignment="Stretch"
+        <Grid Grid.Column="0"
               Background="White">
-            <ListBox x:Name="StudentListBox"
-                     SelectedIndex="0"
-                     ItemsSource="{Binding StudentList}"
-                     SelectedItem="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch"
-                              Width="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  Background="White">
+                <StackPanel materialDesign:RippleAssist.IsCentered="True"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="2">
+                    <materialDesign:ColorZone Margin="5"
+                                              Padding="8,4,8,4"
+                                              Panel.ZIndex="1"
+                                              Width="400"
+                                              BorderBrush="LightGray"
+                                              BorderThickness="1"
+                                              CornerRadius="2"
+                                              Mode="Standard"
+                                              HorizontalAlignment="Center">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50*" />
-                                <ColumnDefinition Width="401*" />
-                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="0"
-                                   Source="/SJBCS;component/Resources/ProfilePic/5210299.jpg"
-                                   Stretch="UniformToFill"
-                                   Height="50" />
-                            <StackPanel Grid.Column="1">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding LastName}"
-                                               FontSize="12"
-                                               FontFamily="Segoe UI"
-                                               Margin="10,0,0,0" />
-                                    <TextBlock Text=", "
-                                               FontSize="12"
-                                               FontFamily="Segoe UI"
-                                               Margin="0,0,0,0" />
-                                    <TextBlock Text="{Binding FirstName}"
-                                               FontSize="12"
-                                               FontFamily="Segoe UI"
-                                               Margin="0,0,0,0" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding GradeLevel}"
-                                               FontSize="10"
-                                               FontFamily="Segoe UI"
-                                               Margin="10,0,0,0" />
-                                    <TextBlock Text="-"
-                                               FontSize="10"
-                                               FontFamily="Segoe UI"
-                                               Margin="0,0,0,0" />
-                                    <TextBlock Text="{Binding SectionName}"
-                                               FontSize="10"
-                                               FontFamily="Segoe UI"
-                                               Margin="0,0,0,0" />
-                                </StackPanel>
-                            </StackPanel>
+                            <Button Style="{DynamicResource MaterialDesignToolButton}">
+                                <materialDesign:PackIcon Kind="Magnify"
+                                                         Opacity=".56" />
+                            </Button>
+                            <TextBox Grid.Column="1"
+                                     Margin="8,0,0,0"
+                                     VerticalAlignment="Center"
+                                     materialDesign:HintAssist.Hint="Search Student"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     BorderThickness="0"
+                                     FontFamily="Segoe UI"
+                                     FontSize="12"
+                                     FontWeight="Regular" />
                         </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    </materialDesign:ColorZone>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="StudentMasterList"
+                  Grid.Row="1"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  Background="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <Separator Foreground="LightGray"
+                                   Opacity=".36" />
+                        <ListBox x:Name="StudentListBox"
+                                 Grid.Column="0"
+                                 Margin="0,5,0,0"
+                                 ItemsSource="{Binding StudentList}"
+                                 SelectedItem="{Binding Student}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:Chip Margin="0,0,6,4"
+                                                             IsHitTestVisible="False"
+                                                             Background="White">
+                                            <materialDesign:Chip.Content>
+                                                <TextBlock FontFamily="Segoe UI"
+                                                           FontSize="12"
+                                                           FontWeight="Regular">
+                                                <Run Text="{Binding FirstName}" />
+                                                <Run Text="" />
+                                                <Run Text="{Binding LastName}" />
+                                                </TextBlock>
+                                            </materialDesign:Chip.Content>
+                                            <materialDesign:Chip.Icon>
+                                                <Image  Source="{Binding ImageData}"
+                                                        Stretch="UniformToFill" />
+                                            </materialDesign:Chip.Icon>
+                                        </materialDesign:Chip>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1"
-              Grid.RowSpan="2"
-              Margin="5,0,0,0">
-            <materialDesign:Flipper Style="{StaticResource MaterialDesignCardFlipper}"
-                                    DataContext="{Binding ElementName=StudentListBox}">
-                <materialDesign:Flipper.FrontContent>
-                    <Grid Width="200">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="160" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <materialDesign:ColorZone VerticalAlignment="Stretch"
-                                                  Mode="PrimaryMid">
-                            <materialDesign:PackIcon Width="128"
-                                                     Height="128"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"
-                                                     Kind="AccountCircle" />
-                        </materialDesign:ColorZone>
-                        <StackPanel Grid.Row="1"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Path=SelectedItem.StudentID}"
-                                       FontSize="12"
-                                       FontFamily="Segoe UI"
-                                       HorizontalAlignment="Center"
-                                       Margin="5" />
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Path=SelectedItem.FirstName}"
-                                           FontSize="12"
-                                           FontFamily="Segoe UI" />
-                                <TextBlock Text=" "
-                                           FontSize="12"
-                                           FontFamily="Segoe UI" />
-                                <TextBlock Text="{Binding Path=SelectedItem.LastName}"
-                                           FontSize="12"
-                                           FontFamily="Segoe UI" />
-                            </StackPanel>
-                            <Button Margin="5"
-                                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                    FontSize="12"
-                                    FontFamily="Segoe UI"
-                                    FontWeight="Regular"
-                                    Content="EDIT" />
-                            <Button Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                    FontSize="12"
-                                    FontFamily="Segoe UI"
-                                    FontWeight="Regular"
-                                    Content="DELETE" />
-                        </StackPanel>
-                    </Grid>
-                </materialDesign:Flipper.FrontContent>
-                <materialDesign:Flipper.BackContent>
-                    <Grid Width="200">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <materialDesign:ColorZone Padding="6"
-                                                  Mode="PrimaryMid">
-                            <StackPanel Orientation="Horizontal">
-                                <Button HorizontalAlignment="Left"
-                                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                        Style="{StaticResource MaterialDesignToolForegroundButton}">
-                                    <materialDesign:PackIcon HorizontalAlignment="Right"
-                                                             Kind="ArrowLeft" />
-                                </Button>
-                                <TextBlock Margin="8,0,0,0"
-                                           VerticalAlignment="Center">EDIT USER</TextBlock>
-                            </StackPanel>
-                        </materialDesign:ColorZone>
-                        <Grid Grid.Row="1"
-                              Width="172"
-                              Margin="0,6,0,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Top">
-                            <StackPanel Grid.Row="0">
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="First name"
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         Text="{Binding SelectedItem.FirstName}" />
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="Last name"
-                                         Text="{Binding SelectedItem.LastName}" />
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="Middle name"
-                                         Text="{Binding SelectedItem.MiddleName}" />
-                                <DatePicker Width="100"
-                                            Margin="0,16,0,0"
-                                            HorizontalAlignment="Left"
-                                            materialDesign:HintAssist.Hint="Birth date"
-                                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                            Text="{Binding SelectedItem.BirthDate}" />
-                                <StackPanel Orientation="Horizontal"
-                                            Margin="0,12,0,0">
-                                    <RadioButton GroupName="Gender"
-                                                 VerticalAlignment="Center"
-                                                 Style="{StaticResource MaterialDesignRadioButton}"
-                                                 Content="Male"
-                                                 IsChecked="{Binding SelectedItem.Gender, Mode=OneWay}"/>
-                                    <RadioButton GroupName="Gender"
-                                                 VerticalAlignment="Center"
-                                                 Style="{StaticResource MaterialDesignRadioButton}"
-                                                 Content="Female"
-                                                 Margin="12,0,0,0"
-                                                 IsChecked="True"/>
-                                </StackPanel>
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="Street"
-                                         Text="{Binding SelectedItem.Street}" />
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="City"
-                                         Text="{Binding SelectedItem.City}" />
-                                <TextBox Margin="0,12,0,0"
-                                         materialDesign:HintAssist.Hint="State"
-                                         Text="{Binding SelectedItem.State}" />
-                                <Button Margin="5"
-                                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        FontSize="12"
-                                        FontFamily="Segoe UI"
-                                        FontWeight="Regular"
-                                        Content="SAVE" />
-                                <Button Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        FontSize="12"
-                                        FontFamily="Segoe UI"
-                                        FontWeight="Regular"
-                                        Content="CANCEL" />
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                </materialDesign:Flipper.BackContent>
-            </materialDesign:Flipper>
+              Margin="5,0,0,0"
+              Width="{Binding StudentInfoPanelWidth}"
+              HorizontalAlignment="Left"
+              Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch"
+                                          Mode="PrimaryMid">
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
 
+                            <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                    Command="{Binding OpenEditStudentMenuDialogCommand}">
+                                <materialDesign:PackIcon Kind="Camera"
+                                                         Foreground="White"
+                                                         ToolTip="Change Profile Picture"
+                                                         Height="25"
+                                                         Width="25" />
+                            </Button>
+                            <Button Style="{DynamicResource MaterialDesignToolButton}">
+                                <materialDesign:PackIcon Kind="Delete"
+                                                         Foreground="White"
+                                                         ToolTip="Delete Record"
+                                                         Height="25"
+                                                         Width="25" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center"
+                                    HorizontalAlignment="Center">
+                            <Ellipse Width="128"
+                                     Height="128">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding ImageData}"
+                                                Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock FontFamily="Segoe UI"
+                                       FontSize="16"
+                                       FontWeight="Regular"
+                                       Margin="5">
+                                                <Run Text="{Binding FirstName}" />
+                                                <Run Text="" />
+                                                <Run Text="{Binding LastName}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+
+                </materialDesign:ColorZone>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Height="Auto"
+                                Command="{Binding OpenStudentInfoViewCommand}">
+                            <StackPanel VerticalAlignment="Top"
+                                        HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="AccountCardDetails"
+                                                         HorizontalAlignment="Center"
+                                                         Height="25"
+                                                         Width="25"/>
+                                <TextBlock Margin="0 0 0 0"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="10"
+                                           FontWeight="Regular"
+                                           Text="Student Info" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Height="Auto"
+                                Command="{Binding OpenContactInfoViewCommand}">
+                            <StackPanel VerticalAlignment="Top"
+                                        HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Phone"
+                                                         HorizontalAlignment="Center"
+                                                         Height="25"
+                                                         Width="25" />
+                                <TextBlock Margin="0 0 0 0"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="10"
+                                           FontWeight="Regular"
+                                           Text="Contact" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Height="Auto"
+                                Command="{Binding OpenGroupInfoViewCommand}">
+                            <StackPanel VerticalAlignment="Top"
+                                        HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Crown"
+                                                         HorizontalAlignment="Center"
+                                                         Height="25"
+                                                         Width="25" />
+                                <TextBlock Margin="0 0 0 0"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="10"
+                                           FontWeight="Regular"
+                                           Text="Groups" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Height="Auto">
+                            <StackPanel VerticalAlignment="Top"
+                                        HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Fingerprint"
+                                                         HorizontalAlignment="Center"
+                                                         Height="25"
+                                                         Width="25" />
+                                <TextBlock Margin="0 0 0 0"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="10"
+                                           FontWeight="Regular"
+                                           Text="Biometrics" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Height="Auto">
+                            <StackPanel VerticalAlignment="Top"
+                                        HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="ChartBar"
+                                                         HorizontalAlignment="Center"
+                                                         Height="25"
+                                                         Width="25" />
+                                <TextBlock Margin="0 0 0 0"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="10"
+                                           FontWeight="Regular"
+                                           Text="Report" />
+                            </StackPanel>
+                        </Button>                        
+                    </StackPanel>
+                    <Separator Foreground="LightGray"
+                               Opacity=".36" />
+                    <StackPanel Grid.Column="1"
+                                HorizontalAlignment="Stretch">
+                        <codeDisplayer:XamlDisplayerHost Content="{Binding Content}" />
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

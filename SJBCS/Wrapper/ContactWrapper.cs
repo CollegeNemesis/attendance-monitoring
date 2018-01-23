@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace SJBCS.Wrapper
 {
-    public class SectionWrapper : EntityModel
+    class ContactWrapper : EntityModel
     {
-        private Section _section;
-        
         public void Add(AMSEntities dBContext, object obj)
         {
-            _section = obj as Section;
-            _section.SectionID = Guid.NewGuid();
-            dBContext.Sections.Add(_section);
-            dBContext.SaveChanges();
-
+            throw new NotImplementedException();
         }
 
         public void Delete(AMSEntities dBContext, object obj)
@@ -28,15 +22,14 @@ namespace SJBCS.Wrapper
 
         public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
         {
-            var query = dBContext.ListSection();
-            return new ObservableCollection<Object>(query.ToList());
+            throw new NotImplementedException();
         }
 
         public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
         {
-            var query = from section in dBContext.Sections
-                        where section.LevelID == new Guid(keyword)
-                        select section;
+            var query = from contact in dBContext.Contacts
+                        where contact.StudentID == keyword
+                        select contact;
 
             return new ObservableCollection<Object>(query.ToList());
         }

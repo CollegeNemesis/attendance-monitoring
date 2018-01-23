@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace SJBCS.Wrapper
 {
-    public class SectionWrapper : EntityModel
+    class OrganizationWrapper : EntityModel
     {
-        private Section _section;
-        
         public void Add(AMSEntities dBContext, object obj)
         {
-            _section = obj as Section;
-            _section.SectionID = Guid.NewGuid();
-            dBContext.Sections.Add(_section);
-            dBContext.SaveChanges();
-
+            throw new NotImplementedException();
         }
 
         public void Delete(AMSEntities dBContext, object obj)
@@ -28,17 +22,27 @@ namespace SJBCS.Wrapper
 
         public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
         {
-            var query = dBContext.ListSection();
-            return new ObservableCollection<Object>(query.ToList());
+            throw new NotImplementedException();
         }
 
         public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
         {
-            var query = from section in dBContext.Sections
-                        where section.LevelID == new Guid(keyword)
-                        select section;
+            var query = from relOrg in dBContext.RelOrganizations
+                        where relOrg.StudentID == keyword
+                        select relOrg.OrganizationID;
 
-            return new ObservableCollection<Object>(query.ToList());
+            List<Guid> tempList = query.ToList();
+            List<Object> orgList = new List<Object>();
+
+            foreach(var id in tempList)
+            {
+                var queryOrg = from org in dBContext.Organizations
+                            where org.OrganizationID == id
+                            select org;
+                orgList.Add(queryOrg.ToList());
+            }
+
+            return new ObservableCollection<Object>(orgList);
         }
 
         public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)

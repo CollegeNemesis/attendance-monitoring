@@ -11,18 +11,19 @@ namespace SJBCS.Model
 {
     class FingerScanner : DPFP.Capture.EventHandler
     {
-        private Capture Capturer;
+
+        private DPFP.Capture.Capture Capturer;
 
         public FingerScanner()
         {
             try
             {
-                Capturer = new Capture();				// Create a capture operation.
+                Capturer = new DPFP.Capture.Capture();				// Create a capture operation.
 
                 if (null != Capturer)
                     Capturer.EventHandler = this;					// Subscribe for capturing events.
                 else
-                    Console.WriteLine("Can't initiate capture operation!");
+                    Console.WriteLine("Can't initiate capture operation! on initial");
             }
             catch
             {
@@ -30,7 +31,7 @@ namespace SJBCS.Model
             }
         }
 
-        protected virtual void Process(Sample Sample)
+        protected virtual void Process(DPFP.Sample Sample)
         {
 
         }
@@ -46,7 +47,7 @@ namespace SJBCS.Model
                 }
                 catch
                 {
-                    Console.WriteLine("Can't initiate capture!");
+                    Console.WriteLine("Can't initiate capture! on Start()");
                 }
             }
         }
@@ -67,19 +68,19 @@ namespace SJBCS.Model
             }
         }
 
-        protected FeatureSet ExtractFeatures(Sample Sample, DataPurpose Purpose)
+        protected DPFP.FeatureSet ExtractFeatures(DPFP.Sample Sample, DPFP.Processing.DataPurpose Purpose)
         {
-            FeatureExtraction Extractor = new FeatureExtraction();  // Create a feature extractor
-            CaptureFeedback feedback = CaptureFeedback.None;
-            FeatureSet features = new FeatureSet();
+            DPFP.Processing.FeatureExtraction Extractor = new DPFP.Processing.FeatureExtraction();  // Create a feature extractor
+            DPFP.Capture.CaptureFeedback feedback = DPFP.Capture.CaptureFeedback.None;
+            DPFP.FeatureSet features = new DPFP.FeatureSet();
             Extractor.CreateFeatureSet(Sample, Purpose, ref feedback, ref features);            // TODO: return features as a result?
-            if (feedback == CaptureFeedback.Good)
+            if (feedback == DPFP.Capture.CaptureFeedback.Good)
                 return features;
             else
                 return null;
         }
 
-        public void OnSampleQuality(object Capture, string ReaderSerialNumber, CaptureFeedback CaptureFeedback)
+        public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
         {
             if (CaptureFeedback == CaptureFeedback.Good)
             {
@@ -91,7 +92,7 @@ namespace SJBCS.Model
             }
         }
 
-        public void OnComplete(object Capture, string ReaderSerialNumber, Sample Sample)
+        public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
         {
             Console.WriteLine("The fingerprint sample was captured.");
             Console.WriteLine("Scan the same fingerprint again.");

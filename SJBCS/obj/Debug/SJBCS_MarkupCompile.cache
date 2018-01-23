@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\App.xaml
-131686450787
+10-1846645569
 21566308462
-58244601316
+59-1215507432
 30-851787704
-View\AddStudentView.xaml;View\AdminMenuView.xaml;View\AttendanceView.xaml;View\ClubOrgView.xaml;View\DefaultLayoutView.xaml;View\EnrollStudentBiometricsView.xaml;View\HomeView.xaml;View\MainWindow.xaml;View\ReportView.xaml;View\SectionView.xaml;View\SMSView.xaml;View\StudentView.xaml;View\TestWindow.xaml;
+View\AttendanceView.xaml;View\ContactInfoView.xaml;View\DefaultLayoutView.xaml;View\EnrollStudentBiometricsView.xaml;View\GroupInfoView.xaml;View\MainWindow.xaml;View\SectionView.xaml;View\StudentInfoView.xaml;View\StudentView.xaml;View\TestWindow.xaml;
 
 False
 

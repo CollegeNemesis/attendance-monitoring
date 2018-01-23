@@ -187,25 +187,21 @@
     <Compile Include="Model\sysdiagram.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\AddStudentViewModel.cs" />
     <Compile Include="ViewModel\AttendanceViewModel.cs" />
+    <Compile Include="ViewModel\ContactInfoViewModel.cs" />
     <Compile Include="ViewModel\EnrollStudentBiometricsViewModel.cs" />
+    <Compile Include="ViewModel\GroupInfoViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\SectionViewModel.cs" />
+    <Compile Include="ViewModel\StudentInfoViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\TestWindowViewModel.cs" />
-    <Compile Include="View\AddStudentView.xaml.cs">
-      <DependentUpon>AddStudentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\AdminMenuView.xaml.cs">
-      <DependentUpon>AdminMenuView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\AttendanceView.xaml.cs">
       <DependentUpon>AttendanceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ClubOrgView.xaml.cs">
-      <DependentUpon>ClubOrgView.xaml</DependentUpon>
+    <Compile Include="View\ContactInfoView.xaml.cs">
+      <DependentUpon>ContactInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DefaultLayoutView.xaml.cs">
       <DependentUpon>DefaultLayoutView.xaml</DependentUpon>
@@ -213,20 +209,17 @@
     <Compile Include="View\EnrollStudentBiometricsView.xaml.cs">
       <DependentUpon>EnrollStudentBiometricsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\HomeView.xaml.cs">
-      <DependentUpon>HomeView.xaml</DependentUpon>
+    <Compile Include="View\GroupInfoView.xaml.cs">
+      <DependentUpon>GroupInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ReportView.xaml.cs">
-      <DependentUpon>ReportView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SectionView.xaml.cs">
       <DependentUpon>SectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SMSView.xaml.cs">
-      <DependentUpon>SMSView.xaml</DependentUpon>
+    <Compile Include="View\StudentInfoView.xaml.cs">
+      <DependentUpon>StudentInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
@@ -236,7 +229,9 @@
     </Compile>
     <Compile Include="Wrapper\AttendanceWrapper.cs" />
     <Compile Include="Wrapper\BiometricWrapper.cs" />
+    <Compile Include="Wrapper\ContactWrapper.cs" />
     <Compile Include="Wrapper\LevelWrapper.cs" />
+    <Compile Include="Wrapper\OrganizationWrapper.cs" />
     <Compile Include="Wrapper\SectionWrapper.cs" />
     <Compile Include="Wrapper\StudentWrapper.cs" />
   </ItemGroup>
@@ -275,19 +270,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\AddStudentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\AdminMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\AttendanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ClubOrgView.xaml">
+    <Page Include="View\ContactInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -299,7 +286,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\HomeView.xaml">
+    <Page Include="View\GroupInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -307,15 +294,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ReportView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\SectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SMSView.xaml">
+    <Page Include="View\StudentInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -345,6 +328,8 @@
       <DependentUpon>AMS.edmx</DependentUpon>
       <LastGenOutput>AMS.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Images\StudentView-icon.png" />
+    <Resource Include="Resources\ProfilePic\5210300.png" />
     <Resource Include="Resources\Images\Calendar-icon.png" />
     <Resource Include="Resources\Images\Attendance-icon.png" />
     <Resource Include="Resources\Images\Add-icon.png" />
