@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="SJBCS.View.ManageBiometricsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SJBCS.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+             xmlns:model="clr-namespace:SJBCS.Model"
+             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="204*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Fingerprint"
+                                         Foreground="SkyBlue"
+                                         Margin="5"
+                                         Height="25"
+                                         Width="25" />
+                <TextBlock FontFamily="Segoe UI"
+                           FontSize="16"
+                           FontWeight="Regular"
+                           Text="Fingerprint Management"
+                           Margin="5"
+                           Foreground="Gray"
+                           VerticalAlignment="Bottom" />
+            </StackPanel>
+            <StackPanel Height="{Binding NotificationHeight}">
+                <TextBlock FontFamily="Segoe UI"
+                           FontSize="12"
+                           FontWeight="Regular"
+                           Text="No fingerprint has been setup yet."
+                           Margin="10"
+                           Foreground="Gray"
+                           VerticalAlignment="Bottom" />
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <StackPanel>
+                <ListView ItemsSource="{Binding FingerList}"
+                          IsHitTestVisible="False"
+                          FontFamily="Segoe UI"
+                          FontSize="14"
+                          FontWeight="Regular"
+                          Margin="60 0 0 0 ">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding StudentID}" />
+                                <TextBlock Text="{Binding FingerID}" />
+                                <materialDesign:PackIcon Kind="Delete"
+                                                         Margin="50 0 0 0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        HorizontalContentAlignment="Left"
+                        Padding="0"
+                        Margin="5"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Command="{Binding OpenBiometricsEnrollmentViewCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus"
+                                                 Foreground="SkyBlue"
+                                                 Margin="5" />
+                        <TextBlock FontFamily="Segoe UI"
+                                   FontSize="12"
+                                   FontWeight="Regular"
+                                   Text="Add fingerprint"
+                                   Margin="5"
+                                   Foreground="Gray"
+                                   VerticalAlignment="Bottom" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>

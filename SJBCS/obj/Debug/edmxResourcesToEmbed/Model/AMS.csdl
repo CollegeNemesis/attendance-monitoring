@@ -4,11 +4,14 @@
     <Key>
       <PropertyRef Name="AttendanceID" />
     </Key>
-    <Property Name="AttendanceID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="AttendanceID" Type="Guid" Nullable="false" />
     <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="TimeOut" Type="DateTime" Precision="0" />
     <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="IsNotified" Type="Boolean" Nullable="false" />
+    <Property Name="TimeInID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TimeOutID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TimeInNotified" Type="Boolean" />
+    <Property Name="TimeOutNotified" Type="Boolean" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
   </EntityType>
   <EntityType Name="Biometric">
@@ -50,7 +53,7 @@
       <PropertyRef Name="OrganizationID" />
     </Key>
     <Property Name="OrganizationID" Type="Guid" Nullable="false" />
-    <Property Name="OrganizationName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="OrganizationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Organization" FromRole="Organization" ToRole="RelOrganization" />
   </EntityType>
   <EntityType Name="RelBiometric">
@@ -104,7 +107,7 @@
     <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="BirthDate" Type="DateTime" Precision="0" />
-    <Property Name="ImageData" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImageData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -118,16 +121,6 @@
     <NavigationProperty Name="RelDistributionLists" Relationship="Self.FK_RelDistributionList_Student" FromRole="Student" ToRole="RelDistributionList" />
     <NavigationProperty Name="RelOrganizations" Relationship="Self.FK_RelOrganization_Student" FromRole="Student" ToRole="RelOrganization" />
     <NavigationProperty Name="Section" Relationship="Self.FK_Student_Section" FromRole="Student" ToRole="Section" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <Association Name="FK_Attendance_Student">
     <End Role="Student" Type="Self.Student" Multiplicity="1" />
@@ -273,7 +266,6 @@
     <EntitySet Name="RelOrganizations" EntityType="Self.RelOrganization" />
     <EntitySet Name="Sections" EntityType="Self.Section" />
     <EntitySet Name="Students" EntityType="Self.Student" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
       <End Role="Student" EntitySet="Students" />
       <End Role="Attendance" EntitySet="Attendances" />
@@ -318,77 +310,34 @@
       <End Role="Section" EntitySet="Sections" />
       <End Role="Student" EntitySet="Students" />
     </AssociationSet>
-    <FunctionImport Name="sp_alterdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_creatediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_dropdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(AMSModel.sp_helpdiagramdefinition_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(AMSModel.sp_helpdiagrams_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="ListSection" EntitySet="Students" ReturnType="Collection(AMSModel.Student)" />
-    <FunctionImport Name="sp_renamediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="new_diagramname" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="SP_ListSection" ReturnType="Collection(AMSModel.SP_ListSection_Result)" />
+    <FunctionImport Name="SP_ListStudent" ReturnType="Collection(AMSModel.SP_SP_ListStudent_Result)" />
     <FunctionImport Name="SP_ListStudentContact" ReturnType="Collection(AMSModel.SP_ListStudentContact_Result)" />
+    <FunctionImport Name="ListStudent_Result" ReturnType="Collection(AMSModel.ListStudent_Result)" />
     <FunctionImport Name="ListStudent" ReturnType="Collection(AMSModel.ListStudent_Result)" />
+    <FunctionImport Name="ListSection" EntitySet="Sections" ReturnType="Collection(AMSModel.Section)" />
+    <EntitySet Name="sysdiagrams" EntityType="AMSModel.sysdiagram" />
   </EntityContainer>
-  <ComplexType Name="sp_helpdiagramdefinition_Result">
-    <Property Type="Int32" Name="version" Nullable="true" />
-    <Property Type="Binary" Name="definition" Nullable="true" />
-  </ComplexType>
-  <ComplexType Name="sp_helpdiagrams_Result">
-    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-    <Property Type="Int32" Name="ID" Nullable="false" />
-    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-    <Property Type="Int32" Name="OwnerID" Nullable="false" />
-  </ComplexType>
   <ComplexType Name="SP_ListSection_Result">
     <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
     <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
     <Property Type="Time" Name="StartTime" Nullable="false" />
     <Property Type="Time" Name="EndTime" Nullable="false" />
   </ComplexType>
-  <ComplexType Name="SP_ListStudent_Result">
+  <ComplexType Name="SP_SP_ListStudent_Result">
     <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="StudentName" Nullable="false" MaxLength="153" />
-    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
-    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
-  </ComplexType>
-  <ComplexType Name="ListStudent_Result">
-    <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
     <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
-    <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
-    <Property Type="String" Name="ImageData" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="true" />
+    <Property Type="String" Name="ImageData" Nullable="true" />
     <Property Type="String" Name="Gender" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Street" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="State" Nullable="true" MaxLength="50" />
     <Property Type="Guid" Name="SectionID" Nullable="false" />
     <Property Type="Guid" Name="LevelID" Nullable="false" />
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
     <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
   </ComplexType>
   <ComplexType Name="SP_ListStudentContact_Result">
@@ -396,8 +345,8 @@
     <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
-    <Property Type="DateTime" Name="BirthDate" Nullable="true" Precision="16" />
-    <Property Type="String" Name="ImageData" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="true" />
+    <Property Type="String" Name="ImageData" Nullable="true" />
     <Property Type="String" Name="Gender" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Street" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
@@ -409,4 +358,30 @@
     <Property Type="Guid" Name="ContactID" Nullable="false" />
     <Property Type="String" Name="ContactNumber" Nullable="false" MaxLength="50" />
   </ComplexType>
+  <ComplexType Name="ListStudent_Result">
+    <Property Type="String" Name="StudentID" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="true" />
+    <Property Type="String" Name="ImageData" Nullable="true" />
+    <Property Type="String" Name="Gender" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Street" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="State" Nullable="true" MaxLength="50" />
+    <Property Type="Guid" Name="SectionID" Nullable="false" />
+    <Property Type="Guid" Name="LevelID" Nullable="false" />
+    <Property Type="String" Name="SectionName" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="GradeLevel" Nullable="false" MaxLength="10" />
+  </ComplexType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
 </Schema>

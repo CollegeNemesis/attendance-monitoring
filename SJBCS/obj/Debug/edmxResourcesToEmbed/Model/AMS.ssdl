@@ -4,11 +4,14 @@
     <Key>
       <PropertyRef Name="AttendanceID" />
     </Key>
-    <Property Name="AttendanceID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="AttendanceID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="TimeIn" Type="smalldatetime" Nullable="false" />
     <Property Name="TimeOut" Type="smalldatetime" />
     <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="IsNotified" Type="bit" Nullable="false" />
+    <Property Name="TimeInID" Type="nvarchar" MaxLength="50" />
+    <Property Name="TimeOutID" Type="nvarchar" MaxLength="50" />
+    <Property Name="TimeInNotified" Type="bit" />
+    <Property Name="TimeOutNotified" Type="bit" />
   </EntityType>
   <EntityType Name="Biometric">
     <Key>
@@ -44,7 +47,7 @@
       <PropertyRef Name="OrganizationID" />
     </Key>
     <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="OrganizationName" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="OrganizationName" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="RelBiometric">
     <Key>
@@ -89,7 +92,7 @@
     <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
     <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="BirthDate" Type="date" />
-    <Property Name="ImageData" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImageData" Type="nvarchar(max)" />
     <Property Name="Gender" Type="nvarchar" MaxLength="50" />
     <Property Name="Street" Type="nvarchar" MaxLength="50" />
     <Property Name="City" Type="nvarchar" MaxLength="50" />
@@ -107,18 +110,6 @@
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
-  <Association Name="FK_Attendance_Student">
-    <End Role="Student" Type="Self.Student" Multiplicity="1" />
-    <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
-      </Principal>
-      <Dependent Role="Attendance">
-        <PropertyRef Name="StudentID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Contact_Student">
     <End Role="Student" Type="Self.Student" Multiplicity="1" />
     <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
@@ -239,40 +230,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
   <Function Name="SP_ListSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_ListStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_ListStudentContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-  </Function>
-  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="AMSModelStoreContainer">
     <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
@@ -286,10 +246,6 @@
     <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
-      <End Role="Student" EntitySet="Student" />
-      <End Role="Attendance" EntitySet="Attendance" />
-    </AssociationSet>
     <AssociationSet Name="FK_Contact_Student" Association="Self.FK_Contact_Student">
       <End Role="Student" EntitySet="Student" />
       <End Role="Contact" EntitySet="Contact" />

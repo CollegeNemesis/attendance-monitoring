@@ -31,7 +31,11 @@ namespace SJBCS.Wrapper
 
         public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
         {
-            throw new NotImplementedException();
+            var query = from level in dBContext.Levels
+                        where level.LevelID == new Guid(keyword)
+                        select level;
+
+            return new ObservableCollection<Object>(query.ToList());
         }
 
         public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)

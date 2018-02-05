@@ -14,7 +14,6 @@ namespace SJBCS.Model
     public partial class ListStudent_Result
     {
         public string StudentID { get; set; }
-        public string SectionName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -26,6 +25,7 @@ namespace SJBCS.Model
         public string State { get; set; }
         public System.Guid SectionID { get; set; }
         public System.Guid LevelID { get; set; }
+        public string SectionName { get; set; }
         public string GradeLevel { get; set; }
     }
 }

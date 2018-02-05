@@ -12,7 +12,14 @@ namespace SJBCS.Wrapper
     {
         public void Add(AMSEntities dBContext, object obj)
         {
-            throw new NotImplementedException();
+            Student student = (Student)obj;
+            dBContext.Students.Add(student);
+            Console.WriteLine(student.StudentID);
+            Console.WriteLine(student.LastName);
+            Console.WriteLine(student.FirstName);
+            Console.WriteLine(student.LevelID);
+            Console.WriteLine(student.SectionID);
+            dBContext.SaveChanges();
         }
 
         public void Delete(AMSEntities dBContext, object obj)
@@ -28,7 +35,11 @@ namespace SJBCS.Wrapper
 
         public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
         {
-            throw new NotImplementedException();
+            var query = from student in dBContext.Students
+                        where student.StudentID == keyword
+                        select student;
+
+            return new ObservableCollection<Object>(query.ToList());
         }
 
         public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)

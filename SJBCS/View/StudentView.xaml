@@ -45,7 +45,7 @@
                     <materialDesign:ColorZone Margin="5"
                                               Padding="8,4,8,4"
                                               Panel.ZIndex="1"
-                                              Width="400"
+                                              Width="300"
                                               BorderBrush="LightGray"
                                               BorderThickness="1"
                                               CornerRadius="2"
@@ -79,12 +79,12 @@
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"
                   Background="White">
-                <ScrollViewer>
-                    <StackPanel>
-                        <Separator Foreground="LightGray"
-                                   Opacity=".36" />
+                <StackPanel>
+                    <Separator Foreground="LightGray"
+                               Opacity=".36" />
+                    <ScrollViewer Grid.Column="0"
+                                  Height="700">
                         <ListBox x:Name="StudentListBox"
-                                 Grid.Column="0"
                                  Margin="0,5,0,0"
                                  ItemsSource="{Binding StudentList}"
                                  SelectedItem="{Binding Student}">
@@ -112,167 +112,239 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                    </StackPanel>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </StackPanel>
             </Grid>
+            <Button Grid.Row="0"
+                    Margin="0,0,16,-20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                    ToolTip="Add Student"
+                    Command="{Binding OpenAddStudentViewCommand}">
+                <materialDesign:PackIcon Kind="Plus" />
+            </Button>
         </Grid>
         <Grid Grid.Column="1"
               Margin="5,0,0,0"
               Width="{Binding StudentInfoPanelWidth}"
-              HorizontalAlignment="Left"
-              Background="White">
+              HorizontalAlignment="Left">
             <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <materialDesign:ColorZone VerticalAlignment="Stretch"
-                                          HorizontalAlignment="Stretch"
-                                          Mode="PrimaryMid">
-                    <StackPanel HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Right">
-
-                            <Button Style="{DynamicResource MaterialDesignToolButton}"
-                                    Command="{Binding OpenEditStudentMenuDialogCommand}">
-                                <materialDesign:PackIcon Kind="Camera"
-                                                         Foreground="White"
-                                                         ToolTip="Change Profile Picture"
-                                                         Height="25"
-                                                         Width="25" />
-                            </Button>
-                            <Button Style="{DynamicResource MaterialDesignToolButton}">
-                                <materialDesign:PackIcon Kind="Delete"
-                                                         Foreground="White"
-                                                         ToolTip="Delete Record"
-                                                         Height="25"
-                                                         Width="25" />
-                            </Button>
-                        </StackPanel>
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
-                            <Ellipse Width="128"
-                                     Height="128">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding ImageData}"
-                                                Stretch="UniformToFill" />
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <TextBlock FontFamily="Segoe UI"
-                                       FontSize="16"
-                                       FontWeight="Regular"
-                                       Margin="5">
-                                                <Run Text="{Binding FirstName}" />
-                                                <Run Text="" />
-                                                <Run Text="{Binding LastName}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-
-                </materialDesign:ColorZone>
-            </Grid>
-            <Grid Grid.Row="1">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center">
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                Height="Auto"
-                                Command="{Binding OpenStudentInfoViewCommand}">
-                            <StackPanel VerticalAlignment="Top"
-                                        HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="AccountCardDetails"
-                                                         HorizontalAlignment="Center"
-                                                         Height="25"
-                                                         Width="25"/>
-                                <TextBlock Margin="0 0 0 0"
-                                           VerticalAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontSize="10"
-                                           FontWeight="Regular"
-                                           Text="Student Info" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                Height="Auto"
-                                Command="{Binding OpenContactInfoViewCommand}">
-                            <StackPanel VerticalAlignment="Top"
-                                        HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Phone"
-                                                         HorizontalAlignment="Center"
-                                                         Height="25"
-                                                         Width="25" />
-                                <TextBlock Margin="0 0 0 0"
-                                           VerticalAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontSize="10"
-                                           FontWeight="Regular"
-                                           Text="Contact" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                Height="Auto"
-                                Command="{Binding OpenGroupInfoViewCommand}">
-                            <StackPanel VerticalAlignment="Top"
-                                        HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Crown"
-                                                         HorizontalAlignment="Center"
-                                                         Height="25"
-                                                         Width="25" />
-                                <TextBlock Margin="0 0 0 0"
-                                           VerticalAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontSize="10"
-                                           FontWeight="Regular"
-                                           Text="Groups" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                Height="Auto">
-                            <StackPanel VerticalAlignment="Top"
-                                        HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Fingerprint"
-                                                         HorizontalAlignment="Center"
-                                                         Height="25"
-                                                         Width="25" />
-                                <TextBlock Margin="0 0 0 0"
-                                           VerticalAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontSize="10"
-                                           FontWeight="Regular"
-                                           Text="Biometrics" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                Height="Auto">
-                            <StackPanel VerticalAlignment="Top"
-                                        HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="ChartBar"
-                                                         HorizontalAlignment="Center"
-                                                         Height="25"
-                                                         Width="25" />
-                                <TextBlock Margin="0 0 0 0"
-                                           VerticalAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontSize="10"
-                                           FontWeight="Regular"
-                                           Text="Report" />
-                            </StackPanel>
-                        </Button>                        
-                    </StackPanel>
-                    <Separator Foreground="LightGray"
-                               Opacity=".36" />
-                    <StackPanel Grid.Column="1"
-                                HorizontalAlignment="Stretch">
-                        <codeDisplayer:XamlDisplayerHost Content="{Binding Content}" />
-                    </StackPanel>
+            <Border Grid.Row="0">
+                <Border.Background>
+                    <ImageBrush Stretch="UniformToFill"
+                                ImageSource="/SJBCS;component/Resources/Images/School-bus.jpg" />
+                </Border.Background>
+            </Border>
+            <DockPanel Grid.Row="1"
+                       Background="White"
+                       Margin="0 0 0 0">
+                <StackPanel DockPanel.Dock="Bottom"
+                            HorizontalAlignment="Center"
+                            Margin="10">
+                    <TextBlock FontFamily="Segoe UI"
+                               FontSize="18"
+                               FontWeight="Regular"
+                               HorizontalAlignment="Center"
+                               Margin="5">
+                    <Run Text="{Binding FirstName}" />
+                    <Run Text="{Binding LastName}" />
+                    </TextBlock>
+                    <TextBlock FontFamily="Segoe UI"
+                               FontSize="14"
+                               FontWeight="Regular"
+                               Text="{Binding StudentID}"
+                               HorizontalAlignment="Center" />
+                    <TextBlock FontFamily="Segoe UI"
+                               FontSize="14"
+                               FontWeight="Regular"
+                               HorizontalAlignment="Center">
+                    <Run Text="{Binding GradeLevel}" />
+                    <materialDesign:PackIcon Kind="Diamond"
+                                             Height="10"
+                                             Width="10"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Top" />
+                    <Run Text="{Binding SectionName}" />
+                    </TextBlock>
                 </StackPanel>
-
-            </Grid>
+                <StackPanel DockPanel.Dock="Top"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                    <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges"
+                                             StaysOpen="False">
+                        <StackPanel>
+                            <Button FontFamily="Segoe UI"
+                                    FontSize="12"
+                                    FontWeight="Regular"
+                                    Content="Manage Biometrics"
+                                    Command="{Binding OpenEnrollBiometricsViewCommand}"/>
+                            <Button FontFamily="Segoe UI"
+                                    FontSize="12"
+                                    FontWeight="Regular"
+                                    Content="Manage Groups" />
+                            <Button FontFamily="Segoe UI"
+                                    FontSize="12"
+                                    FontWeight="Regular"
+                                    Content="Reports" />
+                            <Button FontFamily="Segoe UI"
+                                    FontSize="12"
+                                    FontWeight="Regular"
+                                    Content="Delete" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                    <Button Width="30"
+                            Padding="2,0,2,0"
+                            HorizontalAlignment="Right"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            Style="{StaticResource MaterialDesignToolForegroundButton}"
+                            Command="{Binding OpenUpdateStudentViewCommand}">
+                        <materialDesign:PackIcon Kind="Pencil" />
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+            <Ellipse Grid.Row="0"
+                     Width="100"
+                     Height="100"
+                     Margin="0,0,0,-150"
+                     Stroke="LightBlue">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding ImageData}"
+                                Stretch="UniformToFill" />
+                </Ellipse.Fill>
+            </Ellipse>
+            <StackPanel Grid.Row="2"
+                        Background="White">
+                <StackPanel HorizontalAlignment="Stretch">
+                    <codedisplayer:XamlDisplayerHost Content="{Binding SelectedItem.Content, ElementName=StudentItemListBox}" />
+                </StackPanel>
+                <StackPanel>
+                    <Grid>
+                        <StackPanel>
+                            <Grid Background="White">
+                                <StackPanel Grid.Column="0">
+                                    <Separator Foreground="LightGray"
+                                               Opacity=".36" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Cake"
+                                                                 Foreground="SkyBlue"
+                                                                 Margin="5"
+                                                                 Height="25"
+                                                                 Width="25" />
+                                        <TextBlock FontFamily="Segoe UI"
+                                                   FontSize="16"
+                                                   FontWeight="Regular"
+                                                   Text="Birthdate"
+                                                   Margin="5"
+                                                   Foreground="Gray"
+                                                   VerticalAlignment="Bottom" />
+                                    </StackPanel>
+                                    <TextBlock FontFamily="Segoe UI"
+                                               FontSize="14"
+                                               FontWeight="Regular"
+                                               Text="{Binding BirthDate}"
+                                               Margin="60 0 0 0" />
+                                    <Separator Foreground="LightGray"
+                                               Opacity=".36" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="GenderMaleFemale"
+                                                                 Foreground="SkyBlue"
+                                                                 Margin="5"
+                                                                 Height="25"
+                                                                 Width="25" />
+                                        <TextBlock FontFamily="Segoe UI"
+                                                   FontSize="16"
+                                                   FontWeight="Regular"
+                                                   Text="Gender"
+                                                   Margin="5"
+                                                   Foreground="Gray"
+                                                   VerticalAlignment="Bottom" />
+                                    </StackPanel>
+                                    <TextBlock FontFamily="Segoe UI"
+                                               FontSize="14"
+                                               FontWeight="Regular"
+                                               Text="{Binding Gender}"
+                                               Margin="60 0 0 0 " />
+                                    <Separator Foreground="LightGray"
+                                               Opacity=".36" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="MapMarker"
+                                                                 Foreground="SkyBlue"
+                                                                 Margin="5"
+                                                                 Height="25"
+                                                                 Width="25" />
+                                        <TextBlock FontFamily="Segoe UI"
+                                                   FontSize="16"
+                                                   FontWeight="Regular"
+                                                   Text="Address"
+                                                   Margin="5"
+                                                   Foreground="Gray"
+                                                   VerticalAlignment="Bottom" />
+                                    </StackPanel>
+                                    <TextBlock FontFamily="Segoe UI"
+                                               FontSize="14"
+                                               FontWeight="Regular"
+                                               Margin="60 0 0 0 "
+                                               MaxWidth="300"
+                                               HorizontalAlignment="Left"
+                                               TextWrapping="Wrap">
+                    <Run Text="{Binding Street}" />
+                    <Run Text="{Binding City}" />
+                    <Run Text="{Binding State}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                            <Separator Foreground="LightGray"
+                                       Opacity=".36" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid>
+                        <Grid Background="White">
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Phone"
+                                                             Foreground="SkyBlue"
+                                                             Margin="5"
+                                                             Height="25"
+                                                             Width="25" />
+                                    <TextBlock FontFamily="Segoe UI"
+                                               FontSize="16"
+                                               FontWeight="Regular"
+                                               Text="Contact"
+                                               Margin="5"
+                                               Foreground="Gray"
+                                               VerticalAlignment="Bottom" />
+                                </StackPanel>
+                                <ListView ItemsSource="{Binding ContactList}"
+                                          IsHitTestVisible="False"
+                                          FontFamily="Segoe UI"
+                                          FontSize="14"
+                                          FontWeight="Regular"
+                                          Margin="60 0 0 0 ">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}">
+                                            <Setter Property="Padding"
+                                                    Value="0,0,0,0" />
+                                            <Setter Property="Margin"
+                                                    Value="0 0 0 0" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ContactNumber}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

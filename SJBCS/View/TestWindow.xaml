@@ -4,13 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SJBCS.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:codedisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
         mc:Ignorable="d"
-        Title="TestWindow" Height="300" Width="300"
+        Title="TestWindow"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
-    <Grid HorizontalAlignment="Center"
-          VerticalAlignment="Center">
-        <codedisplayer:XamlDisplayerHost Content="{Binding Content}" />
-    </Grid>
+        Height="300"
+        Width="300">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog"
+                               SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+
+        <Grid>
+            <codedisplayer:XamlDisplayerHost Content="{Binding Content}" />
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

@@ -15,10 +15,16 @@ namespace SJBCS.ViewModel
         #region Model Properties
         private AMSEntities DBContext;
         private ListStudent_Result _selectedStudent;
+        private ContactWrapper _contactWrapper;
+        private ObservableCollection<Object> _contactList;
+        private ObservableCollection<Object> _groupList;
+        private OrganizationWrapper _groupWrapper;
         #endregion
 
         #region View Properties
         public event PropertyChangedEventHandler PropertyChanged;
+        public ObservableCollection<Object> ContactList => _contactList;
+        public ObservableCollection<Object> GroupList => _groupList;
 
         public String StudentID
         {
@@ -69,7 +75,7 @@ namespace SJBCS.ViewModel
         {
             get
             {
-                return _selectedStudent.GradeLevel;
+                return _selectedStudent.GradeLevel.Trim();
             }
             set
             {
@@ -149,6 +155,10 @@ namespace SJBCS.ViewModel
         {
             DBContext = dBContext;
             _selectedStudent = selectedStudent;
+            _contactWrapper = new ContactWrapper();
+            _contactList = _contactWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
+            _groupWrapper = new OrganizationWrapper();
+            _groupList = _groupWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
         }
 
         private void RaisePropertyChanged(string v)

@@ -12,7 +12,7 @@
         Title="SJBCS"
         Height="800"
         Width="1100"
-        Icon="/SJBCS;component/Resources/Images/User_Administrator_4.png"
+        Icon="/SJBCS;component/Resources/Images/logo-4439229_187x180.png"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -35,20 +35,47 @@
                                SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="600*" />
-                <RowDefinition Height="30*" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
 
             <materialDesign:ColorZone Grid.Row="0"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
-                                      Mode="PrimaryMid" />
+                                      Mode="PrimaryMid">
+                <DockPanel>
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  IsChecked="False"
+                                  x:Name="MenuToggleButton" />
+                    <materialDesign:PopupBox DockPanel.Dock="Right"
+                                             PlacementMode="BottomAndAlignRightEdges"
+                                             StaysOpen="False">
+                        <StackPanel>
+                            <Button Content="Hello World" />
+                            <Button Content="Nice Popup" />
+                            <Button Content="Can't Touch This"
+                                    IsEnabled="False" />
+                            <Separator />
+                            <Button Content="Goodbye" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="22" />
+                </DockPanel>
+            </materialDesign:ColorZone>
             <materialDesign:ColorZone Grid.Row="2"
                                       HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch" />
-            <Grid Grid.Row="1"
-                  Background="#E9EBEE">
+                                      VerticalAlignment="Stretch"
+                                      Mode="Dark" />
+            <Grid Grid.Row="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/SJBCS;component/Resources/Images/footer.png"
+                                Stretch="Uniform" 
+                                AlignmentX="Center"
+                                AlignmentY="Bottom"/>
+                </Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="447*" />
@@ -64,6 +91,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{Binding SourcePath}"
                                            Height="25"
+                                           Width="25"
                                            Stretch="UniformToFill" />
                                     <TextBlock Text="{Binding Name}"
                                                FontSize="12"
@@ -78,7 +106,8 @@
                 <StackPanel x:Name="ContentBox"
                             Grid.Column="1"
                             Margin="5"
-                            Orientation="Horizontal">
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
                     <codeDisplayer:XamlDisplayerHost Content="{Binding ElementName=MenuItemListBox, Path=SelectedItem.Content}" />
                 </StackPanel>
                 <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}"

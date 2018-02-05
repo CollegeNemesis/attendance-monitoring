@@ -1,4 +1,5 @@
-﻿using SJBCS.View;
+﻿using SJBCS.Model;
+using SJBCS.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,14 @@ namespace SJBCS.ViewModel
 {
     class TestWindowViewModel
     {
-        private EnrollStudentBiometrics _content;
+        private Object _content;
+        private AMSEntities DBContext;
 
         public TestWindowViewModel()
         {
-            _content = new EnrollStudentBiometrics { DataContext = new EnrollStudentBiometricsViewModel() };
+            DBContext = new AMSEntities();
+            //_content = new AddStudentView { DataContext = new AddStudentViewModel(DBContext) };
+            _content = new ManageBiometricsView { DataContext = new ManageBiometricsViewModel("2009100134") };
         }
         public Object Content => _content;
     }

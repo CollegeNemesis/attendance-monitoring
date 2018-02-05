@@ -1,13 +1,15 @@
 ﻿
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\App.xaml;;
-FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AttendanceView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AddStudentView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\AttendanceMonitoringView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\BiometricsEnrollmentView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\ContactInfoView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\DefaultLayoutView.xaml;;
-FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\EnrollStudentBiometricsView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\GroupInfoView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\MainWindow.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\ManageBiometricsView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\SectionView.xaml;;
-FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\StudentInfoView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\StudentView.xaml;;
 FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\TestWindow.xaml;;
-FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\GroupInfoView.xaml;;
+FC:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\View\UpdateStudentView.xaml;;
 

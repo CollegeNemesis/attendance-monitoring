@@ -14,11 +14,14 @@ namespace SJBCS.Model
     
     public partial class Attendance
     {
-        public string AttendanceID { get; set; }
+        public System.Guid AttendanceID { get; set; }
         public System.DateTime TimeIn { get; set; }
         public Nullable<System.DateTime> TimeOut { get; set; }
         public string StudentID { get; set; }
-        public bool IsNotified { get; set; }
+        public string TimeInID { get; set; }
+        public string TimeOutID { get; set; }
+        public Nullable<bool> TimeInNotified { get; set; }
+        public Nullable<bool> TimeOutNotified { get; set; }
     
         public virtual Student Student { get; set; }
     }

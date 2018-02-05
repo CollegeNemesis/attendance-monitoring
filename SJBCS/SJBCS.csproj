@@ -126,9 +126,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AMS.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\AsyncObservableCollection.cs" />
     <Compile Include="Model\Attendance.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AttendanceLog.cs" />
     <Compile Include="Model\Biometric.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
@@ -141,9 +143,11 @@
     </Compile>
     <Compile Include="Model\EntityModel.cs" />
     <Compile Include="Model\FingerScanner.cs" />
+    <Compile Include="Model\InverseAndBooleanToBooleanConverter.cs" />
     <Compile Include="Model\Level.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ListBoxValidationRule.cs" />
     <Compile Include="Model\ListStudent_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
@@ -166,19 +170,14 @@
     <Compile Include="Model\Section.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\sp_helpdiagrams_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Model\SimpleDateValidationRule.cs" />
     <Compile Include="Model\SP_ListSection_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SP_ListStudentContact_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SP_ListStudent_Result.cs">
+    <Compile Include="Model\SP_SP_ListStudent_Result.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Student.cs">
@@ -187,18 +186,28 @@
     <Compile Include="Model\sysdiagram.cs">
       <DependentUpon>AMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\AttendanceViewModel.cs" />
+    <Compile Include="Model\UniqueIDValidationRule.cs" />
+    <Compile Include="ViewModel\AddStudentViewModel.cs" />
+    <Compile Include="ViewModel\AttendanceMonitoringViewModel.cs" />
+    <Compile Include="ViewModel\BiometricsEnrollmentViewModel.cs" />
     <Compile Include="ViewModel\ContactInfoViewModel.cs" />
-    <Compile Include="ViewModel\EnrollStudentBiometricsViewModel.cs" />
     <Compile Include="ViewModel\GroupInfoViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ManageBiometricsViewModel.cs" />
     <Compile Include="ViewModel\SectionViewModel.cs" />
     <Compile Include="ViewModel\StudentInfoViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\TestWindowViewModel.cs" />
-    <Compile Include="View\AttendanceView.xaml.cs">
-      <DependentUpon>AttendanceView.xaml</DependentUpon>
+    <Compile Include="ViewModel\UpdateStudentViewModel.cs" />
+    <Compile Include="View\AddStudentView.xaml.cs">
+      <DependentUpon>AddStudentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AttendanceMonitoringView.xaml.cs">
+      <DependentUpon>AttendanceMonitoringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BiometricsEnrollmentView.xaml.cs">
+      <DependentUpon>BiometricsEnrollmentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ContactInfoView.xaml.cs">
       <DependentUpon>ContactInfoView.xaml</DependentUpon>
@@ -206,20 +215,17 @@
     <Compile Include="View\DefaultLayoutView.xaml.cs">
       <DependentUpon>DefaultLayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EnrollStudentBiometricsView.xaml.cs">
-      <DependentUpon>EnrollStudentBiometricsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\GroupInfoView.xaml.cs">
       <DependentUpon>GroupInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ManageBiometricsView.xaml.cs">
+      <DependentUpon>ManageBiometricsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SectionView.xaml.cs">
       <DependentUpon>SectionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\StudentInfoView.xaml.cs">
-      <DependentUpon>StudentInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
@@ -227,11 +233,15 @@
     <Compile Include="View\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UpdateStudentView.xaml.cs">
+      <DependentUpon>UpdateStudentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrapper\AttendanceWrapper.cs" />
     <Compile Include="Wrapper\BiometricWrapper.cs" />
     <Compile Include="Wrapper\ContactWrapper.cs" />
     <Compile Include="Wrapper\LevelWrapper.cs" />
     <Compile Include="Wrapper\OrganizationWrapper.cs" />
+    <Compile Include="Wrapper\RelBiometricWrapper.cs" />
     <Compile Include="Wrapper\SectionWrapper.cs" />
     <Compile Include="Wrapper\StudentWrapper.cs" />
   </ItemGroup>
@@ -270,7 +280,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\AttendanceView.xaml">
+    <Page Include="View\AddStudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AttendanceMonitoringView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BiometricsEnrollmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -282,10 +300,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EnrollStudentBiometricsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\GroupInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -294,11 +308,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SectionView.xaml">
+    <Page Include="View\ManageBiometricsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StudentInfoView.xaml">
+    <Page Include="View\SectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -310,6 +324,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UpdateStudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -318,16 +336,21 @@
     <Folder Include="Resources\fpt\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\AMS.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMS.edmx</DependentUpon>
-      <LastGenOutput>AMS.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\AMS.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMS.edmx</DependentUpon>
-      <LastGenOutput>AMS.cs</LastGenOutput>
-    </Content>
+    <Resource Include="Resources\Images\Stop-icon.png" />
+    <Resource Include="Resources\Images\access_denied.png" />
+    <Resource Include="Resources\Images\schoollogo.jpg" />
+    <Resource Include="Resources\Images\logo-4439229_187x180.png" />
+    <Resource Include="Resources\Images\footer.png" />
+    <Resource Include="Resources\Images\Login-icon.png" />
+    <Resource Include="Resources\Images\Logout-icon.png" />
+    <Resource Include="Resources\Images\Background.jpg" />
+    <Resource Include="Resources\Images\Check-icon.png" />
+    <Resource Include="Resources\Images\default-user-image.png" />
+    <Resource Include="Resources\Images\School-bus.jpg" />
+    <Resource Include="Resources\Images\school-wallpaper-1920x1080.jpg" />
+    <Resource Include="Resources\Images\Finger-icon.png" />
+    <Resource Include="Resources\Images\Group-icon.png" />
+    <Resource Include="Resources\Images\Phone-icon.png" />
     <Resource Include="Resources\Images\StudentView-icon.png" />
     <Resource Include="Resources\ProfilePic\5210300.png" />
     <Resource Include="Resources\Images\Calendar-icon.png" />
@@ -340,6 +363,20 @@
     <Resource Include="Resources\Images\Student-icon.png" />
     <Resource Include="Resources\ProfilePic\5210299.jpg" />
     <Resource Include="Resources\Images\User_Administrator_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\AMS.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS.edmx</DependentUpon>
+      <LastGenOutput>AMS.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\AMS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS.edmx</DependentUpon>
+      <LastGenOutput>AMS.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\Sounds\Error.wav" />
+    <Content Include="Resources\Sounds\Success.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

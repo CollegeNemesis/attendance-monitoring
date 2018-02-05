@@ -41,6 +41,16 @@ namespace SJBCS.Wrapper
             return new ObservableCollection<Object>(query.ToList());
         }
 
+        public ObservableCollection<object> RetrieveViaStudent(AMSEntities dBContext, Student student, string keyword)
+        {
+            var query = from section in dBContext.Sections
+                        where section.SectionID == new Guid(keyword)
+                        && section.LevelID == student.LevelID
+                        select section;
+
+            return new ObservableCollection<Object>(query.ToList());
+        }
+
         public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
         {
             throw new NotImplementedException();

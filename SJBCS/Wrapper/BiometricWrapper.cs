@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace SJBCS.Wrapper
 {
@@ -29,7 +30,11 @@ namespace SJBCS.Wrapper
 
         public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
         {
-            throw new NotImplementedException();
+            var query = from relBiometric in dBContext.RelBiometrics
+                        where relBiometric.StudentID == keyword
+                        select relBiometric;
+
+            return new ObservableCollection<Object>(query.ToList());
         }
 
         public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
