@@ -11,45 +11,32 @@ namespace SJBCS.Wrapper
 {
     class AttendanceWrapper : EntityModel
     {
-        public void Add(AMSEntities dBContext, object obj)
+        public override void Add(object obj)
         {
-            dBContext.Attendances.Add((Attendance)obj);
-            dBContext.SaveChanges();
+            DBContext.Attendances.Add((Attendance)obj);
+            DBContext.SaveChanges();
         }
 
-        public void Delete(AMSEntities dBContext, object obj)
+        public override void Delete(object obj)
         {
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
+        public override void Update(object obj)
         {
-            throw new NotImplementedException();
+            Attendance attendance = (Attendance)obj;
+            DBContext.SaveChanges();
         }
 
-        public ObservableCollection<object> RetrieveViaStudent(AMSEntities dBContext, Student student)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            var query = from attendance in dBContext.Attendances
+            Student student = (Student)obj;
+            var query = from attendance in DBContext.Attendances
                         where attendance.StudentID == student.StudentID
                         && DbFunctions.TruncateTime(attendance.TimeIn) == DateTime.Today
                         select attendance;
 
             return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

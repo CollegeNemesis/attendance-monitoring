@@ -10,55 +10,43 @@ namespace SJBCS.Wrapper
 {
     public class SectionWrapper : EntityModel
     {
-        private Section _section;
-        
-        public void Add(AMSEntities dBContext, object obj)
+        public override void Add(object obj)
         {
-            _section = obj as Section;
-            _section.SectionID = Guid.NewGuid();
-            dBContext.Sections.Add(_section);
-            dBContext.SaveChanges();
+            Section section = (Section)obj;
+            section.SectionID = Guid.NewGuid();
+            DBContext.Sections.Add(section);
+            DBContext.SaveChanges();
 
         }
 
-        public void Delete(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
-        {
-            var query = dBContext.ListSection();
+            var query = DBContext.ListSection();
             return new ObservableCollection<Object>(query.ToList());
         }
 
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            var query = from section in dBContext.Sections
-                        where section.LevelID == new Guid(keyword)
-                        select section;
+            if (obj is Student)
+            {
+                Student student = (Student)obj;
+                var query = from section in DBContext.Sections
+                            where section.SectionID == student.SectionID
+                            && section.LevelID == student.LevelID
+                            select section;
 
-            return new ObservableCollection<Object>(query.ToList());
-        }
+                return new ObservableCollection<Object>(query.ToList());
+            }
+           else if(obj is Level)
+            {
+                Level level = (Level)obj;
+                var query = from section in DBContext.Sections
+                            where section.LevelID == level.LevelID
+                            select section;
 
-        public ObservableCollection<object> RetrieveViaStudent(AMSEntities dBContext, Student student, string keyword)
-        {
-            var query = from section in dBContext.Sections
-                        where section.SectionID == new Guid(keyword)
-                        && section.LevelID == student.LevelID
-                        select section;
-
-            return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
+                return new ObservableCollection<Object>(query.ToList());
+            }
+            return null;
         }
     }
 }

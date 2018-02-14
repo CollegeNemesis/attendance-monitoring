@@ -10,42 +10,35 @@ namespace SJBCS.Wrapper
 {
     class LevelWrapper : EntityModel
     {
-        public void Add(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
-        {
-
-            var query = from level in dBContext.Levels select level;
-
-            return new ObservableCollection<Object>(query.ToList());
-
-        }
-
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
-        {
-            var query = from level in dBContext.Levels
-                        where level.LevelID == new Guid(keyword)
-                        select level;
+            var query = from level in DBContext.Levels select level;
 
             return new ObservableCollection<Object>(query.ToList());
         }
 
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            throw new NotImplementedException();
-        }
+            if (obj is Student)
+            {
+                Student student = (Student)obj;
+                var query = from level in DBContext.Levels
+                            where level.LevelID == student.LevelID
+                            select level;
 
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
+                return new ObservableCollection<Object>(query.ToList());
+            }
+            else if (obj is Section)
+            {
+                Section section = (Section)obj;
+                var query = from level in DBContext.Levels
+                            where level.LevelID == section.LevelID
+                            select level;
+
+                return new ObservableCollection<Object>(query.ToList());
+            }
+
+            return null;
         }
     }
 }

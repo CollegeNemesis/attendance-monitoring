@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AMSModelStoreContainer" CdmEntityContainer="AMSEntities">
+    <EntitySetMapping Name="Attendances">
+      <EntityTypeMapping TypeName="AMSModel.Attendance">
+        <MappingFragment StoreEntitySet="Attendance">
+          <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
+          <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+          <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="TimeInID" ColumnName="TimeInID" />
+          <ScalarProperty Name="TimeOutID" ColumnName="TimeOutID" />
+          <ScalarProperty Name="TimeInNotified" ColumnName="TimeInNotified" />
+          <ScalarProperty Name="TimeOutNotified" ColumnName="TimeOutNotified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Biometrics">
+      <EntityTypeMapping TypeName="AMSModel.Biometric">
+        <MappingFragment StoreEntitySet="Biometric">
+          <ScalarProperty Name="FingerID" ColumnName="FingerID" />
+          <ScalarProperty Name="FingerPrintTemplate" ColumnName="FingerPrintTemplate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contacts">
+      <EntityTypeMapping TypeName="AMSModel.Contact">
+        <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DistributionLists">
+      <EntityTypeMapping TypeName="AMSModel.DistributionList">
+        <MappingFragment StoreEntitySet="DistributionList">
+          <ScalarProperty Name="DistributionListID" ColumnName="DistributionListID" />
+          <ScalarProperty Name="DistributionListName" ColumnName="DistributionListName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Levels">
+      <EntityTypeMapping TypeName="AMSModel.Level">
+        <MappingFragment StoreEntitySet="Level">
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organizations">
+      <EntityTypeMapping TypeName="AMSModel.Organization">
+        <MappingFragment StoreEntitySet="Organization">
+          <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+          <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelBiometrics">
+      <EntityTypeMapping TypeName="AMSModel.RelBiometric">
+        <MappingFragment StoreEntitySet="RelBiometric">
+          <ScalarProperty Name="RelBiometricID" ColumnName="RelBiometricID" />
+          <ScalarProperty Name="FingerID" ColumnName="FingerID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelDistributionLists">
+      <EntityTypeMapping TypeName="AMSModel.RelDistributionList">
+        <MappingFragment StoreEntitySet="RelDistributionList">
+          <ScalarProperty Name="RelDistributionListID" ColumnName="RelDistributionListID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="DistributionListID" ColumnName="DistributionListID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelOrganizations">
+      <EntityTypeMapping TypeName="AMSModel.RelOrganization">
+        <MappingFragment StoreEntitySet="RelOrganization">
+          <ScalarProperty Name="RelOrganizationID" ColumnName="RelOrganizationID" />
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sections">
+      <EntityTypeMapping TypeName="AMSModel.Section">
+        <MappingFragment StoreEntitySet="Section">
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Students">
+      <EntityTypeMapping TypeName="AMSModel.Student">
+        <MappingFragment StoreEntitySet="Student">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_ListSection" FunctionName="AMSModel.Store.SP_ListSection">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMSModel.SP_ListSection_Result">
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_ListStudent" FunctionName="AMSModel.Store.SP_ListStudent">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMSModel.SP_SP_ListStudent_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_ListStudentContact" FunctionName="AMSModel.Store.SP_ListStudentContact">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMSModel.SP_ListStudentContact_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ListStudent_Result" FunctionName="AMSModel.Store.SP_ListStudent">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMSModel.ListStudent_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ListStudent" FunctionName="AMSModel.Store.SP_ListStudent">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMSModel.ListStudent_Result">
+          <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+          <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ListSection" FunctionName="AMSModel.Store.SP_ListSection" />
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="AMSModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

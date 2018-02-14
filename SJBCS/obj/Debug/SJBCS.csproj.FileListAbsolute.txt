@@ -93,4 +93,6 @@ C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\Biome
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\BiometricsEnrollmentView.baml
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\AttendanceMonitoringView.g.cs
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\AttendanceMonitoringView.baml
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\MessageDialogBoxView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\MessageDialogBoxView.baml
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\SJBCS.csprojResolveAssemblyReference.cache

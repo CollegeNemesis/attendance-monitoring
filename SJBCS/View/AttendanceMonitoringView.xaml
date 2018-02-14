@@ -9,116 +9,140 @@
              xmlns:model="clr-namespace:SJBCS.Model"
              xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
              mc:Ignorable="d"
-             d:DesignHeight="900"
+             d:DesignHeight="800"
              d:DesignWidth="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0"
-              Background="White"
-              Width="400">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Background="White">
-            </Grid>
-            <Grid Grid.Row="1"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Background="White">
-                <StackPanel>
-                    <ScrollViewer Grid.Column="0"
-                                  Height="700">
-                        <ListView Margin="0,5,0,0"
-                                 ItemsSource="{Binding AttendanceLogList}"
-                                 IsHitTestVisible="False">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Width="400">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding ImageData}"
-                                                   Stretch="UniformToFill"
-                                                   Height="50"
-                                                   Width="50" />
-                                            <StackPanel>
-                                                <TextBlock FontFamily="Segoe UI"
-                                                           FontSize="12"
-                                                           FontWeight="Regular"
-                                                           Margin="5"
-                                                           VerticalAlignment="Bottom">
-                            <Run Text="{Binding FirstName}" />
-                            <Run Text="{Binding LastName}" />                            
-                            <Run Text="{Binding ActionTaken}"
-                                                    Foreground="{Binding StatusColor}" />
-                                                </TextBlock>
-                                                <StackPanel Orientation="Horizontal"
-                                                            Margin="5 0 0 0">
-                                                    <Image Source="{Binding ActionTakenIcon}"
-                                                           Stretch="UniformToFill"
-                                                           Height="20"
-                                                           Width="20" />
+        <Border Grid.Column="0"
+                Background="White">
+            <Grid Width="400">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Background="White">
+                </Grid>
+                <Grid Grid.Row="1"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Background="White">
+                    <StackPanel>
+                        <materialDesign:ColorZone Mode="Dark">
+                            <StackPanel Margin="10"
+                                        Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BookOpenPageVariant"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"
+                                                         Width="20"
+                                                         Height="20"
+                                                         Margin="5"/>
+                                <TextBlock FontFamily="Segoe UI"
+                                           FontSize="18"
+                                           FontWeight="Regular"
+                                           HorizontalAlignment="Left"
+                                           Text="Attendance Log"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                        <ScrollViewer Grid.Column="0"
+                                      Height="650">
+                            <ListView Margin="0,5,0,0"
+                                      ItemsSource="{Binding AttendanceLogList}"
+                                      IsHitTestVisible="False">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Width="400">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding ImageData}"
+                                                       Stretch="UniformToFill"
+                                                       Height="50"
+                                                       Width="50" />
+                                                <StackPanel>
                                                     <TextBlock FontFamily="Segoe UI"
                                                                FontSize="12"
                                                                FontWeight="Regular"
                                                                Margin="5"
-                                                               VerticalAlignment="Bottom"
-                                                               Foreground="Gray"
-                                                               Text="{Binding Timestamp}" />
+                                                               VerticalAlignment="Bottom">
+                            <Run Text="{Binding FirstName}" />
+                            <Run Text="{Binding LastName}" />                            
+                            <Run Text="{Binding ActionTaken}"
+                                                        Foreground="{Binding StatusColor}" />
+                                                    </TextBlock>
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Margin="5 0 0 0">
+                                                        <materialDesign:PackIcon Kind="{Binding ActionTakenIcon}"
+                                                                                 Height="25"
+                                                                                 Width="25"
+                                                                                 Foreground="{Binding StatusColor}" />
+                                                        <TextBlock FontFamily="Segoe UI"
+                                                                   FontSize="12"
+                                                                   FontWeight="Regular"
+                                                                   Margin="5"
+                                                                   VerticalAlignment="Bottom"
+                                                                   Foreground="Gray"
+                                                                   Text="{Binding Timestamp}" />
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </StackPanel>
+                                            <Separator Foreground="LightGray"
+                                                       Opacity=".36" />
                                         </StackPanel>
-                                        <Separator Foreground="LightGray"
-                                                   Opacity=".36" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ScrollViewer>
-                </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid Grid.Column="1"
-              Background="White"
-              Width="400"
-              Margin="5 0 0 0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Background="White">
-                <StackPanel HorizontalAlignment="Left"
-                            Orientation="Horizontal"
-                            Margin="10">
-                    <TextBlock FontFamily="Segoe UI"
-                               FontSize="18"
-                               FontWeight="Regular"
-                               HorizontalAlignment="Center"
-                               Text="{Binding DigitalCalendar}" />
-                    <TextBlock FontFamily="Segoe UI"
-                               FontSize="18"
-                               FontWeight="Regular"
-                               HorizontalAlignment="Center"
-                               Text="{Binding DigitalClock}" />
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="1"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Background="White">
-                <StackPanel>
 
-                    <materialDesign:Card Width="230"
-                                         Margin="4,4,0,0"
-                                         UniformCornerRadius="10">
+        </Border>
+        <Border Grid.Column="1"
+                Background="White"
+                Margin="5 0 0 0">
+            <Grid Width="400">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Background="White">
+                    <materialDesign:ColorZone Mode="PrimaryMid">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CalendarClock"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     Width="50"
+                                                     Height="50"
+                                                     Margin="5" />
+                            <StackPanel HorizontalAlignment="Left"
+                                        Margin="10">
+                                <TextBlock FontFamily="Segoe UI"
+                                           FontSize="25"
+                                           FontWeight="Regular"
+                                           HorizontalAlignment="Left"
+                                           Text="{Binding DigitalClock}" />
+                                <TextBlock FontFamily="Segoe UI"
+                                           FontSize="20"
+                                           FontWeight="Regular"
+                                           HorizontalAlignment="Left"
+                                           Text="{Binding DigitalCalendar}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                </Grid>
+                <Grid Grid.Row="1"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Background="White">
+                    <StackPanel>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -139,12 +163,14 @@
                                                FontSize="16"
                                                FontWeight="Regular"
                                                HorizontalAlignment="Center"
-                                               Text="{Binding FirstName}" />
+                                               Text="{Binding FirstName}"
+                                               Foreground="{Binding StatusColor}" />
                                     <TextBlock FontFamily="Segoe UI"
                                                FontSize="16"
                                                FontWeight="Regular"
                                                HorizontalAlignment="Center"
-                                               Text="{Binding LastName}" />
+                                               Text="{Binding LastName}"
+                                               Foreground="{Binding StatusColor}" />
                                 </StackPanel>
                                 <TextBlock FontFamily="Segoe UI"
                                            FontSize="10"
@@ -153,19 +179,19 @@
                                            HorizontalAlignment="Center">
                     <Run Text="{Binding GradeLevel}" />
                     <materialDesign:PackIcon Kind="Diamond"
-                                             Height="5"
-                                             Width="5"
+                                             Height="10"
+                                             Width="10"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Top" />
                     <Run Text="{Binding SectionName}" />
                                 </TextBlock>
                                 <Border BorderThickness="2"
-                                        BorderBrush="Green"
-                                        Width="100"
-                                        Height="100"
+                                        BorderBrush="{Binding StatusColor}"
+                                        Width="120"
+                                        Height="120"
                                         Margin="10">
-                                    <Image Width="100"
-                                           Height="100"
+                                    <Image Width="120"
+                                           Height="120"
                                            Source="{Binding ImageData}"
                                            Stretch="UniformToFill"
                                            HorizontalAlignment="Center"
@@ -174,26 +200,32 @@
                                 <materialDesign:PackIcon Kind="Fingerprint"
                                                          HorizontalAlignment="Center"
                                                          VerticalAlignment="Center"
-                                                         Width="50"
-                                                         Height="50"
-                                                         Foreground="Green" />
+                                                         Width="75"
+                                                         Height="75"
+                                                         Foreground="{Binding StatusColor}" />
+                                <TextBox Height="200"
+                                         Width="300"
+                                         VerticalAlignment="Top"
+                                         Margin="10"
+                                         FontFamily="Segoe UI"
+                                         FontSize="14"
+                                         FontWeight="Regular"
+                                         HorizontalAlignment="Left"
+                                         materialDesign:HintAssist.Hint="Remarks"
+                                         AcceptsReturn="True"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignTextAreaTextBox}"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Left"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Text="{Binding Remarks}"
+                                         Foreground="{Binding StatusColor}" />
                             </StackPanel>
                         </Grid>
-                    </materialDesign:Card>
-                    <TextBox Height="200"
-                             VerticalAlignment="Top"
-                             Margin="10"
-                             materialDesign:HintAssist.Hint="Attendance Log"
-                             AcceptsReturn="True"
-                             IsReadOnly="True"
-                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignTextAreaTextBoxEnabledComboBox}"
-                             Style="{StaticResource MaterialDesignTextAreaTextBox}"
-                             TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"
-                             Text="{Binding ActionTaken}"/>
-                </StackPanel>
+                    </StackPanel>
 
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </UserControl>

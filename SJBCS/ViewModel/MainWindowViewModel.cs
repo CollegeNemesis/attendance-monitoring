@@ -10,8 +10,10 @@ using System.ComponentModel;
 
 namespace SJBCS.ViewModel
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public static AMSEntities DBContext = new AMSEntities();
+
         public MenuItem[] MenuItems { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;

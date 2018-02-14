@@ -107,7 +107,7 @@
                             Grid.Column="1"
                             Margin="5"
                             Orientation="Horizontal"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Center">
                     <codeDisplayer:XamlDisplayerHost Content="{Binding ElementName=MenuItemListBox, Path=SelectedItem.Content}" />
                 </StackPanel>
                 <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}"

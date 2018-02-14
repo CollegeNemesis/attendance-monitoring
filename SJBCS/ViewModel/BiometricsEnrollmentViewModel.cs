@@ -17,7 +17,7 @@ namespace SJBCS.ViewModel
 {
     class BiometricsEnrollmentViewModel : FingerScanner, INotifyPropertyChanged
     {
-        private string _studentID;
+        private Student _student;
         delegate void Function();
 
         private int _indicator;
@@ -27,8 +27,8 @@ namespace SJBCS.ViewModel
         private String _visibility;
         private DPFP.Template Template;
         private DPFP.Processing.Enrollment Enroller;
-        private Biometric _bio;
-        private RelBiometric _relBio;
+        private Biometric _biometric;
+        private RelBiometric relBiometric;
         private static AMSEntities DBContext = new AMSEntities();
         private BiometricWrapper _biometricWrapper;
         private RelBiometricWrapper _relBiometricWrapper;
@@ -82,14 +82,14 @@ namespace SJBCS.ViewModel
             }
         }
 
-        public BiometricsEnrollmentViewModel(string studentID)
+        public BiometricsEnrollmentViewModel(Student student)
         {
-            _studentID = studentID;
+            _student = student;
             _indicator = 0;
             _instruction = "Let's start.";
             _status = "Put your finger on the sensor and lift after notification appear.";
-            _bio = new Biometric();
-            _relBio = new RelBiometric();
+            _biometric = new Biometric();
+            relBiometric = new RelBiometric();
             _biometricWrapper = new BiometricWrapper();
             _relBiometricWrapper = new RelBiometricWrapper();
             _visibility = "Hidden";
@@ -163,13 +163,13 @@ namespace SJBCS.ViewModel
                 fingerprintData.Position = 0;
                 BinaryReader br = new BinaryReader(fingerprintData);
                 Byte[] bytes = br.ReadBytes((Int32)fingerprintData.Length);
-                _bio.FingerID = Guid.NewGuid();
-                _bio.FingerPrintTemplate = bytes;
-                _biometricWrapper.Add(DBContext, _bio);
-                _relBio.FingerID = _bio.FingerID;
-                _relBio.RelBiometricID = Guid.NewGuid();
-                _relBio.StudentID = _studentID;
-                _relBiometricWrapper.Add(DBContext, _relBio);
+                _biometric.FingerID = Guid.NewGuid();
+                _biometric.FingerPrintTemplate = bytes;
+                _biometricWrapper.Add(_biometric);
+                relBiometric.FingerID = _biometric.FingerID;
+                relBiometric.RelBiometricID = Guid.NewGuid();
+                relBiometric.StudentID = _student.StudentID;
+                _relBiometricWrapper.Add(relBiometric);
                 _visibility = "Visible";
                 RaisePropertyChanged(null);
             }
@@ -194,8 +194,8 @@ namespace SJBCS.ViewModel
             _indicator = 0;
             _instruction = "Let's start.";
             _status = "Put your finger on the sensor and lift after notification appear.";
-            _bio = new Biometric();
-            _relBio = new RelBiometric();
+            _biometric = new Biometric();
+            relBiometric = new RelBiometric();
             _biometricWrapper = new BiometricWrapper();
             _relBiometricWrapper = new RelBiometricWrapper();
             _visibility = "Hidden";

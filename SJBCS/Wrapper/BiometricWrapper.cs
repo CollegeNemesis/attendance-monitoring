@@ -11,40 +11,26 @@ namespace SJBCS.Wrapper
 {
     class BiometricWrapper : EntityModel
     {
-        public void Add(AMSEntities dBContext, object obj)
+        public override void Add(object obj)
         {
-            dBContext.Biometrics.Add((Biometric)obj);
-            dBContext.SaveChanges();
+            DBContext.Biometrics.Add((Biometric)obj);
+            DBContext.SaveChanges();
         }
-
-        public void Delete(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveAll()
         {
-            throw new NotImplementedException();
-        }
+            var query = from bio in DBContext.Biometrics select bio;
 
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
-        {
-            var query = from bio in dBContext.Biometrics select bio;
             return new ObservableCollection<Object>(query.ToList());
         }
 
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            var query = from relBiometric in dBContext.RelBiometrics
-                        where relBiometric.StudentID == keyword
+            Student student = (Student)obj;
+            var query = from relBiometric in DBContext.RelBiometrics
+                        where relBiometric.StudentID == student.StudentID
                         select relBiometric;
 
             return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

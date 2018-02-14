@@ -10,46 +10,33 @@ namespace SJBCS.Wrapper
 {
     class RelBiometricWrapper : EntityModel
     {
-        public void Add(AMSEntities dBContext, object obj)
+        public override void Add(object obj)
         {
-            dBContext.RelBiometrics.Add((RelBiometric)obj);
-            dBContext.SaveChanges();
+            DBContext.RelBiometrics.Add((RelBiometric)obj);
+            DBContext.SaveChanges();
         }
 
-        public void Delete(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            throw new NotImplementedException();
-        }
+            if(obj is Biometric)
+            {
+                Biometric biometric = (Biometric)obj;
+                var query = from relBiometric in DBContext.RelBiometrics
+                            where relBiometric.FingerID == biometric.FingerID
+                            select relBiometric;
 
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
-        {
-            Biometric biometric = (Biometric) obj;
-            var query = from relBiometric in dBContext.RelBiometrics
-                        where relBiometric.FingerID == biometric.FingerID
-                        select relBiometric;
+                return new ObservableCollection<Object>(query.ToList());
+            }
+            else if (obj is Student)
+            {
+                Student student = (Student)obj;
+                var query = from relBiometric in DBContext.RelBiometrics
+                            where relBiometric.StudentID == student.StudentID
+                            select relBiometric;
 
-            Console.WriteLine(biometric.FingerID);
-
-            return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
-        {
-            var query = from relBiometric in dBContext.RelBiometrics
-                        where relBiometric.StudentID == keyword
-                        select relBiometric;
-            
-            return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
+                return new ObservableCollection<Object>(query.ToList());
+            }
+            return null;
         }
     }
 }

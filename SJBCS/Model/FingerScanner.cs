@@ -13,23 +13,18 @@ namespace SJBCS.Model
     {
 
         private DPFP.Capture.Capture Capturer;
-        protected String _actionTaken;
 
         public FingerScanner()
         {
-            _actionTaken = "";
-            try
+           try
             {
                 Capturer = new DPFP.Capture.Capture();				// Create a capture operation.
 
                 if (null != Capturer)
                     Capturer.EventHandler = this;					// Subscribe for capturing events.
-                else
-                    _actionTaken = "Can't initiate capture operation! on initial" + "\n" + _actionTaken;
             }
             catch
             {
-                _actionTaken = "Can't initiate capture operation!" + "\n" + _actionTaken;
             }
         }
 
@@ -45,11 +40,9 @@ namespace SJBCS.Model
                 try
                 {
                     Capturer.StartCapture();
-                    _actionTaken = "Using the fingerprint reader, scan your fingerprint." + "\n" + _actionTaken;
                 }
                 catch
                 {
-                    _actionTaken = "Can't initiate capture! on Start()" + "\n" + _actionTaken;
                 }
             }
         }
@@ -61,11 +54,9 @@ namespace SJBCS.Model
                 try
                 {
                     Capturer.StopCapture();
-                    _actionTaken = "Capture stopped!" + "\n" + _actionTaken;
                 }
                 catch
                 {
-                    _actionTaken = "Can't terminate capture!" + "\n" + _actionTaken;
                 }
             }
         }
@@ -86,39 +77,31 @@ namespace SJBCS.Model
         {
             if (CaptureFeedback == CaptureFeedback.Good)
             {
-                _actionTaken = "The quality of the fingerprint sample is good." + "\n" + _actionTaken;
             }
             else
             {
-                _actionTaken = "The quality of the fingerprint sample is poor." + "\n" + _actionTaken;
             }
         }
 
         public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
         {
-            _actionTaken = "The fingerprint sample was captured." + "\n" + _actionTaken;
-            _actionTaken = "Scan the same fingerprint again." + "\n" + _actionTaken;
             Process(Sample);
         }
 
         public void OnFingerGone(object Capture, string ReaderSerialNumber)
         {
-            _actionTaken = "The finger was removed from the fingerprint reader." + "\n" + _actionTaken;
         }
 
         public void OnFingerTouch(object Capture, string ReaderSerialNumber)
         {
-            _actionTaken = "The fingerprint reader was touched." + "\n" + _actionTaken;
         }
 
-        public void OnReaderConnect(object Capture, string ReaderSerialNumber)
+        public virtual void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
-            _actionTaken = "The fingerprint reader was connected." + "\n" + _actionTaken;
         }
 
-        public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
+        public virtual void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
         {
-            _actionTaken = "The fingerprint reader was disconnected." + "\n" + _actionTaken;
         }
     }
 }

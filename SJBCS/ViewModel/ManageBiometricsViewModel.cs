@@ -16,7 +16,7 @@ namespace SJBCS.ViewModel
 {
     class ManageBiometricsViewModel: INotifyPropertyChanged
     {
-        private string _studentID;
+        private Student _student;
         private String _notificationHeight;
         private AMSEntities DBContext;
         private RelBiometricWrapper _relBiometricWrapper;
@@ -43,12 +43,12 @@ namespace SJBCS.ViewModel
                 _notificationHeight = value;
             }
         }
-        public ManageBiometricsViewModel(string studentID)
+        public ManageBiometricsViewModel(Student student)
         {
             DBContext = new AMSEntities();
-            _studentID = studentID;
+            _student = student;
             _relBiometricWrapper = new RelBiometricWrapper();
-            _fingerList = _relBiometricWrapper.RetrieveViaKeyword(DBContext, studentID, _studentID);
+            _fingerList = _relBiometricWrapper.RetrieveViaKey(_student);
             _fingerprintList = new ObservableCollection<MenuItem>();
             if (_fingerList.FirstOrDefault() == null)
             {
@@ -80,7 +80,7 @@ namespace SJBCS.ViewModel
             //let's set up a little MVVM, cos that's what the cool kids are doing:
             var view = new BiometricsEnrollmentView
             {
-                DataContext = new BiometricsEnrollmentViewModel(_studentID)
+                DataContext = new BiometricsEnrollmentViewModel(_student)
             };
 
             //show the dialog

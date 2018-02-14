@@ -18,7 +18,6 @@ namespace SJBCS.ViewModel
 
         #region Model Properties
         private static AMSEntities DBContext = new AMSEntities();
-        private MenuItem[] _fingerPrintList;
 
         private Student _student;
         private Object _content;
@@ -61,8 +60,8 @@ namespace SJBCS.ViewModel
                 _selectedStudent = (ListStudent_Result)value;
                 _selectedStudent.GradeLevel = _selectedStudent.GradeLevel.Trim();
                 _studentInfoPanelWidth = 400;
-                _contactList = _contactWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
-                _groupList = _groupWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
+                _contactList = _contactWrapper.RetrieveViaKey(_selectedStudent);
+                _groupList = _groupWrapper.RetrieveViaKey(_selectedStudent);
                 
 
                 if (String.IsNullOrEmpty(_selectedStudent.ImageData))
@@ -305,11 +304,11 @@ namespace SJBCS.ViewModel
             _student = new Student();
             _selectedStudent = new ListStudent_Result();
             _studentWrapper = new StudentWrapper();
-            _studentList = _studentWrapper.RetrieveAll(DBContext, _student);
+            _studentList = _studentWrapper.RetrieveAll();
             _contactWrapper = new ContactWrapper();
-            _contactList = _contactWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
+            _contactList = _contactWrapper.RetrieveViaKey(_selectedStudent);
             _groupWrapper = new OrganizationWrapper();
-            _groupList = _groupWrapper.RetrieveViaKeyword(DBContext, _selectedStudent, _selectedStudent.StudentID);
+            _groupList = _groupWrapper.RetrieveViaKey(_selectedStudent);
 
             //Default Value
             _selectedStudent = (ListStudent_Result)_studentList.FirstOrDefault();

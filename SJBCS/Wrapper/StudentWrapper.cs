@@ -10,46 +10,33 @@ namespace SJBCS.Wrapper
 {
     public class StudentWrapper : EntityModel
     {
-        public void Add(AMSEntities dBContext, object obj)
+        public override void Add(object obj)
         {
             Student student = (Student)obj;
-            dBContext.Students.Add(student);
-            Console.WriteLine(student.StudentID);
-            Console.WriteLine(student.LastName);
-            Console.WriteLine(student.FirstName);
-            Console.WriteLine(student.LevelID);
-            Console.WriteLine(student.SectionID);
-            dBContext.SaveChanges();
+            DBContext.Students.Add(student);
+            DBContext.SaveChanges();
         }
 
-        public void Delete(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveViaKey(object obj)
         {
-            throw new NotImplementedException();
+            if (obj is RelBiometric)
+            {
+                RelBiometric relBiometric = (RelBiometric)obj;
+                var query = from student in DBContext.Students
+                            where student.StudentID == relBiometric.StudentID
+                            select student;
+
+                return new ObservableCollection<Object>(query.ToList());
+
+            }
+
+            return null;
         }
 
-        public ObservableCollection<object> RetrieveAll(AMSEntities dBContext, object obj)
+        public override ObservableCollection<object> RetrieveViaSP(object obj, string storedProc)
         {
-            var query = dBContext.ListStudent();
+            var query = DBContext.ListStudent();
             return new ObservableCollection<object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaKeyword(AMSEntities dBContext, object obj, string keyword)
-        {
-            var query = from student in dBContext.Students
-                        where student.StudentID == keyword
-                        select student;
-
-            return new ObservableCollection<Object>(query.ToList());
-        }
-
-        public ObservableCollection<object> RetrieveViaSP(AMSEntities dBContext, object obj, string sp, List<string> param)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(AMSEntities dBContext, object obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

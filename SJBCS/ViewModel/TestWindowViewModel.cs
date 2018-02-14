@@ -17,7 +17,8 @@ namespace SJBCS.ViewModel
         {
             DBContext = new AMSEntities();
             //_content = new AddStudentView { DataContext = new AddStudentViewModel(DBContext) };
-            _content = new ManageBiometricsView { DataContext = new ManageBiometricsViewModel("2009100134") };
+            //_content = new ManageBiometricsView { DataContext = new ManageBiometricsViewModel("2009100134") };
+            _content = new AttendanceMonitoringView { DataContext = new AttendanceMonitoringViewModel() };
         }
         public Object Content => _content;
     }

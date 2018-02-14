@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace SJBCS.Model
 {
-    interface EntityModel
+    public class EntityModel
     {
-        void Add(AMSEntities dBContext, Object obj);
-        void Update(AMSEntities dBContext, Object obj);
-        void Delete(AMSEntities dBContext, Object obj);
-        ObservableCollection<Object> RetrieveViaSP(AMSEntities dBContext, Object obj,String sp, List<string> param);
-        ObservableCollection<Object> RetrieveAll(AMSEntities dBContext, Object obj);
-        ObservableCollection<Object> RetrieveViaKeyword(AMSEntities dBContext, Object obj,string keyword);
+        protected AMSEntities DBContext;
+        public EntityModel()
+        {
+            DBContext = new AMSEntities();
+        }
+        public virtual void Add(Object obj) { }
+        public virtual void Update(Object obj) { }
+        public virtual void Delete(Object obj) { }
+        public virtual ObservableCollection<Object> RetrieveViaSP(Object obj, String storedProc) { return null; }
+        public virtual ObservableCollection<Object> RetrieveAll() { return null; }
+        public virtual ObservableCollection<Object> RetrieveViaKey(Object obj) { return null; }
     }
 }

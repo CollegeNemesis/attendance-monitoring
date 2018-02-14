@@ -21,7 +21,6 @@ namespace SJBCS.ViewModel
         private String _selectedContact;
         private Section _section;
         private Level _level;
-        private Organization _group;
         private StudentWrapper _studentWrapper;
         private ContactWrapper _contactWrapper;
         private SectionWrapper _sectionWrapper;
@@ -29,7 +28,6 @@ namespace SJBCS.ViewModel
         private OrganizationWrapper _organizationWrapper;
 
         private ObservableCollection<String> _contactList;
-        private ObservableCollection<Object> _groupList;
         private ObservableCollection<Object> _levelList;
         private ObservableCollection<Object> _sectionList;
 
@@ -151,7 +149,7 @@ namespace SJBCS.ViewModel
                 _level = value;
                 _student.LevelID = _level.LevelID;
                 Console.WriteLine(_student.LevelID);
-                _sectionList = _sectionWrapper.RetrieveViaKeyword(DBContext, _level, _level.LevelID.ToString());
+                _sectionList = _sectionWrapper.RetrieveViaKey(_level);
                 _section = (Section)_sectionList.FirstOrDefault();
                 Console.WriteLine(_student.SectionID);
                 RaisePropertyChanged(null);
@@ -181,7 +179,6 @@ namespace SJBCS.ViewModel
             }
         }
         public ObservableCollection<String> ContactList => _contactList;
-        public ObservableCollection<Object> GroupList => _groupList;
         public ObservableCollection<Object> LevelList
         {
             get
@@ -227,9 +224,9 @@ namespace SJBCS.ViewModel
             _sectionWrapper = new SectionWrapper();
             _levelWrapper = new LevelWrapper();
             _organizationWrapper = new OrganizationWrapper();
-            _levelList = _levelWrapper.RetrieveAll(DBContext, _level);
+            _levelList = _levelWrapper.RetrieveAll();
             _level = (Level)_levelList.FirstOrDefault();
-            _sectionList = _sectionWrapper.RetrieveViaKeyword(DBContext, _level, _level.LevelID.ToString());
+            _sectionList = _sectionWrapper.RetrieveViaKey(_level);
             _section = (Section)_sectionList.FirstOrDefault();
 
             //Setting Default Value for Students
@@ -261,9 +258,9 @@ namespace SJBCS.ViewModel
             _sectionWrapper = new SectionWrapper();
             _levelWrapper = new LevelWrapper();
             _organizationWrapper = new OrganizationWrapper();
-            _levelList = _levelWrapper.RetrieveAll(DBContext, _level);
+            _levelList = _levelWrapper.RetrieveAll();
             _level = (Level)_levelList.FirstOrDefault();
-            _sectionList = _sectionWrapper.RetrieveViaKeyword(DBContext, _level, _level.LevelID.ToString());
+            _sectionList = _sectionWrapper.RetrieveViaKey(_level);
             _section = (Section)_sectionList.FirstOrDefault();
             _contactList = null;
 
@@ -280,10 +277,10 @@ namespace SJBCS.ViewModel
         }
         private void AddStudent(Object obj)
         {
-            _studentWrapper.Add(DBContext, _student);
+            _studentWrapper.Add(_student);
             foreach(string contact in _contactList)
             {
-                _contactWrapper.Add(DBContext, _student.StudentID, contact);
+                _contactWrapper.Add(_student.StudentID, contact);
             }
             Default();
             RaisePropertyChanged(null);

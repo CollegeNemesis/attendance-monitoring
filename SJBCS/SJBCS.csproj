@@ -190,11 +190,10 @@
     <Compile Include="ViewModel\AddStudentViewModel.cs" />
     <Compile Include="ViewModel\AttendanceMonitoringViewModel.cs" />
     <Compile Include="ViewModel\BiometricsEnrollmentViewModel.cs" />
-    <Compile Include="ViewModel\ContactInfoViewModel.cs" />
-    <Compile Include="ViewModel\GroupInfoViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ManageBiometricsViewModel.cs" />
+    <Compile Include="ViewModel\MessageDialogBoxViewModel.cs" />
     <Compile Include="ViewModel\SectionViewModel.cs" />
     <Compile Include="ViewModel\StudentInfoViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
@@ -209,20 +208,17 @@
     <Compile Include="View\BiometricsEnrollmentView.xaml.cs">
       <DependentUpon>BiometricsEnrollmentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ContactInfoView.xaml.cs">
-      <DependentUpon>ContactInfoView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\DefaultLayoutView.xaml.cs">
       <DependentUpon>DefaultLayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\GroupInfoView.xaml.cs">
-      <DependentUpon>GroupInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ManageBiometricsView.xaml.cs">
       <DependentUpon>ManageBiometricsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MessageDialogBoxView.xaml.cs">
+      <DependentUpon>MessageDialogBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SectionView.xaml.cs">
       <DependentUpon>SectionView.xaml</DependentUpon>
@@ -292,15 +288,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ContactInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\DefaultLayoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\GroupInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -309,6 +297,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ManageBiometricsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MessageDialogBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -375,6 +367,7 @@
       <DependentUpon>AMS.edmx</DependentUpon>
       <LastGenOutput>AMS.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Images\Error-icon.png" />
     <Content Include="Resources\Sounds\Error.wav" />
     <Content Include="Resources\Sounds\Success.wav" />
   </ItemGroup>
