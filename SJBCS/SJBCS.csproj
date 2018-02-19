@@ -37,6 +37,9 @@
     <Reference Include="CodeDisplayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\XamlDisplayerPackage.1.0.6\lib\net45\CodeDisplayer.dll</HintPath>
     </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="DPFPCtlXTypeLibNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=c0c98f712d5392a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -98,6 +101,27 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Unity.Abstractions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.1.3.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.6.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.4.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.6.0\lib\net45\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -107,139 +131,86 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ams\AttendanceListView.xaml.cs">
+      <DependentUpon>AttendanceListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ams\AttendanceListViewModel.cs" />
+    <Compile Include="Ams\AttendanceLog.cs" />
+    <Compile Include="Ams\AttendanceView.xaml.cs">
+      <DependentUpon>AttendanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ams\AttendanceViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\AMS.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AMS.Context.tt</DependentUpon>
+    <Compile Include="AttendanceViewModel.cs" />
+    <Compile Include="Converter\IWrappedParameter.cs" />
+    <Compile Include="Converter\PasswordboxConverter.cs" />
+    <Compile Include="Converter\PasswordBoxWrapper.cs" />
+    <Compile Include="Menu\AdminMenuView.xaml.cs">
+      <DependentUpon>AdminMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\AMS.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AMS.tt</DependentUpon>
+    <Compile Include="Menu\AdminMenuViewModel.cs" />
+    <Compile Include="Menu\UserMenuView.xaml.cs">
+      <DependentUpon>UserMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\AMS.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AMS.edmx</DependentUpon>
+    <Compile Include="Menu\UserMenuViewModel.cs" />
+    <Compile Include="Services\AttendancesRepository.cs" />
+    <Compile Include="Services\BiometricsRepository.cs" />
+    <Compile Include="Services\ContactsRepository.cs" />
+    <Compile Include="Services\GroupsRepository.cs" />
+    <Compile Include="Services\IAttendancesRepository.cs" />
+    <Compile Include="Services\IBiometricsRepository.cs" />
+    <Compile Include="Services\IContactsRepository.cs" />
+    <Compile Include="Services\IGroupsRepository.cs" />
+    <Compile Include="Services\ILevelsRepository.cs" />
+    <Compile Include="Services\ISectionsRepository.cs" />
+    <Compile Include="Services\IStudentsRepository.cs" />
+    <Compile Include="Services\IUsersRepository.cs" />
+    <Compile Include="Services\LevelsRepository.cs" />
+    <Compile Include="Services\SectionsRepository.cs" />
+    <Compile Include="Services\StudentsRepository.cs" />
+    <Compile Include="Services\UsersRepository.cs" />
+    <Compile Include="Startup\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\AsyncObservableCollection.cs" />
-    <Compile Include="Model\Attendance.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\AttendanceLog.cs" />
-    <Compile Include="Model\Biometric.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\CommandImplementation.cs" />
-    <Compile Include="Model\Contact.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DistributionList.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EntityModel.cs" />
-    <Compile Include="Model\FingerScanner.cs" />
-    <Compile Include="Model\InverseAndBooleanToBooleanConverter.cs" />
-    <Compile Include="Model\Level.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ListBoxValidationRule.cs" />
-    <Compile Include="Model\ListStudent_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\MenuItem.cs" />
-    <Compile Include="Model\NotEmptyValidationRule.cs" />
-    <Compile Include="Model\NotifyPropertyChangedExtension.cs" />
-    <Compile Include="Model\OnTemplateEventHandler.cs" />
-    <Compile Include="Model\Organization.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\RelBiometric.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\RelDistributionList.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\RelOrganization.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Section.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SimpleDateValidationRule.cs" />
-    <Compile Include="Model\SP_ListSection_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SP_ListStudentContact_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SP_SP_ListStudent_Result.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Student.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\sysdiagram.cs">
-      <DependentUpon>AMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UniqueIDValidationRule.cs" />
-    <Compile Include="ViewModel\AddStudentViewModel.cs" />
-    <Compile Include="ViewModel\AttendanceMonitoringViewModel.cs" />
-    <Compile Include="ViewModel\BiometricsEnrollmentViewModel.cs" />
-    <Compile Include="ViewModel\HomeViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\ManageBiometricsViewModel.cs" />
-    <Compile Include="ViewModel\MessageDialogBoxViewModel.cs" />
-    <Compile Include="ViewModel\SectionViewModel.cs" />
-    <Compile Include="ViewModel\StudentInfoViewModel.cs" />
-    <Compile Include="ViewModel\StudentViewModel.cs" />
-    <Compile Include="ViewModel\TestWindowViewModel.cs" />
-    <Compile Include="ViewModel\UpdateStudentViewModel.cs" />
-    <Compile Include="View\AddStudentView.xaml.cs">
-      <DependentUpon>AddStudentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\AttendanceMonitoringView.xaml.cs">
-      <DependentUpon>AttendanceMonitoringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\BiometricsEnrollmentView.xaml.cs">
-      <DependentUpon>BiometricsEnrollmentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DefaultLayoutView.xaml.cs">
-      <DependentUpon>DefaultLayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
+    <Compile Include="Startup\LoginViewModel.cs" />
+    <Compile Include="Startup\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ManageBiometricsView.xaml.cs">
-      <DependentUpon>ManageBiometricsView.xaml</DependentUpon>
+    <Compile Include="Startup\MainWindowViewModel.cs" />
+    <Compile Include="Students\StudentAddView.xaml.cs">
+      <DependentUpon>StudentAddView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MessageDialogBoxView.xaml.cs">
-      <DependentUpon>MessageDialogBoxView.xaml</DependentUpon>
+    <Compile Include="Students\StudentAddViewModel.cs" />
+    <Compile Include="Students\StudentInfo.cs" />
+    <Compile Include="Students\StudentInfoView.xaml.cs">
+      <DependentUpon>StudentInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SectionView.xaml.cs">
-      <DependentUpon>SectionView.xaml</DependentUpon>
+    <Compile Include="Students\StudentInfoViewModel.cs" />
+    <Compile Include="Students\StudentListView.xaml.cs">
+      <DependentUpon>StudentListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StudentView.xaml.cs">
+    <Compile Include="Students\StudentListViewModel.cs" />
+    <Compile Include="Students\StudentUpdateView.xaml.cs">
+      <DependentUpon>StudentUpdateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Students\StudentUpdateViewModel.cs" />
+    <Compile Include="Students\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TestWindow.xaml.cs">
-      <DependentUpon>TestWindow.xaml</DependentUpon>
+    <Compile Include="Students\StudentViewModel.cs" />
+    <Compile Include="Util\AsyncObservableCollection.cs" />
+    <Compile Include="Util\BindableBase.cs" />
+    <Compile Include="Util\ContainerHelper.cs" />
+    <Compile Include="Util\FingerScanner.cs" />
+    <Compile Include="Util\MessageDialogProperty.cs" />
+    <Compile Include="Util\MessageDialogView.xaml.cs">
+      <DependentUpon>MessageDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UpdateStudentView.xaml.cs">
-      <DependentUpon>UpdateStudentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Wrapper\AttendanceWrapper.cs" />
-    <Compile Include="Wrapper\BiometricWrapper.cs" />
-    <Compile Include="Wrapper\ContactWrapper.cs" />
-    <Compile Include="Wrapper\LevelWrapper.cs" />
-    <Compile Include="Wrapper\OrganizationWrapper.cs" />
-    <Compile Include="Wrapper\RelBiometricWrapper.cs" />
-    <Compile Include="Wrapper\SectionWrapper.cs" />
-    <Compile Include="Wrapper\StudentWrapper.cs" />
+    <Compile Include="Util\RelayCommand.cs" />
+    <Compile Include="Util\ValidatableBindableBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -259,13 +230,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\AMS.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AMS.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\AMS.edmx.diagram">
-      <DependentUpon>AMS.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -276,49 +240,53 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\AddStudentView.xaml">
+    <Page Include="Ams\AttendanceListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AttendanceMonitoringView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Ams\AttendanceView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\BiometricsEnrollmentView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Menu\AdminMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\DefaultLayoutView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Menu\UserMenuView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\MainWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Startup\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ManageBiometricsView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Startup\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\MessageDialogBoxView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Students\StudentAddView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\SectionView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Students\StudentInfoView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\StudentView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Students\StudentListView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TestWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Students\StudentUpdateView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UpdateStudentView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Students\StudentView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Util\MessageDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -357,19 +325,15 @@
     <Resource Include="Resources\Images\User_Administrator_4.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\AMS.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMS.edmx</DependentUpon>
-      <LastGenOutput>AMS.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\AMS.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMS.edmx</DependentUpon>
-      <LastGenOutput>AMS.cs</LastGenOutput>
-    </Content>
     <Resource Include="Resources\Images\Error-icon.png" />
     <Content Include="Resources\Sounds\Error.wav" />
     <Content Include="Resources\Sounds\Success.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SJBCS.Data\SJBCS.Data.csproj">
+      <Project>{5f55c349-84fc-46fc-aac6-c77eae0217d9}</Project>
+      <Name>SJBCS.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,11 @@
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.dll.config
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.dll
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.pdb
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.dll
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.xml
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.csproj.CoreCompileInputs.cache
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.dll
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.pdb
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.csprojResolveAssemblyReference.cache

@@ -1,0 +1,86 @@
+﻿<Window x:Class="SJBCS.Startup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
+        xmlns:menu="clr-namespace:SJBCS.Menu"
+        xmlns:local="clr-namespace:SJBCS.Startup"
+        mc:Ignorable="d"
+        Title="SJBCS"
+        Height="768"
+        Width="1024"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:LoginViewModel}">
+            <local:LoginView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type menu:AdminMenuViewModel}">
+            <menu:AdminMenuView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type menu:UserMenuViewModel}">
+            <menu:UserMenuView />
+        </DataTemplate>
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog"
+                               SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="600*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <materialDesign:ColorZone Grid.Row="0"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Mode="PrimaryMid">
+                <DockPanel>
+                    <Button Width="30"
+                            Padding="2,0,2,0"
+                            HorizontalAlignment="Right"
+                            materialDesign:RippleAssist.IsCentered="True"
+                            Style="{StaticResource MaterialDesignToolForegroundButton}"
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="studentList">
+                        <materialDesign:PackIcon Kind="Menu"
+                                                 Width="30"
+                                                 Height="30" />
+                    </Button>
+                    <materialDesign:PopupBox DockPanel.Dock="Right"
+                                             PlacementMode="BottomAndAlignRightEdges"
+                                             StaysOpen="False">
+                        <StackPanel>
+                            <Button Content="Log out" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="22" />
+                </DockPanel>
+            </materialDesign:ColorZone>
+            <materialDesign:ColorZone Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      Mode="Dark" />
+            <Grid Grid.Row="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/SJBCS;component/Resources/Images/footer.png"
+                                Stretch="Uniform"
+                                AlignmentX="Center"
+                                AlignmentY="Bottom" />
+                </Grid.Background>
+                <codeDisplayer:XamlDisplayerHost Content="{Binding CurrentViewModel}" />
+                <materialDesign:Snackbar x:Name="MainSnackbar"
+                                         MessageQueue="{materialDesign:MessageQueue}"
+                                         Grid.Row="1" />
+            </Grid>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

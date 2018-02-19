@@ -96,3 +96,16 @@ C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\Atten
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\MessageDialogBoxView.g.cs
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\View\MessageDialogBoxView.baml
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\SJBCS.csprojResolveAssemblyReference.cache
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Ams\AttendanceView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Menu\AdminMenuView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Menu\UserMenuView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Startup\LoginView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Startup\MainWindow.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\BiometricsEnrollmentView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentAddView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentInfoView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentUpdateView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Util\MessageDialogView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Ams\AttendanceListView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentListView.g.cs
