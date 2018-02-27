@@ -9,12 +9,12 @@ using System.Windows.Data;
 
 namespace SJBCS.Converter
 {
-    public class PasswordBoxConverter : IValueConverter
+    public class PasswordConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // Implement type and value check here...
-            return new PasswordBoxWrapper((PasswordBox)value);
+            return new PasswordWrapper((PasswordBox)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,0 +1,139 @@
+﻿<Window x:Class="SJBCS.GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SJBCS.GUI"
+        xmlns:home="clr-namespace:SJBCS.GUI.Home"
+        xmlns:student="clr-namespace:SJBCS.GUI.Student"
+        xmlns:report="clr-namespace:SJBCS.GUI.Report"
+        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
+        xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
+        mc:Ignorable="d"
+        Title=""
+        ResizeMode="NoResize"
+        Icon="Image/clock-icon-png.png"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+<!--<Window x:Class="SJBCS.GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SJBCS.GUI"
+        xmlns:home="clr-namespace:SJBCS.GUI.Home"
+        xmlns:student="clr-namespace:SJBCS.GUI.Student"
+        xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
+        mc:Ignorable="d"
+        Title="SJBCS"
+        ResizeMode="NoResize"
+        Icon="Image/clock-icon-png.png"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="768"
+        MinWidth="1024">-->
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type home:LoginViewModel}">
+            <home:LoginView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type home:MenuViewModel}">
+            <home:MenuView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type home:ClockViewModel}">
+            <home:ClockView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ams:AttendanceViewModel}">
+            <ams:AttendanceView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type student:SectionViewModel}">
+            <student:SectionView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type student:GroupViewModel}">
+            <student:GroupView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type student:StudentViewModel}">
+            <student:StudentView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type report:ReportViewModel}">
+            <report:ReportView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sms:SmsViewModel}">
+            <sms:SmsView />
+        </DataTemplate>
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog"
+                               SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="Header1"
+                  Grid.Row="0">
+                <materialDesign:ColorZone Mode="PrimaryMid"
+                                          Background="#3D62B3"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" />
+                <TextBlock FontFamily="Segoe UI"
+                           FontWeight="Regular"
+                           FontSize="16"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="SJBCS Attendance Monitoring System" />
+
+            </Grid>
+            <Grid x:Name="Header2"
+                  Grid.Row="1"
+                  Height="Auto">
+                <materialDesign:ColorZone Mode="PrimaryMid"
+                                          Background="White"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          BorderBrush="#B5B5B5"
+                                          BorderThickness="0 0 0 1">
+                    <DockPanel>
+                        <materialDesign:PopupBox HorizontalAlignment="Right"
+                                                 PlacementMode="BottomAndAlignRightEdges"
+                                                 StaysOpen="False"
+                                                 Foreground="#272C33">
+                            <StackPanel>
+                                <Button Content="Goodbye" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+            </Grid>
+            <Grid x:Name="Main"
+                  Background="#e9ebee"
+                  Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ContentControl x:Name="Menu"
+                                Grid.Column="0"
+                                Content="{Binding MenuViewModel}" />
+                <ContentControl x:Name="CurrentView"
+                                Grid.Column="1"
+                                Content="{Binding CurrentViewModel}" />
+            </Grid>
+            <Grid x:Name="Footer"
+                  Grid.Row="3"
+                  Height="50">
+                <materialDesign:ColorZone Mode="Dark"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch">
+                    <ContentControl Content="{Binding ClockViewModel}"
+                                    HorizontalAlignment="Right" />
+                </materialDesign:ColorZone>
+            </Grid>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

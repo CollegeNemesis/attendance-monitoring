@@ -1,18 +1,14 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
-             xmlns:local="clr-namespace:SJBCS"
              xmlns:converter="clr-namespace:SJBCS.Converter"
-             xmlns:Data="clr-namespace:SJBCS.Data;assembly=SJBCS.Data"
              x:Class="SJBCS.Startup.LoginView"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
     <UserControl.Resources>
-        <converter:PasswordBoxConverter x:Key="PwdConverter" />
+        <converter:PasswordConverter x:Key="pwdConverter" />
     </UserControl.Resources>
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">

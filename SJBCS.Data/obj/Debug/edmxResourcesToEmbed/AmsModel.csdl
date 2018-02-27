@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="SJBCS.Data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="AmsEntities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="Attendance">
     <Key>
       <PropertyRef Name="AttendanceID" />
@@ -100,9 +100,9 @@
   </EntityType>
   <EntityType Name="Student">
     <Key>
-      <PropertyRef Name="StudentID" />
+      <PropertyRef Name="StudentGuid" />
     </Key>
-    <Property Name="StudentID" Type="Guid" Nullable="false" />
+    <Property Name="StudentGuid" Type="Guid" Nullable="false" />
     <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -114,7 +114,7 @@
     <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="SectionID" Type="Guid" Nullable="false" />
     <Property Name="LevelID" Type="Guid" Nullable="false" />
-    <Property Name="StudentNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
     <NavigationProperty Name="Contacts" Relationship="Self.FK_Contact_Student" FromRole="Student" ToRole="Contact" />
     <NavigationProperty Name="Level" Relationship="Self.FK_Student_Level" FromRole="Student" ToRole="Level" />
@@ -126,9 +126,6 @@
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="UserID" />
-      <PropertyRef Name="Username" />
-      <PropertyRef Name="Password" />
-      <PropertyRef Name="Type" />
     </Key>
     <Property Name="UserID" Type="Guid" Nullable="false" />
     <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
@@ -140,7 +137,7 @@
     <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
+        <PropertyRef Name="StudentGuid" />
       </Principal>
       <Dependent Role="Attendance">
         <PropertyRef Name="StudentID" />
@@ -164,7 +161,7 @@
     <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
+        <PropertyRef Name="StudentGuid" />
       </Principal>
       <Dependent Role="Contact">
         <PropertyRef Name="StudentID" />
@@ -224,7 +221,7 @@
     <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
+        <PropertyRef Name="StudentGuid" />
       </Principal>
       <Dependent Role="RelBiometric">
         <PropertyRef Name="StudentID" />
@@ -236,7 +233,7 @@
     <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
+        <PropertyRef Name="StudentGuid" />
       </Principal>
       <Dependent Role="RelDistributionList">
         <PropertyRef Name="StudentID" />
@@ -248,7 +245,7 @@
     <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="StudentID" />
+        <PropertyRef Name="StudentGuid" />
       </Principal>
       <Dependent Role="RelOrganization">
         <PropertyRef Name="StudentID" />

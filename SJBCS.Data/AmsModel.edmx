@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SJBCS.Data.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AmsEntities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
@@ -90,9 +90,9 @@
         </EntityType>
         <EntityType Name="Student">
           <Key>
-            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="StudentGuid" />
           </Key>
-          <Property Name="StudentID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudentGuid" Type="uniqueidentifier" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -104,16 +104,11 @@
           <Property Name="State" Type="nvarchar" MaxLength="50" />
           <Property Name="SectionID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="StudentNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentID" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="Type" />
           </Key>
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Username" Type="varchar(max)" Nullable="false" />
@@ -125,7 +120,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="Attendance">
               <PropertyRef Name="StudentID" />
@@ -137,7 +132,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="Contact">
               <PropertyRef Name="StudentID" />
@@ -161,7 +156,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelBiometric">
               <PropertyRef Name="StudentID" />
@@ -185,7 +180,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelDistributionList">
               <PropertyRef Name="StudentID" />
@@ -209,7 +204,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelOrganization">
               <PropertyRef Name="StudentID" />
@@ -252,7 +247,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SJBCSDataStoreContainer">
+        <EntityContainer Name="AmsEntitiesStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
@@ -264,14 +259,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <EntitySet Name="RelOrganization" EntityType="Self.RelOrganization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [User].[UserID] AS [UserID], 
-    [User].[Username] AS [Username], 
-    [User].[Password] AS [Password], 
-    [User].[Type] AS [Type]
-    FROM [dbo].[User] AS [User]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -321,7 +309,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SJBCS.Data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AmsEntities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
@@ -422,9 +410,9 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
         </EntityType>
         <EntityType Name="Student">
           <Key>
-            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="StudentGuid" />
           </Key>
-          <Property Name="StudentID" Type="Guid" Nullable="false" />
+          <Property Name="StudentGuid" Type="Guid" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -436,7 +424,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SectionID" Type="Guid" Nullable="false" />
           <Property Name="LevelID" Type="Guid" Nullable="false" />
-          <Property Name="StudentNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Student" FromRole="Student" ToRole="Attendance" />
           <NavigationProperty Name="Contacts" Relationship="Self.FK_Contact_Student" FromRole="Student" ToRole="Contact" />
           <NavigationProperty Name="Level" Relationship="Self.FK_Student_Level" FromRole="Student" ToRole="Level" />
@@ -448,9 +436,6 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="Type" />
           </Key>
           <Property Name="UserID" Type="Guid" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
@@ -462,7 +447,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="Attendance">
               <PropertyRef Name="StudentID" />
@@ -486,7 +471,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="Contact">
               <PropertyRef Name="StudentID" />
@@ -546,7 +531,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelBiometric" Type="Self.RelBiometric" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelBiometric">
               <PropertyRef Name="StudentID" />
@@ -558,7 +543,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelDistributionList" Type="Self.RelDistributionList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelDistributionList">
               <PropertyRef Name="StudentID" />
@@ -570,7 +555,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
           <End Role="RelOrganization" Type="Self.RelOrganization" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
+              <PropertyRef Name="StudentGuid" />
             </Principal>
             <Dependent Role="RelOrganization">
               <PropertyRef Name="StudentID" />
@@ -652,9 +637,9 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SJBCSDataStoreContainer" CdmEntityContainer="AmsModel">
+        <EntityContainerMapping StorageEntityContainer="AmsEntitiesStoreContainer" CdmEntityContainer="AmsModel">
           <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="SJBCS.Data.Attendance">
+            <EntityTypeMapping TypeName="AmsEntities.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
                 <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
@@ -668,7 +653,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Biometrics">
-            <EntityTypeMapping TypeName="SJBCS.Data.Biometric">
+            <EntityTypeMapping TypeName="AmsEntities.Biometric">
               <MappingFragment StoreEntitySet="Biometric">
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
                 <ScalarProperty Name="FingerPrintTemplate" ColumnName="FingerPrintTemplate" />
@@ -676,7 +661,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Contacts">
-            <EntityTypeMapping TypeName="SJBCS.Data.Contact">
+            <EntityTypeMapping TypeName="AmsEntities.Contact">
               <MappingFragment StoreEntitySet="Contact">
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
@@ -685,7 +670,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DistributionLists">
-            <EntityTypeMapping TypeName="SJBCS.Data.DistributionList">
+            <EntityTypeMapping TypeName="AmsEntities.DistributionList">
               <MappingFragment StoreEntitySet="DistributionList">
                 <ScalarProperty Name="DistributionListID" ColumnName="DistributionListID" />
                 <ScalarProperty Name="DistributionListName" ColumnName="DistributionListName" />
@@ -693,7 +678,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Levels">
-            <EntityTypeMapping TypeName="SJBCS.Data.Level">
+            <EntityTypeMapping TypeName="AmsEntities.Level">
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
@@ -701,7 +686,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Organizations">
-            <EntityTypeMapping TypeName="SJBCS.Data.Organization">
+            <EntityTypeMapping TypeName="AmsEntities.Organization">
               <MappingFragment StoreEntitySet="Organization">
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
                 <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
@@ -709,7 +694,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelBiometrics">
-            <EntityTypeMapping TypeName="SJBCS.Data.RelBiometric">
+            <EntityTypeMapping TypeName="AmsEntities.RelBiometric">
               <MappingFragment StoreEntitySet="RelBiometric">
                 <ScalarProperty Name="RelBiometricID" ColumnName="RelBiometricID" />
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
@@ -718,7 +703,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelDistributionLists">
-            <EntityTypeMapping TypeName="SJBCS.Data.RelDistributionList">
+            <EntityTypeMapping TypeName="AmsEntities.RelDistributionList">
               <MappingFragment StoreEntitySet="RelDistributionList">
                 <ScalarProperty Name="RelDistributionListID" ColumnName="RelDistributionListID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -727,7 +712,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelOrganizations">
-            <EntityTypeMapping TypeName="SJBCS.Data.RelOrganization">
+            <EntityTypeMapping TypeName="AmsEntities.RelOrganization">
               <MappingFragment StoreEntitySet="RelOrganization">
                 <ScalarProperty Name="RelOrganizationID" ColumnName="RelOrganizationID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -736,7 +721,7 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="SJBCS.Data.Section">
+            <EntityTypeMapping TypeName="AmsEntities.Section">
               <MappingFragment StoreEntitySet="Section">
                 <ScalarProperty Name="SectionID" ColumnName="SectionID" />
                 <ScalarProperty Name="SectionName" ColumnName="SectionName" />
@@ -747,9 +732,9 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="SJBCS.Data.Student">
+            <EntityTypeMapping TypeName="AmsEntities.Student">
               <MappingFragment StoreEntitySet="Student">
-                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="StudentGuid" ColumnName="StudentGuid" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -761,12 +746,12 @@ warning 6002: The table/view 'AMS.dbo.User' does not have a primary key defined.
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="SectionID" ColumnName="SectionID" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
-                <ScalarProperty Name="StudentNum" ColumnName="StudentNum" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="SJBCS.Data.User">
+            <EntityTypeMapping TypeName="AmsEntities.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />

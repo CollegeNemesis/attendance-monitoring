@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace SJBCS.Converter
+namespace SJBCS.GUI.Converters
 {
     public class PasswordBoxWrapper : IWrappedParameter<string>
     {

@@ -24,7 +24,7 @@ namespace SJBCS.Data
             this.RelOrganizations = new HashSet<RelOrganization>();
         }
     
-        public System.Guid StudentID { get; set; }
+        public System.Guid StudentGuid { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -36,7 +36,7 @@ namespace SJBCS.Data
         public string State { get; set; }
         public System.Guid SectionID { get; set; }
         public System.Guid LevelID { get; set; }
-        public string StudentNum { get; set; }
+        public string StudentID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }

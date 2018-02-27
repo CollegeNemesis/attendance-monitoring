@@ -28,7 +28,7 @@ namespace SJBCS.Util
             eventArgs.Cancel();
 
             //...now, lets update the "session" with some new content!
-            eventArgs.Session.UpdateContent(new MessageDialogBoxView());
+            eventArgs.Session.UpdateContent(new MessageDialogView());
             //note, you can also grab the session when the dialog opens via the DialogOpenedEventHandler
 
             //lets run a fake operation for 3 seconds then close this baby.
@@ -38,9 +38,9 @@ namespace SJBCS.Util
         }
         public static async void OpenDialog(MessageType messageType, String message)
         {
-            var view = new MessageDialogBoxView
+            var view = new MessageDialogView
             {
-                DataContext = new MessageDialogBoxViewModel(messageType, message)
+                DataContext = new MessageDialogViewModel(messageType, message)
             };
 
             //show the dialog

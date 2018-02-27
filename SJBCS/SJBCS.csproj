@@ -146,8 +146,8 @@
     </Compile>
     <Compile Include="AttendanceViewModel.cs" />
     <Compile Include="Converter\IWrappedParameter.cs" />
-    <Compile Include="Converter\PasswordboxConverter.cs" />
-    <Compile Include="Converter\PasswordBoxWrapper.cs" />
+    <Compile Include="Converter\PasswordConverter.cs" />
+    <Compile Include="Converter\PasswordWrapper.cs" />
     <Compile Include="Menu\AdminMenuView.xaml.cs">
       <DependentUpon>AdminMenuView.xaml</DependentUpon>
     </Compile>

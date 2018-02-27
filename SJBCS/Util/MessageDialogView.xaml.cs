@@ -18,7 +18,7 @@ namespace SJBCS.Util
     /// <summary>
     /// Interaction logic for MessageDialogView.xaml
     /// </summary>
-    public partial class MessageDialogView : UserControl
+    public class MessageDialogView : UserControl
     {
         public MessageDialogView()
         {

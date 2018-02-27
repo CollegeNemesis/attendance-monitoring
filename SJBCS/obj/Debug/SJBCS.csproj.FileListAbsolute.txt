@@ -109,3 +109,4 @@ C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\S
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Util\MessageDialogView.g.cs
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Ams\AttendanceListView.g.cs
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Students\StudentListView.g.cs
+C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS\obj\Debug\Util\MessageDialogView.baml

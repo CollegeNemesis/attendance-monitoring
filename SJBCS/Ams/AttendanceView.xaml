@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SJBCS.Ams"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
-             xmlns:model="clr-namespace:SJBCS.Model"
+             xmlns:model="clr-namespace:SJBCS.Ams"
              xmlns:codeDisplayer="clr-namespace:CodeDisplayer;assembly=CodeDisplayer"
              mc:Ignorable="d"
              d:DesignHeight="600"
