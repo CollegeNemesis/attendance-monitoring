@@ -1,3 +1,11 @@
 .vs/**
-**/bin/**
-**/obj/**
+AMS.Utilities/bin/**
+SJBCS.Data/bin/**
+SJBCS.GUI/bin/**
+SJBCS.Services/bin/**
+SJBCS.Utilities/bin/**
+AMS.Utilities/obj/**
+SJBCS.Data/obj/**
+SJBCS.GUI/obj/**
+SJBCS.Services/obj/**
+SJBCS.Utilities/obj/**
