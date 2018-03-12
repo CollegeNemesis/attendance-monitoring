@@ -3,7 +3,7 @@
     public class FingerScanner : BindableBase, DPFP.Capture.EventHandler
     {
 
-            private DPFP.Capture.Capture Capturer;
+            protected DPFP.Capture.Capture Capturer;
 
             public FingerScanner()
             {

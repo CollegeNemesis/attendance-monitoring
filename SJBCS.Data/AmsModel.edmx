@@ -4,19 +4,22 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AmsEntities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
           </Key>
           <Property Name="AttendanceID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TimeIn" Type="smalldatetime" Nullable="false" />
-          <Property Name="TimeOut" Type="smalldatetime" />
           <Property Name="StudentID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TimeInID" Type="nvarchar" MaxLength="50" />
-          <Property Name="TimeOutID" Type="nvarchar" MaxLength="50" />
-          <Property Name="TimeInNotified" Type="bit" />
-          <Property Name="TimeOutNotified" Type="bit" />
+          <Property Name="TimeIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="TimeInSMSID" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeInSMSStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeOut" Type="smalldatetime" />
+          <Property Name="TimeOutSMSID" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeOutSMSStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsLate" Type="bit" />
+          <Property Name="IsOverstay" Type="bit" />
+          <Property Name="IsEarlyOut" Type="bit" />
         </EntityType>
         <EntityType Name="Biometric">
           <Key>
@@ -24,6 +27,25 @@
           </Key>
           <Property Name="FingerID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="FingerPrintTemplate" Type="varbinary(max)" Nullable="false" />
+          <Property Name="FingerName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="dt" />
+          </Key>
+          <Property Name="dt" Type="smalldatetime" Nullable="false" />
+          <Property Name="isWeekday" Type="bit" />
+          <Property Name="isHoliday" Type="bit" />
+          <Property Name="Y" Type="smallint" />
+          <Property Name="FY" Type="smallint" />
+          <Property Name="Q" Type="tinyint" />
+          <Property Name="M" Type="tinyint" />
+          <Property Name="D" Type="tinyint" />
+          <Property Name="DW" Type="tinyint" />
+          <Property Name="monthname" Type="varchar" MaxLength="9" />
+          <Property Name="dayname" Type="varchar" MaxLength="9" />
+          <Property Name="W" Type="tinyint" />
+          <Property Name="UTCOffset" Type="tinyint" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -38,7 +60,7 @@
             <PropertyRef Name="DistributionListID" />
           </Key>
           <Property Name="DistributionListID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="DistributionListName" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="DistributionListName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Level">
           <Key>
@@ -83,7 +105,7 @@
             <PropertyRef Name="SectionID" />
           </Key>
           <Property Name="SectionID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="SectionName" Type="nchar" MaxLength="10" />
+          <Property Name="SectionName" Type="nvarchar" MaxLength="30" />
           <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
@@ -247,9 +269,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AmsEntitiesStoreContainer">
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calendar" EntityType="Self.Calendar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DistributionList" EntityType="Self.DistributionList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
@@ -305,23 +328,25 @@
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AmsEntities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
           </Key>
           <Property Name="AttendanceID" Type="Guid" Nullable="false" />
-          <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="TimeOut" Type="DateTime" Precision="0" />
           <Property Name="StudentID" Type="Guid" Nullable="false" />
-          <Property Name="TimeInID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TimeOutID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TimeInNotified" Type="Boolean" />
-          <Property Name="TimeOutNotified" Type="Boolean" />
+          <Property Name="TimeIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TimeInSMSID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeInSMSStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeOut" Type="DateTime" Precision="0" />
+          <Property Name="TimeOutSMSID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeOutSMSStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsLate" Type="Boolean" />
+          <Property Name="IsOverstay" Type="Boolean" />
+          <Property Name="IsEarlyOut" Type="Boolean" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Attendance_Student" FromRole="Attendance" ToRole="Student" />
         </EntityType>
         <EntityType Name="Biometric">
@@ -331,6 +356,25 @@
           <Property Name="FingerID" Type="Guid" Nullable="false" />
           <Property Name="FingerPrintTemplate" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <NavigationProperty Name="RelBiometrics" Relationship="Self.FK_RelBiometric_Biometric" FromRole="Biometric" ToRole="RelBiometric" />
+          <Property Name="FingerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="dt" />
+          </Key>
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="isWeekday" Type="Boolean" />
+          <Property Name="isHoliday" Type="Boolean" />
+          <Property Name="Y" Type="Int16" />
+          <Property Name="FY" Type="Int16" />
+          <Property Name="Q" Type="Byte" />
+          <Property Name="M" Type="Byte" />
+          <Property Name="D" Type="Byte" />
+          <Property Name="DW" Type="Byte" />
+          <Property Name="monthname" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dayname" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="W" Type="Byte" />
+          <Property Name="UTCOffset" Type="Byte" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -346,7 +390,7 @@
             <PropertyRef Name="DistributionListID" />
           </Key>
           <Property Name="DistributionListID" Type="Guid" Nullable="false" />
-          <Property Name="DistributionListName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DistributionListName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="RelDistributionLists" Relationship="Self.FK_RelDistributionList_DistributionList" FromRole="DistributionList" ToRole="RelDistributionList" />
         </EntityType>
         <EntityType Name="Level">
@@ -401,7 +445,7 @@
             <PropertyRef Name="SectionID" />
           </Key>
           <Property Name="SectionID" Type="Guid" Nullable="false" />
-          <Property Name="SectionName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="SectionName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="LevelID" Type="Guid" Nullable="false" />
           <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
@@ -577,6 +621,7 @@
         <EntityContainer Name="AmsModel" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Attendances" EntityType="Self.Attendance" />
           <EntitySet Name="Biometrics" EntityType="Self.Biometric" />
+          <EntitySet Name="Calendars" EntityType="Self.Calendar" />
           <EntitySet Name="Contacts" EntityType="Self.Contact" />
           <EntitySet Name="DistributionLists" EntityType="Self.DistributionList" />
           <EntitySet Name="Levels" EntityType="Self.Level" />
@@ -637,31 +682,54 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AmsEntitiesStoreContainer" CdmEntityContainer="AmsModel">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="AmsModel">
           <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="AmsEntities.Attendance">
+            <EntityTypeMapping TypeName="Model.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
-                <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
-                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
-                <ScalarProperty Name="TimeInID" ColumnName="TimeInID" />
-                <ScalarProperty Name="TimeOutID" ColumnName="TimeOutID" />
-                <ScalarProperty Name="TimeInNotified" ColumnName="TimeInNotified" />
-                <ScalarProperty Name="TimeOutNotified" ColumnName="TimeOutNotified" />
+                <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+                <ScalarProperty Name="TimeInSMSID" ColumnName="TimeInSMSID" />
+                <ScalarProperty Name="TimeInSMSStatus" ColumnName="TimeInSMSStatus" />
+                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+                <ScalarProperty Name="TimeOutSMSID" ColumnName="TimeOutSMSID" />
+                <ScalarProperty Name="TimeOutSMSStatus" ColumnName="TimeOutSMSStatus" />
+                <ScalarProperty Name="IsLate" ColumnName="IsLate" />
+                <ScalarProperty Name="IsOverstay" ColumnName="IsOverstay" />
+                <ScalarProperty Name="IsEarlyOut" ColumnName="IsEarlyOut" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Biometrics">
-            <EntityTypeMapping TypeName="AmsEntities.Biometric">
+            <EntityTypeMapping TypeName="Model.Biometric">
               <MappingFragment StoreEntitySet="Biometric">
+                <ScalarProperty Name="FingerName" ColumnName="FingerName" />
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
                 <ScalarProperty Name="FingerPrintTemplate" ColumnName="FingerPrintTemplate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Calendars">
+            <EntityTypeMapping TypeName="Model.Calendar">
+              <MappingFragment StoreEntitySet="Calendar">
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="isWeekday" ColumnName="isWeekday" />
+                <ScalarProperty Name="isHoliday" ColumnName="isHoliday" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="FY" ColumnName="FY" />
+                <ScalarProperty Name="Q" ColumnName="Q" />
+                <ScalarProperty Name="M" ColumnName="M" />
+                <ScalarProperty Name="D" ColumnName="D" />
+                <ScalarProperty Name="DW" ColumnName="DW" />
+                <ScalarProperty Name="monthname" ColumnName="monthname" />
+                <ScalarProperty Name="dayname" ColumnName="dayname" />
+                <ScalarProperty Name="W" ColumnName="W" />
+                <ScalarProperty Name="UTCOffset" ColumnName="UTCOffset" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Contacts">
-            <EntityTypeMapping TypeName="AmsEntities.Contact">
+            <EntityTypeMapping TypeName="Model.Contact">
               <MappingFragment StoreEntitySet="Contact">
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
@@ -670,7 +738,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DistributionLists">
-            <EntityTypeMapping TypeName="AmsEntities.DistributionList">
+            <EntityTypeMapping TypeName="Model.DistributionList">
               <MappingFragment StoreEntitySet="DistributionList">
                 <ScalarProperty Name="DistributionListID" ColumnName="DistributionListID" />
                 <ScalarProperty Name="DistributionListName" ColumnName="DistributionListName" />
@@ -678,7 +746,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Levels">
-            <EntityTypeMapping TypeName="AmsEntities.Level">
+            <EntityTypeMapping TypeName="Model.Level">
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
@@ -686,7 +754,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Organizations">
-            <EntityTypeMapping TypeName="AmsEntities.Organization">
+            <EntityTypeMapping TypeName="Model.Organization">
               <MappingFragment StoreEntitySet="Organization">
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
                 <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
@@ -694,7 +762,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelBiometrics">
-            <EntityTypeMapping TypeName="AmsEntities.RelBiometric">
+            <EntityTypeMapping TypeName="Model.RelBiometric">
               <MappingFragment StoreEntitySet="RelBiometric">
                 <ScalarProperty Name="RelBiometricID" ColumnName="RelBiometricID" />
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
@@ -703,7 +771,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelDistributionLists">
-            <EntityTypeMapping TypeName="AmsEntities.RelDistributionList">
+            <EntityTypeMapping TypeName="Model.RelDistributionList">
               <MappingFragment StoreEntitySet="RelDistributionList">
                 <ScalarProperty Name="RelDistributionListID" ColumnName="RelDistributionListID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -712,7 +780,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelOrganizations">
-            <EntityTypeMapping TypeName="AmsEntities.RelOrganization">
+            <EntityTypeMapping TypeName="Model.RelOrganization">
               <MappingFragment StoreEntitySet="RelOrganization">
                 <ScalarProperty Name="RelOrganizationID" ColumnName="RelOrganizationID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -721,7 +789,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="AmsEntities.Section">
+            <EntityTypeMapping TypeName="Model.Section">
               <MappingFragment StoreEntitySet="Section">
                 <ScalarProperty Name="SectionID" ColumnName="SectionID" />
                 <ScalarProperty Name="SectionName" ColumnName="SectionName" />
@@ -732,7 +800,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="AmsEntities.Student">
+            <EntityTypeMapping TypeName="Model.Student">
               <MappingFragment StoreEntitySet="Student">
                 <ScalarProperty Name="StudentGuid" ColumnName="StudentGuid" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -751,7 +819,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="AmsEntities.User">
+            <EntityTypeMapping TypeName="Model.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />

@@ -8,44 +8,44 @@ namespace SJBCS.Services.Repository
 {
     public class UsersRepository : IUsersRepository
     {
-        AmsDbContext _context = new AmsDbContext();        
+        AmsDbContext _context = new AmsDbContext();
 
-        public async Task<User> AddUserAsync(User user)
+        public User AddUser(User User)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
+            _context.Users.Add(User);
+            _context.SaveChanges();
+            return User;
         }
 
-        public async Task DeleteUserAsync(string username)
+        public void DeleteUser(string Username)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
-            if (user != null)
+            var User = _context.Users.FirstOrDefault(r => r.Username == Username);
+            if (User != null)
             {
-                _context.Users.Remove(user);
+                _context.Users.Remove(User);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public Task<User> GetUserAsync(string username)
+        public User GetUser(string Username)
         {
-            return _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            return _context.Users.FirstOrDefault(r => r.Username == Username);
         }
 
-        public Task<List<User>> GetUsersAsync()
+        public List<User> GetUsers()
         {
-            return _context.Users.ToListAsync();
+            return _context.Users.ToList();
         }
 
-        public async Task<User> UpdateUserAsync(User user)
+        public User UpdateUser(User User)
         {
-            if (!_context.Users.Local.Any(u => u.Username == user.Username))
+            if (!_context.Users.Local.Any(r => r.UserID == User.UserID))
             {
-                _context.Users.Attach(user);
+                _context.Users.Attach(User);
             }
-            _context.Entry(user).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return user;
+            _context.Entry(User).State = EntityState.Modified;
+            _context.SaveChanges();
+            return User;
         }
     }
 }

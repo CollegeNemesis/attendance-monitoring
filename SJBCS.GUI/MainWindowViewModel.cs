@@ -2,6 +2,7 @@
 using AMS.Utilities;
 using SJBCS.Data;
 using SJBCS.GUI.AMS;
+using SJBCS.GUI.Dialogs;
 using SJBCS.GUI.Home;
 using SJBCS.GUI.Report;
 using SJBCS.GUI.SMS;
@@ -13,6 +14,7 @@ namespace SJBCS.GUI
     class MainWindowViewModel : BindableBase
     {
         private object _currentViewModel;
+        private object _menu;
 
         #region ViewModel
         public LoginViewModel _loginViewModel;
@@ -25,7 +27,9 @@ namespace SJBCS.GUI
         public ReportViewModel _reportViewModel;
         public AttendanceViewModel _attendanceViewModel;
 
-        public StudentViewModel _studenViewModel;
+        public AddEditStudentViewModel _addEditStudentViewModel;
+        public StudentViewModel _studentViewModel;
+
         #endregion
 
         public object CurrentViewModel
@@ -34,17 +38,16 @@ namespace SJBCS.GUI
             set { SetProperty(ref _currentViewModel, value); }
         }
 
+        public object Menu
+        {
+            get { return _menu; }
+            set { SetProperty(ref _menu, value); }
+        }
+
         public ClockViewModel ClockViewModel
         {
             get { return _clockViewModel; }
             set { SetProperty(ref _clockViewModel, value); }
-
-        }
-
-        public MenuViewModel MenuViewModel
-        {
-            get { return _menuViewModel; }
-            set { SetProperty(ref _menuViewModel, value); }
 
         }
 
@@ -56,11 +59,16 @@ namespace SJBCS.GUI
             _attendanceViewModel = ContainerHelper.Container.Resolve<AttendanceViewModel>();
             _sectionViewModel = ContainerHelper.Container.Resolve<SectionViewModel>();
             _groupViewModel = ContainerHelper.Container.Resolve<GroupViewModel>();
-            _studenViewModel = ContainerHelper.Container.Resolve<StudentViewModel>();
+            _studentViewModel = ContainerHelper.Container.Resolve<StudentViewModel>();
             _reportViewModel = ContainerHelper.Container.Resolve<ReportViewModel>();
             _smsViewModel = ContainerHelper.Container.Resolve<SmsViewModel>();
+            _addEditStudentViewModel = ContainerHelper.Container.Resolve<AddEditStudentViewModel>();
 
-            _currentViewModel = _attendanceViewModel;
+            //_currentViewModel = _loginViewModel;
+            //_menu = null;
+
+            _currentViewModel = _studentViewModel;
+            _menu = _menuViewModel;
 
             _loginViewModel.LoginRequested += NavToMenu;
             _menuViewModel.NavToAttendanceRequested += NavToAttendance;
@@ -69,6 +77,11 @@ namespace SJBCS.GUI
             _menuViewModel.NavToSectionRequested += NavToSection;
             _menuViewModel.NavToGroupRequested += NavToGroup;
             _menuViewModel.NavToReportRequested += NavToReport;
+
+            _studentViewModel.AddStudentRequested += NavToAddStudent;
+            _studentViewModel.EditStudentRequested += NavToEditStudent;
+
+            _addEditStudentViewModel.Done += NavToStudent;
         }
 
         private void NavToReport()
@@ -88,7 +101,8 @@ namespace SJBCS.GUI
 
         private void NavToStudent()
         {
-            CurrentViewModel = _studenViewModel;
+            _studentViewModel.LoadStudents();
+            CurrentViewModel = _studentViewModel;
         }
 
         private void NavToSms()
@@ -98,18 +112,36 @@ namespace SJBCS.GUI
 
         private void NavToAttendance()
         {
+            _attendanceViewModel.SwitchOn();
             CurrentViewModel = _attendanceViewModel;
         }
 
+        private void NavToAddStudent(Data.Student selectedStudent)
+        {
+            _addEditStudentViewModel.EditMode = false;
+            _addEditStudentViewModel.SetStudent(selectedStudent);
+            _attendanceViewModel.SwitchOff();
+            CurrentViewModel = _addEditStudentViewModel;
+        }
+
+        private void NavToEditStudent(Data.Student selectedStudent)
+        {
+            _addEditStudentViewModel.EditMode = true;
+            _addEditStudentViewModel.SetStudent(selectedStudent);
+            _attendanceViewModel.SwitchOff();
+            CurrentViewModel = _addEditStudentViewModel;
+        }
         private void NavToMenu(User user)
         {
             if (user.Type.ToLower().Equals("admin"))
             {
-                //CurrentViewModel = _adminHomeViewModel;
+                Menu = _menuViewModel;
+                CurrentViewModel = _studentViewModel;
             }
             else if (user.Type.ToLower().Equals("user"))
             {
-                //CurrentViewModel = _userHomeViewModel;
+                CurrentViewModel = _attendanceViewModel;
+                Menu = null;
             }
             else
             {

@@ -4,30 +4,31 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="449d60c9c65b4bf2b111c775bcdbb51c" Name="Diagram1">
-        <EntityTypeShape EntityType="AmsEntities.Attendance" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Biometric" Width="1.5" PointX="8.25" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Contact" Width="1.5" PointX="7.5" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.DistributionList" Width="1.5" PointX="8.25" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Level" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Organization" Width="1.5" PointX="8.25" PointY="15.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.RelBiometric" Width="1.5" PointX="10.5" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.RelDistributionList" Width="1.5" PointX="10.5" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.RelOrganization" Width="1.5" PointX="10.5" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Section" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.Student" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AmsEntities.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="AmsEntities.FK_Attendance_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelBiometric_Biometric" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_Contact_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelDistributionList_DistributionList" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_Section_Level" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_Student_Level" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelOrganization_Organization" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelBiometric_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelDistributionList_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_RelOrganization_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="AmsEntities.FK_Student_Section" ManuallyRouted="false" />
+      <Diagram DiagramId="8968817efc324079962bab6b38341179" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Attendance" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Biometric" Width="1.5" PointX="8.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Calendar" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Contact" Width="1.5" PointX="7.5" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.DistributionList" Width="1.5" PointX="8.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Level" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Organization" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.RelBiometric" Width="1.5" PointX="10.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.RelDistributionList" Width="1.5" PointX="10.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.RelOrganization" Width="1.5" PointX="10.5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Section" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Student" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Attendance_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelBiometric_Biometric" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Contact_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelDistributionList_DistributionList" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Section_Level" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Student_Level" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelOrganization_Organization" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelBiometric_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelDistributionList_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RelOrganization_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Student_Section" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

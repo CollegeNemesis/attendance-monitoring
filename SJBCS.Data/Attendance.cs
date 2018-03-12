@@ -15,13 +15,16 @@ namespace SJBCS.Data
     public partial class Attendance
     {
         public System.Guid AttendanceID { get; set; }
-        public System.DateTime TimeIn { get; set; }
-        public Nullable<System.DateTime> TimeOut { get; set; }
         public System.Guid StudentID { get; set; }
-        public string TimeInID { get; set; }
-        public string TimeOutID { get; set; }
-        public Nullable<bool> TimeInNotified { get; set; }
-        public Nullable<bool> TimeOutNotified { get; set; }
+        public System.DateTime TimeIn { get; set; }
+        public string TimeInSMSID { get; set; }
+        public string TimeInSMSStatus { get; set; }
+        public Nullable<System.DateTime> TimeOut { get; set; }
+        public string TimeOutSMSID { get; set; }
+        public string TimeOutSMSStatus { get; set; }
+        public Nullable<bool> IsLate { get; set; }
+        public Nullable<bool> IsOverstay { get; set; }
+        public Nullable<bool> IsEarlyOut { get; set; }
     
         public virtual Student Student { get; set; }
     }

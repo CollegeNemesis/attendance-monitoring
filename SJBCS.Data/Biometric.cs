@@ -22,6 +22,7 @@ namespace SJBCS.Data
     
         public System.Guid FingerID { get; set; }
         public byte[] FingerPrintTemplate { get; set; }
+        public string FingerName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RelBiometric> RelBiometrics { get; set; }

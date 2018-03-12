@@ -21,14 +21,14 @@ namespace SJBCS.GUI.Home
         public LoginViewModel(IUsersRepository repo)
         {
             _repo = repo;
-            LoginCommand = new RelayCommand<IWrappedParameter<string>>(password => { Login(Username, (IWrappedParameter<string>)password); });
+            LoginCommand = new RelayCommand<IWrappedParameter<string>>(password => { Login(Username, password); });
         }
         public RelayCommand<IWrappedParameter<string>> LoginCommand { get; private set; }
         public event Action<User> LoginRequested = delegate { };
 
-        private async void Login(string username, IWrappedParameter<string> password)
+        private void Login(string username, IWrappedParameter<string> password)
         {
-            User user = await _repo.GetUserAsync(_username);
+            User user =  _repo.GetUser(_username);
             if (user != null)
             {
                 if (user.Password.Equals(password.Value))
@@ -41,7 +41,6 @@ namespace SJBCS.GUI.Home
                     {
                         MessageDialog.isDialogOpen = true;
                         MessageDialog.OpenDialog(MessageType.Error, "Invalid password.");
-
                     }
                 }
             }

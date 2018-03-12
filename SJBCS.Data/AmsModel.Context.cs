@@ -27,6 +27,7 @@ namespace SJBCS.Data
     
         public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<Biometric> Biometrics { get; set; }
+        public virtual DbSet<Calendar> Calendars { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<DistributionList> DistributionLists { get; set; }
         public virtual DbSet<Level> Levels { get; set; }

@@ -7,10 +7,11 @@ namespace SJBCS.Services.Repository
 {
     public interface IStudentsRepository
     {
-        Task<List<Student>> GetStudentsAsync();
-        Task<Student> GetStudentAsync(string studentId);
-        Task<Student> AddStudentAsync(Student user);
-        Task<Student> UpdateStudentAsync(Student user);
-        Task DeleteStudentAsync(string studentId);
+        List<Student> GetStudents();
+        Student GetStudent(Guid id);
+        Student GetStudent(string id);
+        Student AddStudent(Student Student);
+        Student UpdateStudent(Student Student);
+        void DeleteStudent(Guid id);
     }
 }

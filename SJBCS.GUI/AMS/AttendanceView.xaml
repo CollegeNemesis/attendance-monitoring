@@ -3,10 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
@@ -22,256 +26,149 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="FormatListBulleted"
-                                                 Height="25"
-                                                 Width="25"
+                                                 Height="20"
+                                                 Width="20"
                                                  Margin="5 0 0 0"
                                                  VerticalAlignment="Center" />
                         <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   FontSize="12"
                                    Margin="5"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
                                    Text="Notifications" />
                     </StackPanel>
-                    <ListBox IsHitTestVisible="False">
-                        <ListBoxItem BorderBrush="#e9ebee"
-                                     BorderThickness="0 .5 0 .5">
-                            <StackPanel Orientation="Horizontal">
-                                <Image VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Height="50"
-                                       Width="50"
-                                       Stretch="UniformToFill"
-                                       Source="/SJBCS.GUI;component/Image/default-user-image.png" />
-                                <StackPanel>
-                                    <TextBlock FontFamily="Segoe UI"
-                                               FontWeight="SemiBold"
-                                               FontSize="12"
-                                               Margin="5"
-                                               VerticalAlignment="Center"
-                                               TextAlignment="Left"
-                                               TextWrapping="Wrap"
-                                               MaxWidth="250">
-                                <Run Text="John Kenneth" />
-                                <Run Text="Arrojo" />
-                                <Run Text="logged in."
-                                        FontFamily="Segoe UI"
-                                        FontWeight="Regular"
-                                        FontSize="12" />
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Login"
-                                                                 VerticalAlignment="Center"
-                                                                 Foreground="Green" />
+                    <ListBox x:Name="DemoItemsListBox"
+                             Margin="0 16 0 16"
+                             SelectedIndex="0"
+                             ItemsSource="{Binding AttendanceLogs}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="domain:DemoItem">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Height="50"
+                                           Width="50"
+                                           Stretch="UniformToFill"
+                                           Source="/SJBCS.GUI;component/Image/default-user-image.png" />
+                                    <StackPanel>
                                         <TextBlock FontFamily="Segoe UI"
-                                                   FontWeight="Regular"
+                                                   FontWeight="SemiBold"
                                                    FontSize="12"
-                                                   Foreground="LightGray"
                                                    Margin="5"
                                                    VerticalAlignment="Center"
-                                                   TextAlignment="Left">
-                                <Run Text="2/27/2018 4:10 AM" />
+                                                   TextAlignment="Left"
+                                                   TextWrapping="Wrap"
+                                                   MaxWidth="250">
+                                <Run Text="{Binding FirstName}" />
+                                <Run Text="{Binding LastName}" />
+                                <Run Text="{Binding Action}"
+                                            FontFamily="Segoe UI"
+                                            FontWeight="Regular"
+                                            FontSize="12" />
                                         </TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="{Binding Icon}"
+                                                                     VerticalAlignment="Center"
+                                                                     Foreground="{Binding Status}" />
+                                            <TextBlock FontFamily="Segoe UI"
+                                                       FontWeight="Regular"
+                                                       FontSize="12"
+                                                       Foreground="LightGray"
+                                                       Margin="5"
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Left">
+                                <Run Text="{Binding Timestamp}" />
+                                            </TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem BorderBrush="#e9ebee"
-                                     BorderThickness="0 .5 0 .5">
-                            <StackPanel Orientation="Horizontal">
-                                <Image VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Height="50"
-                                       Width="50"
-                                       Stretch="UniformToFill"
-                                       Source="/SJBCS.GUI;component/Image/default-user-image.png" />
-                                <StackPanel>
-                                    <TextBlock FontFamily="Segoe UI"
-                                               FontWeight="SemiBold"
-                                               FontSize="12"
-                                               Margin="5"
-                                               VerticalAlignment="Center"
-                                               TextAlignment="Left"
-                                               TextWrapping="Wrap"
-                                               MaxWidth="250">
-                                <Run Text="John Kenneth" />
-                                <Run Text="Arrojo" />
-                                <Run Text="logged in."
-                                        FontFamily="Segoe UI"
-                                        FontWeight="Regular"
-                                        FontSize="12" />
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Login"
-                                                                 VerticalAlignment="Center"
-                                                                 Foreground="Green" />
-                                        <TextBlock FontFamily="Segoe UI"
-                                                   FontWeight="Regular"
-                                                   FontSize="12"
-                                                   Foreground="LightGray"
-                                                   Margin="5"
-                                                   VerticalAlignment="Center"
-                                                   TextAlignment="Left">
-                                <Run Text="2/27/2018 4:10 AM" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </ListBoxItem>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
             </Grid>
         </materialDesign:ColorZone>
-        <materialDesign:ColorZone Grid.Column="1"
-                                  Background="White"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  BorderBrush="#B5B5B5"
-                                  BorderThickness=".5 0 .5 0"
-                                  Margin="5 0 0 0"
-                                  MaxWidth="500">
-            <Grid>
-                <StackPanel>
-                    <materialDesign:ColorZone Mode="PrimaryMid"
-                                              HorizontalAlignment="Stretch">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="InformationOutline"   
-                                                         Height="25"
-                                                         Width="25"
-                                                         Margin="5 0 0 0"
-                                                         VerticalAlignment="Center" />
-                                <TextBlock FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="16"
-                                           Margin="5"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Left"
-                                           Text="Instruction" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0 10 0 10">
-                                <TextBlock FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="14"
-                                           Margin="5"
-                                           VerticalAlignment="Center"
-                                           TextAlignment="Left">
-                                <Run Text="Gently press your finger on the sensor" />
-                                </TextBlock>
-                                <materialDesign:PackIcon Kind="Fingerprint"
-                                                         Height="25"
-                                                         Width="25"
-                                                         Margin="0"
-                                                         VerticalAlignment="Center" />
-                            </StackPanel>
-                        </StackPanel>
-                    </materialDesign:ColorZone>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="AccountBoxOutline"
-                                                 Height="25"
-                                                 Width="25"
-                                                 Margin="5 0 0 0"
-                                                 VerticalAlignment="Center" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Left"
-                                   Text="Student Information" />
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Center">
-
-                        <Image VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Height="150"
-                               Width="150"
-                               Stretch="UniformToFill"
-                               Source="/SJBCS.GUI;component/Image/default-user-image.png" />
-                        <StackPanel>
-                            <TextBlock FontFamily="Segoe UI"
+        <materialDesign:Card></materialDesign:Card>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <materialDesign:Chip Margin="5 5 0 0"
+                                 Content="{Binding ScannerStatus, UpdateSourceTrigger=PropertyChanged}"
+                                 Grid.Row="0">
+                <materialDesign:Chip.Icon>
+                    <materialDesign:PackIcon Kind="{Binding Icon}"
+                                             Height="40"
+                                             Width="40"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Foreground="{Binding Status}"
+                                             Background="White" />
+                </materialDesign:Chip.Icon>
+            </materialDesign:Chip>
+            <materialDesign:Chip Margin="5 5 0 0"
+                                 Content="{Binding Remarks}"
+                                 Grid.Row="1">
+                <materialDesign:Chip.Icon>
+                    <materialDesign:PackIcon Kind="Information"
+                                             Height="40"
+                                             Width="40"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Foreground="Blue"
+                                             Background="White" />
+                </materialDesign:Chip.Icon>
+            </materialDesign:Chip>
+            <Grid Grid.Row="2">
+                <materialDesign:Card Margin="10"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Top">
+                    <Grid Width="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="160" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                                  Mode="PrimaryLight">
+                            <Ellipse Width="128"
+                                     Height="128"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center">
+                                <Ellipse.Fill>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="{Binding Student.ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </materialDesign:ColorZone>
+                        <StackPanel Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <TextBlock TextAlignment="Center"
+                                       FontFamily="Segoe UI"
                                        FontWeight="Regular"
                                        FontSize="16"
-                                       Margin="5"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center">
-                                <Run Text="John Kenneth" />
-                                <Run Text="Arrojo" />
-                            </TextBlock>
-                            <TextBlock FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="14"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center">
-                                <Run Text="5210299" />
-                            </TextBlock>
-                            <TextBlock FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Margin="0 0 0 5">
-                                <Run Text="Grade 1" />
-                                <Run Text="Diamond" />
+                                       MaxWidth="200"
+                                       TextWrapping="Wrap"
+                                       Margin="10">
+                                <Run Text="{Binding Student.FirstName}" />
+                                <Run Text="{Binding Student.LastName}" />
+                                <LineBreak />
+                                <Run Text="{Binding Student.StudentID}"
+                                     FontSize="14" />
+                                <LineBreak />
+                                <Run Text="{Binding Student.Level.GradeLevel}"
+                                     FontSize="12" />
+                                <Run Text="{Binding Student.Section.SectionName}"
+                                     FontSize="12" />
                             </TextBlock>
                         </StackPanel>
-                    </StackPanel>
-                    <materialDesign:ColorZone Mode="PrimaryLight"
-                                              HorizontalAlignment="Stretch"
-                                              Height="10" />
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="LanConnect"
-                                                 Height="25"
-                                                 Width="25"
-                                                 Margin="5 0 0 0"
-                                                 VerticalAlignment="Center" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Left"
-                                   Text="Scanner Status" />
-                    </StackPanel>
-                    <TextBlock FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               FontSize="14"
-                               Margin="5"
-                               VerticalAlignment="Center"
-                               TextAlignment="Left">
-                                <Run Text="Scanner is disconnected."
-                                     Foreground="Red" />
-                    </TextBlock>
-                    <materialDesign:ColorZone Mode="PrimaryLight"
-                                              HorizontalAlignment="Stretch"
-                                              Height="10" />
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="AlertCircle"
-                                                 Height="25"
-                                                 Width="25"
-                                                 Margin="5 0 0 0"
-                                                 VerticalAlignment="Center" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Left"
-                                   Text="Remarks" />
-                    </StackPanel>
-                    <TextBlock FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               FontSize="14"
-                               Margin="5"
-                               VerticalAlignment="Center"
-                               TextAlignment="Left">
-                                <Run Text="Finger not recognized."
-                                     Foreground="Red" />
-                    </TextBlock>
-                </StackPanel>
+                    </Grid>
+                </materialDesign:Card>
             </Grid>
-        </materialDesign:ColorZone>
+
+        </Grid>
     </Grid>
 </UserControl>

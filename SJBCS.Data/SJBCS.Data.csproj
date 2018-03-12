@@ -71,6 +71,9 @@
     <Compile Include="Biometric.cs">
       <DependentUpon>AmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Calendar.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Contact.cs">
       <DependentUpon>AmsModel.tt</DependentUpon>
     </Compile>

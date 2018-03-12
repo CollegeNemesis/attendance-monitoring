@@ -86,6 +86,7 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -127,6 +128,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AMS\AttendanceLog.cs" />
+    <Compile Include="Converters\NegatableBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringEmptyConverter.cs" />
+    <Compile Include="Student\AddContactView.xaml.cs">
+      <DependentUpon>AddContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\AddContactViewModel.cs" />
+    <Compile Include="Student\AddGroupView.xaml.cs">
+      <DependentUpon>AddGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\AddGroupViewModel.cs" />
+    <Compile Include="Dialogs\DialogBoxView.xaml.cs">
+      <DependentUpon>DialogBoxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogBoxViewModel.cs" />
     <Compile Include="Home\ClockView.xaml.cs">
       <DependentUpon>ClockView.xaml</DependentUpon>
     </Compile>
@@ -143,6 +159,15 @@
       <DependentUpon>SmsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="SMS\SmsViewModel.cs" />
+    <Compile Include="Student\AddEditStudentView.xaml.cs">
+      <DependentUpon>AddEditStudentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\AddEditStudentViewModel.cs" />
+    <Compile Include="Student\EditableStudent.cs" />
+    <Compile Include="Student\EnrollBiometricsView.xaml.cs">
+      <DependentUpon>EnrollBiometricsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\EnrollBiometricsViewModel.cs" />
     <Compile Include="Student\GroupView.xaml.cs">
       <DependentUpon>GroupView.xaml</DependentUpon>
     </Compile>
@@ -151,11 +176,39 @@
       <DependentUpon>SectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\SectionViewModel.cs" />
+    <Compile Include="Student\StudentDetailsView.xaml.cs">
+      <DependentUpon>StudentDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentDetailsViewModel.cs" />
+    <Compile Include="Student\StudentListView.xaml.cs">
+      <DependentUpon>StudentListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentListViewModel.cs" />
     <Compile Include="Student\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\StudentViewModel.cs" />
+    <Compile Include="TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TestWindowViewModel.cs" />
+    <Compile Include="Validation\PropertyValidationAttribute.cs" />
+    <Compile Include="Validation\UniqueIdValidation.cs" />
+    <Compile Include="Validation\UniqueStudentIdValidationRule.cs" />
+    <Compile Include="Validation\ValueComparison.cs" />
     <Page Include="AMS\AttendanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\AddContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\AddGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,6 +263,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Student\AddEditStudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\EnrollBiometricsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Student\GroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,7 +279,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Student\StudentDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Student\StudentListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Student\StudentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,6 +371,29 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\note-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\connected-icon.png" />
+    <Resource Include="Image\disconnected-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\ok-icon.png" />
+    <Resource Include="Image\x-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\attendance-logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\sjbcs-logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\finger-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\check-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Style\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

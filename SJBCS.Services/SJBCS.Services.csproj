@@ -50,8 +50,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AttendancesRepository.cs" />
+    <Compile Include="Repository\BiometricsRepository.cs" />
+    <Compile Include="Repository\ContactsRepository.cs" />
+    <Compile Include="Repository\DistributionListsRepository.cs" />
+    <Compile Include="Repository\IAttendancesRepository.cs" />
+    <Compile Include="Repository\IContactsRepository.cs" />
+    <Compile Include="Repository\IDistributionListsRepository.cs" />
+    <Compile Include="Repository\ILevelsRepository.cs" />
+    <Compile Include="Repository\IRelDistributionListsRepository.cs" />
+    <Compile Include="Repository\LevelsRepository.cs" />
+    <Compile Include="Repository\OrganizationsRepository.cs" />
+    <Compile Include="Repository\IBiometricsRepository.cs" />
+    <Compile Include="Repository\IOrganizationsRepository.cs" />
+    <Compile Include="Repository\IRelBiometricsRepository.cs" />
+    <Compile Include="Repository\IRelOrganizationsRepository.cs" />
+    <Compile Include="Repository\ISectionsRepository.cs" />
     <Compile Include="Repository\IStudentsRepository.cs" />
     <Compile Include="Repository\IUsersRepository.cs" />
+    <Compile Include="Repository\RelBiometricsRepository.cs" />
+    <Compile Include="Repository\RelDistributionListsRepository.cs" />
+    <Compile Include="Repository\RelOrganizationsRepository.cs" />
+    <Compile Include="Repository\SectionsRepository.cs" />
     <Compile Include="Repository\StudentsRepository.cs" />
     <Compile Include="Repository\UsersRepository.cs" />
   </ItemGroup>

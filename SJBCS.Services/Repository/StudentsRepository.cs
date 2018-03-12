@@ -12,42 +12,47 @@ namespace SJBCS.Services.Repository
     {
         AmsDbContext _context = new AmsDbContext();
 
-        public async Task<Student> AddStudentAsync(Student Student)
+        public Student AddStudent(Student Student)
         {
             _context.Students.Add(Student);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return Student;
         }
 
-        public async Task DeleteStudentAsync(string studentId)
+        public void DeleteStudent(Guid id)
         {
-            var Student = _context.Students.FirstOrDefault(s => s.StudentID == studentId);
+            var Student = _context.Students.FirstOrDefault(r => r.StudentGuid == id);
             if (Student != null)
             {
                 _context.Students.Remove(Student);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public Task<Student> GetStudentAsync(string studentId)
+        public Student GetStudent(Guid id)
         {
-            return _context.Students.FirstOrDefaultAsync(s => s.StudentID == studentId);
+            return _context.Students.FirstOrDefault(r => r.StudentGuid == id);
+        }
+        public Student GetStudent(string id)
+        {
+            return _context.Students.FirstOrDefault(r => r.StudentID == id);
         }
 
-        public Task<List<Student>> GetStudentsAsync()
+        public List<Student> GetStudents()
         {
-            return _context.Students.ToListAsync();
+            return _context.Students.ToList();
         }
 
-        public async Task<Student> UpdateStudentAsync(Student student)
+        public Student UpdateStudent(Student source)
         {
-            if (!_context.Students.Local.Any(s => s.StudentID == student.StudentID))
+            if (!_context.Students.Local.Any(r => r.StudentGuid == source.StudentGuid))
             {
-                _context.Students.Attach(student);
+                _context.Students.Attach(source);
             }
-            _context.Entry(student).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return student;
+            _context.Entry(source).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return source;
         }
     }
 }

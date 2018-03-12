@@ -12,7 +12,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock FontFamily="Segoe UI"
                        FontWeight="Regular"
-                       FontSize="20"
+                       FontSize="30"
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="{Binding DigitalClock}"/>
