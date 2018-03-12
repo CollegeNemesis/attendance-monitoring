@@ -9,14 +9,3 @@ C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.dll
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.pdb
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.csprojResolveAssemblyReference.cache
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.dll.config
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.dll
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\SJBCS.Data.pdb
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.dll
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.xml
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.csprojResolveAssemblyReference.cache
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.csproj.CoreCompileInputs.cache
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.dll
-C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Data\obj\Debug\SJBCS.Data.pdb

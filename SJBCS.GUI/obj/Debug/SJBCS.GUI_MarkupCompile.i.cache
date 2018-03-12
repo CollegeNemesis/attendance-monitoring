@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.GUI\obj\Debug\
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.GUI\obj\Debug\
 SJBCS.GUI
 none
 false
 DEBUG;TRACE
-C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.GUI\App.xaml
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.GUI\App.xaml
 11600087601
 
-331169663021
-381681309786
+331665839561
+38-1487014345
 AMS\AttendanceView.xaml;Dialogs\MessageDialogView.xaml;Home\ClockView.xaml;Home\LoginView.xaml;Home\MenuView.xaml;MainWindow.xaml;Report\ReportView.xaml;SMS\SmsView.xaml;Student\GroupView.xaml;Student\SectionView.xaml;Student\StudentView.xaml;
 
 False
