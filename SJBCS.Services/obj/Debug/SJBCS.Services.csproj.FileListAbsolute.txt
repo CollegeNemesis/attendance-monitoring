@@ -12,3 +12,17 @@ C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Services\bin\Debug\E
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.dll
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.pdb
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Services.dll.config
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Services.dll.config
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Services.dll
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Services.pdb
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\EntityFramework.dll
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Data.dll
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Data.pdb
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\SJBCS.Data.dll.config
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\EntityFramework.xml
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.csprojResolveAssemblyReference.cache
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.csproj.CoreCompileInputs.cache
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.dll
+C:\Users\lapangan\Documents\99_Others\SJBCS\master\attendance-monitoring\SJBCS.Services\obj\Debug\SJBCS.Services.pdb
