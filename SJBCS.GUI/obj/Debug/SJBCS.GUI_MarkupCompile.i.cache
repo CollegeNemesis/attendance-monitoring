@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\arroj\source\repos\AMS\attendance-monitoring\SJBCS.GUI\App.xaml
-11600087601
+19-51594492
 
-331169663021
-381681309786
-AMS\AttendanceView.xaml;Dialogs\MessageDialogView.xaml;Home\ClockView.xaml;Home\LoginView.xaml;Home\MenuView.xaml;MainWindow.xaml;Report\ReportView.xaml;SMS\SmsView.xaml;Student\GroupView.xaml;Student\SectionView.xaml;Student\StudentView.xaml;
+57-1683843075
+39-422924013
+AMS\AttendanceView.xaml;Student\AddContactView.xaml;Student\AddGroupView.xaml;Dialogs\DialogBoxView.xaml;Dialogs\MessageDialogView.xaml;Home\ClockView.xaml;Home\LoginView.xaml;Home\MenuView.xaml;MainWindow.xaml;Report\ReportView.xaml;SMS\SmsView.xaml;Student\AddEditStudentView.xaml;Student\EnrollBiometricsView.xaml;Student\GroupView.xaml;Student\SectionView.xaml;Student\StudentDetailsView.xaml;Student\StudentListView.xaml;Student\StudentView.xaml;TestWindow.xaml;
 
 False
 
