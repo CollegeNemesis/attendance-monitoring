@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SMSRESTService.Logging
+namespace SJBCS.SMS.Logging
 {
     public class Log
     {

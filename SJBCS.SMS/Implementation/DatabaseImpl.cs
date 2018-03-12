@@ -1,4 +1,4 @@
-﻿using SMSRESTService.Logging;
+﻿using SJBCS.SMS.Logging;
 using System;
 using System.Data.SqlClient;
 
