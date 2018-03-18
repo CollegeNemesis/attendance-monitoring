@@ -3,96 +3,96 @@
     public class FingerScanner : BindableBase, DPFP.Capture.EventHandler
     {
 
-            protected DPFP.Capture.Capture Capturer;
+        protected DPFP.Capture.Capture Capturer;
 
-            public FingerScanner()
+        public FingerScanner()
+        {
+            try
+            {
+                Capturer = new DPFP.Capture.Capture();              // Create a capture operation.
+
+                if (null != Capturer)
+                    Capturer.EventHandler = this;                   // Subscribe for capturing events.
+            }
+            catch
+            {
+            }
+        }
+
+        protected virtual void Process(DPFP.Sample Sample)
+        {
+
+        }
+
+        protected void Start()
+        {
+            if (null != Capturer)
             {
                 try
                 {
-                    Capturer = new DPFP.Capture.Capture();              // Create a capture operation.
-
-                    if (null != Capturer)
-                        Capturer.EventHandler = this;                   // Subscribe for capturing events.
+                    Capturer.StartCapture();
                 }
                 catch
                 {
                 }
             }
+        }
 
-            protected virtual void Process(DPFP.Sample Sample)
+        protected void Stop()
+        {
+            if (null != Capturer)
             {
-
-            }
-
-            protected void Start()
-            {
-                if (null != Capturer)
+                try
                 {
-                    try
-                    {
-                        Capturer.StartCapture();
-                    }
-                    catch
-                    {
-                    }
+                    Capturer.StopCapture();
                 }
-            }
-
-            protected void Stop()
-            {
-                if (null != Capturer)
-                {
-                    try
-                    {
-                        Capturer.StopCapture();
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-
-            protected DPFP.FeatureSet ExtractFeatures(DPFP.Sample Sample, DPFP.Processing.DataPurpose Purpose)
-            {
-                DPFP.Processing.FeatureExtraction Extractor = new DPFP.Processing.FeatureExtraction();  // Create a feature extractor
-                DPFP.Capture.CaptureFeedback feedback = DPFP.Capture.CaptureFeedback.None;
-                DPFP.FeatureSet features = new DPFP.FeatureSet();
-                Extractor.CreateFeatureSet(Sample, Purpose, ref feedback, ref features);            // TODO: return features as a result?
-                if (feedback == DPFP.Capture.CaptureFeedback.Good)
-                    return features;
-                else
-                    return null;
-            }
-
-            public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
-            {
-                if (CaptureFeedback == DPFP.Capture.CaptureFeedback.Good)
-                {
-                }
-                else
+                catch
                 {
                 }
             }
+        }
 
-            public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
+        protected DPFP.FeatureSet ExtractFeatures(DPFP.Sample Sample, DPFP.Processing.DataPurpose Purpose)
+        {
+            DPFP.Processing.FeatureExtraction Extractor = new DPFP.Processing.FeatureExtraction();  // Create a feature extractor
+            DPFP.Capture.CaptureFeedback feedback = DPFP.Capture.CaptureFeedback.None;
+            DPFP.FeatureSet features = new DPFP.FeatureSet();
+            Extractor.CreateFeatureSet(Sample, Purpose, ref feedback, ref features);            // TODO: return features as a result?
+            if (feedback == DPFP.Capture.CaptureFeedback.Good)
+                return features;
+            else
+                return null;
+        }
+
+        public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
+        {
+            if (CaptureFeedback == DPFP.Capture.CaptureFeedback.Good)
             {
-                Process(Sample);
             }
-
-            public void OnFingerGone(object Capture, string ReaderSerialNumber)
-            {
-            }
-
-            public void OnFingerTouch(object Capture, string ReaderSerialNumber)
-            {
-            }
-
-            public virtual void OnReaderConnect(object Capture, string ReaderSerialNumber)
-            {
-            }
-
-            public virtual void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
+            else
             {
             }
         }
+
+        public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
+        {
+            Process(Sample);
+        }
+
+        public void OnFingerGone(object Capture, string ReaderSerialNumber)
+        {
+        }
+
+        public void OnFingerTouch(object Capture, string ReaderSerialNumber)
+        {
+        }
+
+        public virtual void OnReaderConnect(object Capture, string ReaderSerialNumber)
+        {
+        }
+
+        public virtual void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
+        {
+        }
+    }
 }

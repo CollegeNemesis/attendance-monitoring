@@ -63,7 +63,7 @@
                 <Trigger Property="IsSelected"
                          Value="True">
                     <Setter Property="Background"
-                            Value="White" />
+                            Value="Transparent" />
                     <Setter Property="Foreground"
                             Value="Black" />
                     <Setter Property="Foreground"
@@ -89,23 +89,27 @@
                                    FontFamily="Segoe UI" />
                     </materialDesign:ColorZone>
                     <StackPanel Orientation="Horizontal">
-
-                        <Image Source="{Binding ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}"
-                               Stretch="UniformToFill"
+                        <Image Stretch="UniformToFill"
                                Height="50"
                                Width="50"
-                               Margin="10" />
+                               Margin="10">
+                            <Image.Source>
+                                <Binding Path="ImageData"
+                                         Converter="{StaticResource StringEmptyConverter}"
+                                         ConverterParameter="/SJBCS.GUI;component/Image/default-user-image.png"
+                                         FallbackValue="/SJBCS.GUI;component/Image/default-user-image.png" />
+                            </Image.Source>
+                        </Image>
                         <StackPanel>
-                            <TextBlock HorizontalAlignment="Center">
+                            <TextBlock>
                     <Run Text="{Binding FirstName}" />
                     <Run Text="{Binding LastName}" />
                             </TextBlock>
-                            <TextBlock HorizontalAlignment="Center"
-                                       Margin="0 0 0 5">
+                            <TextBlock Margin="0 0 0 5">
                     <Run Text="{Binding StudentID}" />
                     <LineBreak />
                     <Run Text="{Binding Level.GradeLevel}" />
-                    <Run Text="-" />
+                    <LineBreak />
                     <Run Text="{Binding Section.SectionName}" />
                             </TextBlock>
                         </StackPanel>
@@ -114,7 +118,8 @@
                                 FontSize="10"
                                 FontWeight="Regular"
                                 FontFamily="Segoe UI"
-                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.AddStudentCommand}">
+                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.EditStudentCommand}"
+                                CommandParameter="{Binding}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="AccountPlus" />
                                 <TextBlock Margin="8 0 0 0"
@@ -126,7 +131,7 @@
                                 FontSize="10"
                                 FontWeight="Regular"
                                 FontFamily="Segoe UI"
-                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.AddStudentCommand}">
+                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.DeleteStudentCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Delete" />
                                 <TextBlock Margin="8 0 0 0"
@@ -225,7 +230,7 @@
         <Grid Grid.Row="2">
             <DataGrid x:Name="studentDataGrid"
                       AutoGenerateColumns="False"
-                      Background="Transparent"
+                      Background="White"
                       IsReadOnly="True"
                       ItemsSource="{Binding}"
                       SelectionMode="Extended"

@@ -30,6 +30,7 @@ namespace SJBCS.GUI.Student
 
         public void LoadStudents()
         {
+            Students = null;
             Students = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
         }
 

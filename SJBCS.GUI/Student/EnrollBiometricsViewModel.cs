@@ -8,6 +8,7 @@ using SJBCS.Services.Repository;
 using System.Collections.ObjectModel;
 using static DPFP.Verification.Verification;
 using DPFP.Verification;
+using MaterialDesignThemes.Wpf;
 
 namespace SJBCS.GUI.Student
 {
@@ -70,7 +71,6 @@ namespace SJBCS.GUI.Student
             counter = 0;
 
             Start();
-            Enroller = new DPFP.Processing.Enrollment();    // Create an enrollment.
         }
 
 
@@ -79,12 +79,10 @@ namespace SJBCS.GUI.Student
             base.Process(Sample);
 
 
-            Status = "Scanning " + ++counter;
             // Process the sample and create a feature set for the enrollment purpose.
             DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
 
             // Check quality of the sample and add to enroller if it's good
-
             if (features != null)
             {
                 MemoryStream fingerprintData = null;
@@ -96,7 +94,10 @@ namespace SJBCS.GUI.Student
                     fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
                     Template = new Template(fingerprintData);
                     result = new Result();
+
+                    Verificator = new DPFP.Verification.Verification();
                     Verificator.Verify(features, Template, ref result);
+
                     if (result.Verified)
                     {
                         Verificator = new DPFP.Verification.Verification();
@@ -107,6 +108,7 @@ namespace SJBCS.GUI.Student
                 if (!IsFingerEnrolled)
                 {
                     Verificator = new DPFP.Verification.Verification();
+                    Enroller = new DPFP.Processing.Enrollment();    // Create an enrollment.
 
                     try
                     {
@@ -134,6 +136,8 @@ namespace SJBCS.GUI.Student
                     }
                 }
             }
+            Status = "Scanning " + ++counter;
+
         }
 
         private void OnTemplate(DPFP.Template template)
@@ -162,12 +166,28 @@ namespace SJBCS.GUI.Student
         public override void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
             Scanner = "Scanner connected.";
-            
+
         }
 
         public override void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
         {
             Scanner = "Scanner disconnected.";
+        }
+
+        public void SwitchOff()
+        {
+            Verificator = new DPFP.Verification.Verification();
+            Stop();
+        }
+
+        public void SwitchOn()
+        {
+            Start();
+        }
+
+        protected override void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+            SwitchOff();
         }
     }
 }

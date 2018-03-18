@@ -129,6 +129,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AMS\AttendanceLog.cs" />
+    <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Converters\IconConverter.cs" />
     <Compile Include="Converters\NegatableBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\StringEmptyConverter.cs" />
     <Compile Include="Student\AddContactView.xaml.cs">
@@ -192,10 +194,7 @@
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TestWindowViewModel.cs" />
-    <Compile Include="Validation\PropertyValidationAttribute.cs" />
-    <Compile Include="Validation\UniqueIdValidation.cs" />
-    <Compile Include="Validation\UniqueStudentIdValidationRule.cs" />
-    <Compile Include="Validation\ValueComparison.cs" />
+    <Compile Include="Validation\UniqueStudentId.cs" />
     <Page Include="AMS\AttendanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,6 +294,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ThemesOverrides.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
@@ -320,6 +323,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Themes\MaterialDesignThemes.Overrides">
+      <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -392,8 +398,6 @@
   <ItemGroup>
     <Resource Include="Image\check-icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Style\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

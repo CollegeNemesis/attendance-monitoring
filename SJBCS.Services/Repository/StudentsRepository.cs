@@ -35,11 +35,13 @@ namespace SJBCS.Services.Repository
         }
         public Student GetStudent(string id)
         {
+            _context = new AmsDbContext();
             return _context.Students.FirstOrDefault(r => r.StudentID == id);
         }
 
         public List<Student> GetStudents()
         {
+            _context = new AmsDbContext();
             return _context.Students.ToList();
         }
 
@@ -51,7 +53,6 @@ namespace SJBCS.Services.Repository
             }
             _context.Entry(source).State = EntityState.Modified;
             _context.SaveChanges();
-
             return source;
         }
     }

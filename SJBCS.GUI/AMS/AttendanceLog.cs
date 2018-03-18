@@ -16,23 +16,6 @@ namespace SJBCS.GUI.AMS
             set { _imageData = value; }
         }
 
-        private string _status;
-
-        public string Status
-        {
-            get { return _status; }
-            set { _status = value; }
-        }
-
-
-        private string _icon;
-
-        public string Icon
-        {
-            get { return _icon; }
-            set { _icon = value; }
-        }
-
         private string _firstName;
 
         public string FirstName
@@ -65,15 +48,13 @@ namespace SJBCS.GUI.AMS
             set { _timestamp = value; }
         }
 
-        public AttendanceLog(string icon, string status, string imageData, string firstName, string lastName, string action, DateTime? timestamp)
+        public AttendanceLog(string imageData, string firstName, string lastName, string action, DateTime? timestamp)
         {
             _imageData = imageData;
             _firstName = firstName;
             _lastName = lastName;
             _action = action;
             _timestamp = timestamp;
-            _icon = icon;
-            _status = status;
         }
     }
 }

@@ -46,22 +46,6 @@ namespace SJBCS.GUI.AMS
 
         #region View Property
 
-        private string _icon;
-
-        public string Icon
-        {
-            get { return _icon; }
-            set { SetProperty(ref _icon, value); }
-        }
-
-        private string _status;
-
-        public string Status
-        {
-            get { return _status; }
-            set { SetProperty(ref _status, value); }
-        }
-
 
         private Data.Student _student;
 
@@ -95,30 +79,23 @@ namespace SJBCS.GUI.AMS
             set { SetProperty(ref _remarks, value); }
         }
 
-
         #endregion
 
         public AttendanceViewModel()
         {
-
             Initialize();
-
-            Verificator = new DPFP.Verification.Verification();     // Create a fingerprint template verificator
-            Start();
+            _attendanceLogs = new ObservableCollection<AttendanceLog>();
+            Start();    //Begin capture
         }
 
         public override void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
-            ScannerStatus = "Scanner connected.";
-            Icon = "CheckCircle";
-            Status = "Green";
+            ScannerStatus = "Connected";
         }
 
         public override void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
         {
-            ScannerStatus = "Scanner disconnected.";
-            Icon = "CloseCircle";
-            Status = "Red";
+            ScannerStatus = "Disconnected";
         }
 
         protected override void Process(Sample Sample)
@@ -131,15 +108,12 @@ namespace SJBCS.GUI.AMS
             FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
 
             // Check quality of the sample and start verification if it's good
-            // TODO: move to a separate task
             if (features != null)
             {
                 MemoryStream fingerprintData = null;
                 Result result = null;
 
-                // Loop on the FPT List from DB to Compare the feature set with the DB templates
-
-                foreach (Biometric biometric in Biometrics)
+                foreach (Biometric biometric in Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates
                 {
                     fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
                     Template = new Template(fingerprintData);
@@ -151,28 +125,26 @@ namespace SJBCS.GUI.AMS
                         Verificator = new DPFP.Verification.Verification();
                         _relBiometric = _relBiometricsRepository.GetRelBiometric(biometric.FingerID);
 
-                        //Check if finger is already link to a student.
-                        if (_relBiometric != null)
+                        if (_relBiometric != null)  //Check if finger is enrolled.
                         {
                             _student = _studentsRepository.GetStudent(_relBiometric.StudentID);
                             Student = _student;
                             _attendance = _attendancesRepository.GetAttendance(_student.StudentGuid);
 
-                            //Check if student has already logged in for the day.
-                            if (_attendance != null)
+                            if (_attendance != null)    //Check if student has already logged in for the day.
                             {
-                                //Check if student already logged out for the day
-                                if (_attendance.TimeOut == null)
+                                if (_attendance.TimeOut == null)    //Check if student already logged out for the day
                                 {
-                                    //Check if Timeout is greater than 1 hour after login
                                     DateTime login = _attendance.TimeIn;
                                     DateTime logout = DateTime.Now;
                                     TimeSpan span = logout.Subtract(login);
+
                                     Console.WriteLine("Time Difference (seconds): " + span.Seconds);
                                     Console.WriteLine("Time Difference (minutes): " + span.Minutes);
                                     Console.WriteLine("Time Difference (hours): " + span.Hours);
                                     Console.WriteLine("Time Difference (days): " + span.Days);
-                                    if (span.Seconds > 30)
+
+                                    if (span.Seconds > 30) //Check if span between login and logout is greater than allowed threshold
                                     {
                                         //Update student logout
                                         _attendance.TimeOut = logout;
@@ -198,24 +170,23 @@ namespace SJBCS.GUI.AMS
                                             _attendance.IsEarlyOut = false;
                                         }
 
-                                        _attendancesRepository.UpdateAttendance(_attendance);
-                                        //Add action to attendance log
+                                        _attendancesRepository.UpdateAttendance(_attendance); //Updated attendance record
+
                                         Application.Current.Dispatcher.Invoke(delegate
                                         {
-                                            _attendanceLogs.Add(new AttendanceLog("Logout", "Red", _student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut));
+                                            _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
+
                                         });
-                                        Remarks = "User logged out.";
+                                        Remarks = "Student logged out.";
                                     }
                                     else
                                     {
-                                        //Prompt user that it is not allowed to logout 1 hour after login.
-                                        Remarks = "You're not allowed to logout 1 hour after logging in.";
+                                        Remarks = "Student is not allowed to logout 1 hour after logging in.";
                                     }
                                 }
                                 else
                                 {
-                                    //Prompt user that it is not allowed to logout twice in 1 day.
-                                    Remarks = "You're not allowed to logout twice a day";
+                                    Remarks = "Student is not allowed to logout twice a day.";
                                 }
 
                             }
@@ -226,12 +197,12 @@ namespace SJBCS.GUI.AMS
                                 _attendance.AttendanceID = Guid.NewGuid();
                                 _attendance.StudentID = _student.StudentGuid;
                                 _attendance.TimeIn = DateTime.Now;
-                                //Check if student is late
+
                                 TimeSpan timeIn = _attendance.TimeIn.TimeOfDay;
                                 TimeSpan startTime = _student.Section.StartTime;
                                 TimeSpan inSpan = startTime.Subtract(timeIn);
 
-                                if (inSpan.Minutes > 1)
+                                if (inSpan.Minutes > 1) //Check if student is late
                                 {
                                     _attendance.IsLate = true;
                                 }
@@ -239,34 +210,31 @@ namespace SJBCS.GUI.AMS
                                 {
                                     _attendance.IsLate = false;
                                 }
-                                _attendancesRepository.AddAttendance(_attendance);
+
+                                _attendancesRepository.AddAttendance(_attendance); //Add Record
+
                                 Application.Current.Dispatcher.Invoke(delegate
                                 {
-                                    _attendanceLogs.Add(new AttendanceLog("Login", "Green", _student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
+                                    _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
                                 });
-                                Remarks = "User logged in.";
+
+                                Remarks = "Student logged in.";
                             }
+
                             IsFingerEnrolled = true;
                             break;
                         }
                         else
                         {
-                            //Fingerprint not link to in Biometrics table but not linked to any students!
+                            //Fingerprint enrolled but not linked to any students!
                         }
                     }
                 }
 
                 if (!IsFingerEnrolled)
                 {
-                    Verificator = new DPFP.Verification.Verification();
-
-                    //Play an error beep sound.
-
-                    //Prompt for fingerprint not recognized.
-
-                    Student = new Data.Student();
-                    Student.ImageData = "/SJBCS.GUI;component/Image/default-user-image.png";
                     Remarks = "Fingerprint not recognized.";
+                    Initialize();
                 }
 
                 IsFingerEnrolled = false;
@@ -277,7 +245,6 @@ namespace SJBCS.GUI.AMS
 
         private void Initialize()
         {
-
             #region Models
             _student = new Data.Student();
             _biometric = new Biometric();
@@ -286,6 +253,8 @@ namespace SJBCS.GUI.AMS
             #endregion
 
             IsFingerEnrolled = false;
+            Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
+
             #region Repositories
             _studentsRepository = new StudentsRepository();
             _biometricsRepository = new BiometricsRepository();
@@ -293,22 +262,25 @@ namespace SJBCS.GUI.AMS
             _attendancesRepository = new AttendancesRepository();
             #endregion
 
-            Status = "Green";
-            _attendanceLogs = new ObservableCollection<AttendanceLog>();
             Biometrics = _biometricsRepository.GetBiometrics(); //Load all FingerPrintTemplate (fpt);
+
             if (Biometrics.Count == 0)
             {
                 Remarks = "No fingerprint template available in our records.";
             }
+
+            Student.ImageData = "/SJBCS.GUI;component/Image/default-user-image.png";
         }
 
         public void SwitchOff()
         {
+            Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
             Stop();
         }
 
         public void SwitchOn()
         {
+            Initialize();
             Start();
         }
     }

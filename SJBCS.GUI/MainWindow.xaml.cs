@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AMS.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity;
 
 namespace SJBCS.GUI
 {
@@ -23,6 +25,7 @@ namespace SJBCS.GUI
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = ContainerHelper.Container.Resolve<MainWindowViewModel>();
         }
     }
 }

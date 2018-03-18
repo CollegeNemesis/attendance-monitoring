@@ -34,9 +34,6 @@
         WindowStartupLocation="CenterScreen"
         MinHeight="768"
         MinWidth="1024">-->
-    <Window.DataContext>
-        <local:MainWindowViewModel />
-    </Window.DataContext>
     <Window.Resources>
         <DataTemplate DataType="{x:Type home:LoginViewModel}">
             <home:LoginView />

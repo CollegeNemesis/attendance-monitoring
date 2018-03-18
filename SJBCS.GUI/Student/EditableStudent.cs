@@ -1,5 +1,6 @@
 ﻿using AMS.Utilities;
 using SJBCS.Data;
+using SJBCS.GUI.Validation;
 using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref studentGuid, value); }
         }
         private string firstName;
-        [Required]
+        [Required(ErrorMessage = "First name is required.")]
         public string FirstName
         {
             get { return firstName; }
@@ -33,7 +34,7 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref middleName, value); }
         }
         private string lastName;
-        [Required]
+        [Required(ErrorMessage = "Last name is required.")]
         public string LastName
         {
             get { return lastName; }
@@ -88,6 +89,9 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref levelID, value); }
         }
         private string studentID;
+
+        //[UniqueStudentId (ErrorMessage = "Duplicate Student ID. ID already exists.")]
+        [Required(ErrorMessage = "Student ID is required.")]
         public string StudentID
         {
             get { return studentID; }
@@ -102,7 +106,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Contact> contacts;
-        [Required]
         public ObservableCollection<Contact> Contacts
         {
             get { return contacts; }
@@ -114,8 +117,8 @@ namespace SJBCS.GUI.Student
             get { return level; }
             set { SetProperty(ref level, value); }
         }
-        private ICollection<RelBiometric> relBiometrics;
-        public ICollection<RelBiometric> RelBiometrics
+        private ObservableCollection<RelBiometric> relBiometrics;
+        public ObservableCollection<RelBiometric> RelBiometrics
         {
             get { return relBiometrics; }
             set { SetProperty(ref relBiometrics, value); }

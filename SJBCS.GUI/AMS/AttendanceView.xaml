@@ -10,6 +10,16 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
+        <converters:ColorConverter x:Key="ColorConverter" />
+        <converters:IconConverter x:Key="IconConverter" />
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily"
+                    Value="Segoe UI" />
+            <Setter Property="FontWeight"
+                    Value="Regular" />
+            <Setter Property="FontSize"
+                    Value="12" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,55 +36,43 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="FormatListBulleted"
-                                                 Height="20"
-                                                 Width="20"
+                                                 Height="40"
+                                                 Width="40"
                                                  Margin="5 0 0 0"
                                                  VerticalAlignment="Center" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="SemiBold"
-                                   FontSize="12"
-                                   Margin="5"
+                        <TextBlock Margin="5"
+                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
                                    Text="Notifications" />
                     </StackPanel>
-                    <ListBox x:Name="DemoItemsListBox"
-                             Margin="0 16 0 16"
+                    <ListBox Margin="0 16 0 16"
                              SelectedIndex="0"
                              ItemsSource="{Binding AttendanceLogs}">
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="domain:DemoItem">
+                            <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Image VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            Height="50"
                                            Width="50"
                                            Stretch="UniformToFill"
-                                           Source="/SJBCS.GUI;component/Image/default-user-image.png" />
+                                           Source="{Binding ImageData}" />
                                     <StackPanel>
-                                        <TextBlock FontFamily="Segoe UI"
-                                                   FontWeight="SemiBold"
-                                                   FontSize="12"
-                                                   Margin="5"
+                                        <TextBlock Margin="5"
                                                    VerticalAlignment="Center"
                                                    TextAlignment="Left"
                                                    TextWrapping="Wrap"
                                                    MaxWidth="250">
                                 <Run Text="{Binding FirstName}" />
                                 <Run Text="{Binding LastName}" />
-                                <Run Text="{Binding Action}"
-                                            FontFamily="Segoe UI"
-                                            FontWeight="Regular"
-                                            FontSize="12" />
+                                <Run Text="{Binding Action}" />
                                         </TextBlock>
                                         <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="{Binding Icon}"
+                                            <materialDesign:PackIcon Kind="{Binding Action,Converter={StaticResource IconConverter}}"
                                                                      VerticalAlignment="Center"
-                                                                     Foreground="{Binding Status}" />
-                                            <TextBlock FontFamily="Segoe UI"
-                                                       FontWeight="Regular"
-                                                       FontSize="12"
-                                                       Foreground="LightGray"
+                                                                     Foreground="{Binding Action,Converter={StaticResource ColorConverter}}" />
+                                            <TextBlock Foreground="LightGray"
                                                        Margin="5"
                                                        VerticalAlignment="Center"
                                                        TextAlignment="Left">
@@ -90,69 +88,83 @@
             </Grid>
         </materialDesign:ColorZone>
         <materialDesign:Card></materialDesign:Card>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <materialDesign:Chip Margin="5 5 0 0"
-                                 Content="{Binding ScannerStatus, UpdateSourceTrigger=PropertyChanged}"
-                                 Grid.Row="0">
-                <materialDesign:Chip.Icon>
-                    <materialDesign:PackIcon Kind="{Binding Icon}"
-                                             Height="40"
-                                             Width="40"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Foreground="{Binding Status}"
-                                             Background="White" />
-                </materialDesign:Chip.Icon>
-            </materialDesign:Chip>
-            <materialDesign:Chip Margin="5 5 0 0"
-                                 Content="{Binding Remarks}"
-                                 Grid.Row="1">
-                <materialDesign:Chip.Icon>
-                    <materialDesign:PackIcon Kind="Information"
-                                             Height="40"
-                                             Width="40"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Foreground="Blue"
-                                             Background="White" />
-                </materialDesign:Chip.Icon>
-            </materialDesign:Chip>
-            <Grid Grid.Row="2">
-                <materialDesign:Card Margin="10"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Top">
-                    <Grid Width="200">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="160" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <materialDesign:ColorZone VerticalAlignment="Stretch"
-                                                  Mode="PrimaryLight">
-                            <Ellipse Width="128"
-                                     Height="128"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center">
-                                <Ellipse.Fill>
-                                    <ImageBrush Stretch="UniformToFill"
-                                                ImageSource="{Binding Student.ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </materialDesign:ColorZone>
-                        <StackPanel Grid.Row="1"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <TextBlock TextAlignment="Center"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="16"
-                                       MaxWidth="200"
-                                       TextWrapping="Wrap"
-                                       Margin="10">
+
+        <materialDesign:ColorZone Grid.Column="1"
+                                  Background="White"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Margin="5 0 0 0"
+                                  BorderBrush="#B5B5B5"
+                                  BorderThickness="0 0 .5 0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <materialDesign:Chip Margin="5 5 0 0"
+                                     Grid.Row="0">
+                    <materialDesign:Chip.Content>
+                        <TextBlock FontSize="16">
+                        <Run Text="Scanner :" />
+                        <Run Text="{Binding ScannerStatus}" />
+                        </TextBlock>
+                    </materialDesign:Chip.Content>
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="{Binding ScannerStatus,Converter={StaticResource IconConverter}}"
+                                                 Height="40"
+                                                 Width="40"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{Binding ScannerStatus,Converter={StaticResource ColorConverter}}"
+                                                 Background="White" />
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+                <materialDesign:Chip Margin="5 5 0 0"
+                                     FontSize="16"
+                                     Content="{Binding Remarks}"
+                                     Grid.Row="1">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="{Binding Remarks,Converter={StaticResource IconConverter}}"
+                                                 Height="40"
+                                                 Width="40"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="Blue"
+                                                 Background="White" />
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+                <Grid Grid.Row="2">
+                    <materialDesign:Card Margin="10"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top">
+                        <Grid Width="200">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="160" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                                      Mode="PrimaryLight">
+                                <Ellipse Width="128"
+                                         Height="128"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush Stretch="UniformToFill"
+                                                    ImageSource="{Binding Student.ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </materialDesign:ColorZone>
+                            <StackPanel Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock TextAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="16"
+                                           MaxWidth="200"
+                                           TextWrapping="Wrap"
+                                           Margin="10">
                                 <Run Text="{Binding Student.FirstName}" />
                                 <Run Text="{Binding Student.LastName}" />
                                 <LineBreak />
@@ -163,12 +175,13 @@
                                      FontSize="12" />
                                 <Run Text="{Binding Student.Section.SectionName}"
                                      FontSize="12" />
-                            </TextBlock>
-                        </StackPanel>
-                    </Grid>
-                </materialDesign:Card>
-            </Grid>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+                </Grid>
 
-        </Grid>
+            </Grid>
+        </materialDesign:ColorZone>
     </Grid>
 </UserControl>

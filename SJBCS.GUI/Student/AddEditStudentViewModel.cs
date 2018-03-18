@@ -25,6 +25,7 @@ namespace SJBCS.GUI.Student
         private IContactsRepository _contactsRepository;
         private IRelOrganizationsRepository _relOrganizationsRepository;
         private IRelBiometricsRepository _relBiometricsRepository;
+        private IBiometricsRepository _biometricsRepository;
 
         public bool EditMode
         {
@@ -188,6 +189,7 @@ namespace SJBCS.GUI.Student
         private void CopyStudent(Data.Student source, EditableStudent target)
         {
             target.StudentGuid = source.StudentGuid;
+
             if (EditMode)
             {
                 target.StudentID = source.StudentID;
@@ -207,7 +209,7 @@ namespace SJBCS.GUI.Student
                 target.Contacts = new ObservableCollection<Contact>(source.Contacts);
                 target.Level = source.Level;
                 target.Section = source.Section;
-                target.RelBiometrics = source.RelBiometrics;
+                target.RelBiometrics = new ObservableCollection<RelBiometric>(source.RelBiometrics);
                 target.RelDistributionLists = source.RelDistributionLists;
                 target.RelOrganizations = new ObservableCollection<RelOrganization>(source.RelOrganizations);
 
@@ -228,7 +230,7 @@ namespace SJBCS.GUI.Student
 
         public event Action Done = delegate { };
 
-        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IRelOrganizationsRepository relOrganizationsRepository)
+        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository, IRelOrganizationsRepository relOrganizationsRepository)
         {
             _studentsRepository = studentsRepository;
             _levelsRepository = levelsRepository;
@@ -236,6 +238,7 @@ namespace SJBCS.GUI.Student
             _contactsRepository = contactsRepository;
             _relOrganizationsRepository = relOrganizationsRepository;
             _relBiometricsRepository = relBiometricsRepository;
+            _biometricsRepository = biometricsRepository;
 
             CancelCommand = new RelayCommand(OnCancel);
             SaveCommand = new RelayCommand(OnSave, CanSave);
@@ -295,26 +298,26 @@ namespace SJBCS.GUI.Student
 
                 if (result.ToString().ToLower() != "false")
                 {
-                    Biometric biometric = (Biometric)result;
                     RelBiometric relBiometric = new RelBiometric { RelBiometricID = Guid.NewGuid() };
-                    relBiometric.FingerID = biometric.FingerID;
+                    relBiometric.Biometric = (Biometric)result;
                     relBiometric.StudentID = Student.StudentGuid;
-                    
+
+
                     if (Student.RelBiometrics.FirstOrDefault() == null)
                     {
-                        biometric.FingerName = "Finger 1";
+                        relBiometric.Biometric.FingerName = "Left";
                     }
                     else
                     {
                         Biometric temp = Student.RelBiometrics.FirstOrDefault().Biometric;
 
-                        if (temp.FingerName == "Finger 1")
+                        if (temp.FingerName == "Left")
                         {
-                            biometric.FingerName = "Finger 2";
+                            relBiometric.Biometric.FingerName = "Right";
                         }
                         else
                         {
-                            biometric.FingerName = "Finger 1";
+                            relBiometric.Biometric.FingerName = "Left";
                         }
                     }
 
@@ -485,9 +488,10 @@ namespace SJBCS.GUI.Student
             {
                 _relBiometricsRepository.AddRelBiometric(relBiometric);
             }
-            foreach (RelOrganization group in DeletedGroups)
+            foreach (RelBiometric relBiometric in DeletedRelBiometrics)
             {
-                _relOrganizationsRepository.DeleteRelOrganization(group.RelOrganizationID);
+                _relBiometricsRepository.DeleteRelBiometric(relBiometric.RelBiometricID);
+                _biometricsRepository.DeleteBiometric(relBiometric.FingerID);
             }
             Done();
         }

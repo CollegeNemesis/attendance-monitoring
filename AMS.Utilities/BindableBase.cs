@@ -20,7 +20,7 @@ namespace AMS.Utilities
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        protected virtual void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             Console.WriteLine("You can intercept the closing event, and cancel here.");
         }

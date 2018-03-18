@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using AMS.Utilities;
 using SJBCS.Data;
 using SJBCS.GUI.AMS;
@@ -7,6 +8,7 @@ using SJBCS.GUI.Home;
 using SJBCS.GUI.Report;
 using SJBCS.GUI.SMS;
 using SJBCS.GUI.Student;
+using SJBCS.Services.Repository;
 using Unity;
 
 namespace SJBCS.GUI
@@ -15,6 +17,7 @@ namespace SJBCS.GUI
     {
         private object _currentViewModel;
         private object _menu;
+        private IStudentsRepository _studentsRepository;
 
         #region ViewModel
         public LoginViewModel _loginViewModel;
@@ -51,8 +54,9 @@ namespace SJBCS.GUI
 
         }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IStudentsRepository studentsRepository)
         {
+            _studentsRepository = studentsRepository;
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _menuViewModel = ContainerHelper.Container.Resolve<MenuViewModel>();
             _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
