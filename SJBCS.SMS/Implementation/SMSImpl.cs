@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using SMSRESTService.Logging;
+using SJBCS.SMS.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -32,7 +32,7 @@ namespace SJBCS.SMS.Implementation
                     {
                         int rowsAffected = DatabaseImpl.updateAttendanceSMSID(requestData.AttendanceID, smsID);
                         ret = rowsAffected > 0;
-                        Log.DEBUG("Rows Affected: " + rowsAffected);
+                        Log.DEBUG("Update SMS ID rows affected: " + rowsAffected);
                     }
                 }
                 else
@@ -53,7 +53,7 @@ namespace SJBCS.SMS.Implementation
             bool ret;
             int rowsAffected = DatabaseImpl.updateAttendaceSMSStatus(smsID, status);
             ret = rowsAffected > 0;
-            Log.DEBUG("Rows Affected: " + rowsAffected);
+            Log.DEBUG("Update status rows affected: " + rowsAffected);
 
             return ret;
         }
