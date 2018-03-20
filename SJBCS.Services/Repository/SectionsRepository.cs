@@ -36,6 +36,7 @@ namespace SJBCS.Services.Repository
 
         public List<Section> GetSections(Guid id)
         {
+            _context = new AmsDbContext();
             return _context.Sections.Where(r => r.LevelID == id).ToList();
         }
 

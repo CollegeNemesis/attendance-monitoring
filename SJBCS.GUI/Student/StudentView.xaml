@@ -150,69 +150,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!--<Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Width="250"
-                        Margin="10"
-                        Grid.Column="0">
-                <materialDesign:ColorZone Mode="Dark">
-                    <TextBlock Text="STUDENT DETAILS"
-                               HorizontalAlignment="Center" />
-                </materialDesign:ColorZone>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/SJBCS.GUI;component/Image/default-user-image.png"
-                           Stretch="UniformToFill"
-                           Height="50"
-                           Width="50"
-                           Margin="10" />
-                    <TextBlock HorizontalAlignment="Center"
-                               Margin="10">
-                    <Run Text="John Kenneth" />
-                    <Run Text="Arrojo" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center"
-                               Margin="0 0 0 5"
-                               TextAlignment="Center">
-                    <Run Text="5210299" />
-                    <LineBreak />
-                    <Run Text="Grade 1" />
-                    <Run Text="-" />
-                    <Run Text="Einstein" />
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Cake"
-                                             Height="10"
-                                             Width="10" />
-                    <TextBlock Margin="5 0 10 0">
-                        <Run Text="Birtdate:" />
-                        <Run Text="11/04/1992" />
-                    </TextBlock>
-                    <materialDesign:PackIcon Kind="GenderMaleFemale"
-                                             Height="10"
-                                             Width="10" />
-                    <TextBlock Margin="5 0 0 0">
-                        <Run Text="Gender:" />
-                        <Run Text="Male" />
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"
-                            Margin="0 5 0 0">
-                    <materialDesign:PackIcon Kind="MapMarker"
-                                             Height="10"
-                                             Width="10" />
-                    <TextBlock Margin="5 0 0 0">
-                        <Run Text="Address:" />
-                        <Run Text="Prenza 2" />
-                        <Run Text="Marilao" />
-                        <Run Text="Bulacan" />
-                    </TextBlock>
-                </StackPanel>
-            </StackPanel>
-        </Grid>-->
         <Grid Grid.Row="0">
             <Grid>
                 <Button Style="{DynamicResource MaterialDesignFlatButton}"

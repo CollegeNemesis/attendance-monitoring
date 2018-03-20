@@ -14,6 +14,7 @@ namespace SJBCS.GUI.Student
 {
     public class EditableStudent : ValidatableBindableBase
     {
+
         private System.Guid studentGuid;
         public System.Guid StudentGuid
         {
@@ -55,7 +56,12 @@ namespace SJBCS.GUI.Student
         private string gender;
         public string Gender
         {
-            get { return gender; }
+            get
+            {
+                if (gender == null)
+                    gender = "Male";
+                return gender;
+            }
             set { SetProperty(ref gender, value); }
         }
         private string street;

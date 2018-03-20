@@ -12,13 +12,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using Unity;
 
 namespace SJBCS.GUI.Student
 {
     public class AddEditStudentViewModel : BindableBase
     {
-        private bool _editMode;
         private IStudentsRepository _studentsRepository;
         private ILevelsRepository _levelsRepository;
         private ISectionsRepository _sectionsRepository;
@@ -26,14 +26,23 @@ namespace SJBCS.GUI.Student
         private IRelOrganizationsRepository _relOrganizationsRepository;
         private IRelBiometricsRepository _relBiometricsRepository;
         private IBiometricsRepository _biometricsRepository;
+        private IOrganizationsRepository _organizationsRepository;
 
+        private bool _editMode;
         public bool EditMode
         {
             get { return _editMode; }
             set { SetProperty(ref _editMode, value); }
         }
 
-        private string _selectedImage;
+        private Guid _selectedGroupId;
+
+        public Guid SelectedGroupId
+        {
+            get { return _selectedGroupId; }
+            set { _selectedGroupId = value; }
+        }
+
 
         private Guid _selectedLevelId;
 
@@ -67,18 +76,28 @@ namespace SJBCS.GUI.Student
             }
         }
 
+        private ObservableCollection<Organization> _organizations;
+
+        public ObservableCollection<Organization> Organizations
+        {
+            get { return _organizations; }
+            set { SetProperty(ref _organizations, value); }
+        }
+
+        private string _selectedImage;
+
         public string SelectedImage
         {
             get { return _selectedImage; }
             set { SetProperty(ref _selectedImage, value); }
         }
 
-        private string _contactNumber;
+        private EditableContact _editableContact;
 
-        public string ContactNumber
+        public EditableContact EditableContact
         {
-            get { return _contactNumber; }
-            set { SetProperty(ref _contactNumber, value); }
+            get { return _editableContact; }
+            set { SetProperty(ref _editableContact, value); }
         }
 
         private EditableStudent _student;
@@ -176,14 +195,22 @@ namespace SJBCS.GUI.Student
             _editingStudent = student;
 
             if (Student != null) Student.ErrorsChanged -= RaiseCanExecuteChanged;
+            if (EditableContact != null) EditableContact.ErrorsChanged -= RaiseCanExecuteChanged;
+
             Student = new EditableStudent();
+            EditableContact = new EditableContact();
+
             Student.ErrorsChanged += RaiseCanExecuteChanged;
+            EditableContact.ErrorsChanged += RaiseCanExecuteChanged;
+
             CopyStudent(student, Student);
         }
 
         private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
         {
             SaveCommand.RaiseCanExecuteChanged();
+            AddContactCommand.RaiseCanExecuteChanged();
+            AddGroupCommand.RaiseCanExecuteChanged();
         }
 
         private void CopyStudent(Data.Student source, EditableStudent target)
@@ -230,7 +257,7 @@ namespace SJBCS.GUI.Student
 
         public event Action Done = delegate { };
 
-        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository, IRelOrganizationsRepository relOrganizationsRepository)
+        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository, IRelOrganizationsRepository relOrganizationsRepository, IOrganizationsRepository organizationsRepository)
         {
             _studentsRepository = studentsRepository;
             _levelsRepository = levelsRepository;
@@ -239,15 +266,16 @@ namespace SJBCS.GUI.Student
             _relOrganizationsRepository = relOrganizationsRepository;
             _relBiometricsRepository = relBiometricsRepository;
             _biometricsRepository = biometricsRepository;
+            _organizationsRepository = organizationsRepository;
 
             CancelCommand = new RelayCommand(OnCancel);
             SaveCommand = new RelayCommand(OnSave, CanSave);
             OpenFileCommand = new RelayCommand(OnOpenFile);
 
-            AddContactCommand = new RelayCommand(OnAddContact);
+            AddContactCommand = new RelayCommand(OnAddContact, CanAddContact);
             DeleteContactCommand = new RelayCommand<Contact>(OnDeleteContact);
 
-            AddGroupCommand = new RelayCommand(OnAddGroup);
+            AddGroupCommand = new RelayCommand(OnAddGroup, CanAddGroup);
             DeleteGroupCommand = new RelayCommand<RelOrganization>(OnDeleteGroup);
 
             EnrollBiometricCommand = new RelayCommand(OnEnrollBiometric);
@@ -351,29 +379,19 @@ namespace SJBCS.GUI.Student
             }
         }
 
-        private async void OnAddContact()
+        private void OnAddContact()
         {
-            //Show Add Contact Dialog
-            var view = new AddContactView
-            {
-                DataContext = ContainerHelper.Container.Resolve<AddContactViewModel>()
-            };
+            if (Student.Contacts == null)
+                Student.Contacts = new ObservableCollection<Contact>();
 
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            Contact contact = new Contact { ContactID = Guid.NewGuid() };
+            contact.ContactNumber = EditableContact.ContactNumber;
+            contact.StudentID = Student.StudentGuid;
 
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
+            Student.Contacts.Add(contact);
+            AddedContacts.Add(contact);
 
-            if (result.ToString().ToLower() != "false")
-            {
-                Contact contact = new Contact { ContactID = Guid.NewGuid() };
-                contact.ContactNumber = result.ToString();
-                contact.StudentID = Student.StudentGuid;
-                Student.Contacts.Add(contact);
-                AddedContacts.Add(contact);
-            }
-
+            EditableContact = new EditableContact();
         }
 
         private async void OnDeleteGroup(RelOrganization relOrganization)
@@ -394,30 +412,29 @@ namespace SJBCS.GUI.Student
             {
                 Student.RelOrganizations.Remove(relOrganization);
                 DeletedGroups.Add(relOrganization);
+                Organizations.Add(_organizationsRepository.GetOrganization(relOrganization.OrganizationID));
             }
         }
 
-        private async void OnAddGroup()
+        private void OnAddGroup()
         {
-            //Show Add Contact Dialog
-            var view = new AddGroupView
+            if (Student.RelOrganizations == null)
+                Student.RelOrganizations = new ObservableCollection<RelOrganization>();
+
+            RelOrganization relOrganization = new RelOrganization { RelOrganizationID = Guid.NewGuid() };
+            relOrganization.OrganizationID = SelectedGroupId;
+            relOrganization.StudentID = Student.StudentGuid;
+            relOrganization.Organization = Organizations.SingleOrDefault(i => i.OrganizationID == relOrganization.OrganizationID);
+
+            Student.RelOrganizations.Add(relOrganization);
+
+            AddedGroups.Add(relOrganization);
+
+            Organizations.Remove(Organizations.SingleOrDefault(i => i.OrganizationID == relOrganization.OrganizationID));
+            
+            if(Organizations.Count != 0)
             {
-                DataContext = ContainerHelper.Container.Resolve<AddGroupViewModel>()
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
-
-            if (result.ToString().ToLower() != "false")
-            {
-                RelOrganization relOrganization = new RelOrganization { RelOrganizationID = Guid.NewGuid() };
-                relOrganization.OrganizationID = ((Organization)result).OrganizationID;
-                relOrganization.StudentID = Student.StudentGuid;
-                Student.RelOrganizations.Add(relOrganization);
-                AddedGroups.Add(relOrganization);
+                SelectedGroupId = Organizations.FirstOrDefault().OrganizationID;
             }
 
         }
@@ -446,7 +463,34 @@ namespace SJBCS.GUI.Student
 
         private bool CanSave()
         {
+            if (Student.Contacts == null)
+            {
+                return false;
+            }
+            if (Student.StudentID == null || Student.LastName == null || Student.FirstName == null || Student.Contacts.FirstOrDefault() == null)
+                return false;
             return !Student.HasErrors;
+        }
+
+        private bool CanAddContact()
+        {
+            if (EditableContact.ContactNumber == null)
+                return false;
+            return !EditableContact.HasErrors;
+        }
+
+        private bool CanAddGroup()
+        {
+            if (Organizations == null)
+                return false;
+
+            if (SelectedGroupId == null)
+                return false;
+
+            if (Organizations.Count() == 0)
+                return false;
+
+            return true;
         }
 
         private void OnSave()
@@ -517,7 +561,7 @@ namespace SJBCS.GUI.Student
             Done();
         }
 
-        public void LoadComboBox()
+        public void RefreshList()
         {
             AddedContacts = new ObservableCollection<Contact>();
             DeletedContacts = new ObservableCollection<Contact>();
@@ -528,7 +572,13 @@ namespace SJBCS.GUI.Student
             AddedRelBiometrics = new ObservableCollection<RelBiometric>();
             DeletedRelBiometrics = new ObservableCollection<RelBiometric>();
 
+            Organizations = new ObservableCollection<Organization>();
+        }
+
+        public void PopulateLevelComboBox()
+        {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            Organizations = new ObservableCollection<Organization>(_organizationsRepository.GetOrganizations());
 
             if (Student != null && EditMode)
             {
@@ -540,6 +590,31 @@ namespace SJBCS.GUI.Student
                 SelectedLevelId = Levels[0].LevelID;
                 SelectedSectionId = Sections[0].SectionID;
             }
+        }
+
+        public void PopulateOrganizationComboBox()
+        {
+            if (Student.RelOrganizations != null)
+            {
+                foreach (RelOrganization relOrganization in Student.RelOrganizations)
+                {
+                    Organizations.Remove(Organizations.SingleOrDefault(i => i.OrganizationID == relOrganization.OrganizationID));
+                }
+            }
+
+            if (Organizations.Count != 0)
+            {
+                SelectedGroupId = Organizations.FirstOrDefault().OrganizationID;
+            }
+        }
+
+
+        public void Initialize()
+        {
+            RefreshList();
+            PopulateLevelComboBox();
+            PopulateOrganizationComboBox();
+
         }
     }
 }

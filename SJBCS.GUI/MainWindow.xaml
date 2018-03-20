@@ -77,6 +77,7 @@
             <Grid x:Name="Header1"
                   Grid.Row="0">
                 <materialDesign:ColorZone Mode="PrimaryDark"
+                                          Background="#335795"
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch">
                     <DockPanel>

@@ -36,6 +36,7 @@ namespace SJBCS.Services.Repository
 
         public List<Organization> GetOrganizations()
         {
+            _context = new AmsDbContext();
             return _context.Organizations.ToList();
         }
 

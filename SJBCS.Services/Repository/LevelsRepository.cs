@@ -36,6 +36,7 @@ namespace SJBCS.Services.Repository
 
         public List<Level> GetLevels()
         {
+            _context = new AmsDbContext();
             return _context.Levels.ToList();
         }
 

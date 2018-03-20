@@ -23,6 +23,10 @@ namespace AMS.Utilities
 
         public IEnumerable GetErrors(string propertyName)
         {
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                return null;
+            }
             if (_errors.ContainsKey(propertyName))
                 return _errors[propertyName];
             else

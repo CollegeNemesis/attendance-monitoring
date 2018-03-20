@@ -68,11 +68,10 @@ namespace SJBCS.GUI
             _smsViewModel = ContainerHelper.Container.Resolve<SmsViewModel>();
             _addEditStudentViewModel = ContainerHelper.Container.Resolve<AddEditStudentViewModel>();
 
-            //_currentViewModel = _loginViewModel;
-            //_menu = null;
-
             _currentViewModel = _studentViewModel;
             _menu = _menuViewModel;
+
+            _addEditStudentViewModel.EditMode = false;
 
             _loginViewModel.LoginRequested += NavToMenu;
             _menuViewModel.NavToAttendanceRequested += NavToAttendance;
