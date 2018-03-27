@@ -13,9 +13,19 @@ namespace SJBCS.GUI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string state = (string)value;
+            string state = value.ToString();
+
             switch (state)
             {
+                case "Error":
+                    return "Red";
+
+                case "InformationB":
+                    return "Blue";
+
+                case "Warning":
+                    return "Orange";
+
                 case "Connected":
                     return "Green";
 

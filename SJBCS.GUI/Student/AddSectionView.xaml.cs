@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SJBCS.GUI.Student
 {
     /// <summary>
-    /// Interaction logic for AddContactView.xaml
+    /// Interaction logic for AddSectionView.xaml
     /// </summary>
-    public partial class AddContactView : UserControl
+    public partial class AddSectionView : UserControl
     {
-        public AddContactView()
+        public AddSectionView()
         {
             InitializeComponent();
         }

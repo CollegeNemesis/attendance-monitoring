@@ -24,11 +24,35 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
+
+    <Style x:Key="MaterialDesignPasswordBox"
+           BasedOn="{StaticResource MaterialDesignPasswordBox}"
+           TargetType="{x:Type PasswordBox}">
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Setter Property="BorderBrush"
+                Value="#B5B5B5" />
+        <Setter Property="BorderThickness"
+                Value=".5" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Height"
+                Value="50" />
+        <Setter Property="materialDesign:HintAssist.FloatingScale"
+                Value="0.6" />
+        <Setter Property="materialDesign:HintAssist.FloatingOffset"
+                Value="0,-25" />
+    </Style>
+
     <Style x:Key="MaterialDesignRaisedButton"
            BasedOn="{StaticResource MaterialDesignRaisedButton}"
            TargetType="{x:Type Button}">
         <Setter Property="FontSize"
-                Value="12" />
+                Value="16" />
         <Setter Property="FontFamily"
                 Value="Segoe UI" />
         <Setter Property="FontWeight"
@@ -91,6 +115,27 @@
                 Value="0,-25" />
     </Style>
 
+    <Style TargetType="{x:Type materialDesign:TimePicker}">
+        <Setter Property="materialDesign:HintAssist.Hint"
+                Value="" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Setter Property="BorderBrush"
+                Value="#B5B5B5" />
+        <Setter Property="BorderThickness"
+                Value=".5" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="materialDesign:HintAssist.FloatingScale"
+                Value="0.6" />
+        <Setter Property="materialDesign:HintAssist.FloatingOffset"
+                Value="0,-25" />
+    </Style>
+
     <Style x:Key="MaterialDesignFlatButton"
            BasedOn="{StaticResource MaterialDesignFlatButton}"
            TargetType="{x:Type Button}">
@@ -100,5 +145,119 @@
                 Value="Segoe UI" />
         <Setter Property="FontWeight"
                 Value="Regular" />
+    </Style>
+
+    <Style  TargetType="{x:Type materialDesign:Chip}">
+        <Setter Property="Background"
+                Value="White" />
+    </Style>
+
+    <Style x:Key="MaterialDesignDataGrid"
+           BasedOn="{StaticResource MaterialDesignDataGrid}"
+           TargetType="{x:Type DataGrid}">
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+    </Style>
+
+    <Style x:Key="MaterialDesignDataGridColumnHeader"
+           BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+           TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="Black" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontWeight"
+                Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="MaterialDesignDataGridCell"
+           BasedOn="{StaticResource MaterialDesignDataGridCell}"
+           TargetType="{x:Type DataGridCell}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocusWithin"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource MaterialDesignTextBoxBorder}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected"
+                               Value="True" />
+                    <Condition Property="Selector.IsSelectionActive"
+                               Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background"
+                        Value="White" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected"
+                               Value="True" />
+                    <Condition Property="Selector.IsSelectionActive"
+                               Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground"
+                        Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="Background"
+                        Value="White" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value=".56" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MaterialDesignDataGridRowHeader"
+           BasedOn="{StaticResource MaterialDesignDataGridRowHeader}"
+           TargetType="{x:Type DataGridRowHeader}">
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+    </Style>
+
+    <Style x:Key="MaterialDesignDataGridRow"
+           BasedOn="{StaticResource MaterialDesignDataGridRow}"
+           TargetType="{x:Type DataGridRow}">
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="White" />
+            </Trigger>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="White" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

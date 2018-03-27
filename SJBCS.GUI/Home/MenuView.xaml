@@ -66,52 +66,6 @@
                 <Button HorizontalAlignment="Stretch"
                         Height="Auto"
                         Width="Auto"
-                        Command="{Binding NavToSmsCommand}">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Foreground"
-                                    Value="#272C33" />
-                            <Setter Property="Background"
-                                    Value="Transparent" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Foreground"
-                                            Value="#3D62B3" />
-                                    <Setter Property="Background"
-                                            Value="#e9ebee" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="50"
-                               Width="50"
-                               Margin="10"
-                               Stretch="UniformToFill"
-                               Source="/SJBCS.GUI;component/Image/sms-icon.png" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Left"
-                                   Text="SMS" />
-                    </StackPanel>
-                </Button>
-                <Button HorizontalAlignment="Stretch"
-                        Height="Auto"
-                        Width="Auto"
                         Command="{Binding NavToStudentCommand}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -204,52 +158,6 @@
                 <Button HorizontalAlignment="Stretch"
                         Height="Auto"
                         Width="Auto"
-                        Command="{Binding NavToGroupCommand}">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Foreground"
-                                    Value="#272C33" />
-                            <Setter Property="Background"
-                                    Value="Transparent" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                         Value="True">
-                                    <Setter Property="Foreground"
-                                            Value="#3D62B3" />
-                                    <Setter Property="Background"
-                                            Value="#e9ebee" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="50"
-                               Width="50"
-                               Margin="10"
-                               Stretch="UniformToFill"
-                               Source="/SJBCS.GUI;component/Image/group-icon.png" />
-                        <TextBlock FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="16"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Left"
-                                   Text="Clubs &amp; Organizations" />
-                    </StackPanel>
-                </Button>
-                <Button HorizontalAlignment="Stretch"
-                        Height="Auto"
-                        Width="Auto"
                         Command="{Binding NavToReportCommand}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -293,7 +201,52 @@
                                    Text="Reports" />
                     </StackPanel>
                 </Button>
-
+                <Button HorizontalAlignment="Stretch"
+                        Height="Auto"
+                        Width="Auto"
+                        Command="{Binding NavToSmsCommand}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Foreground"
+                                    Value="#272C33" />
+                            <Setter Property="Background"
+                                    Value="Transparent" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="#3D62B3" />
+                                    <Setter Property="Background"
+                                            Value="#e9ebee" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="50"
+                               Width="50"
+                               Margin="10"
+                               Stretch="UniformToFill"
+                               Source="/SJBCS.GUI;component/Image/settings-icon.png" />
+                        <TextBlock FontFamily="Segoe UI"
+                                   FontWeight="Regular"
+                                   FontSize="16"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Text="Settings" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </materialDesign:ColorZone>

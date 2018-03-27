@@ -24,6 +24,7 @@ namespace SJBCS.GUI.Student
         public StudentViewModel(IStudentsRepository studentsRepository)
         {
             AddStudentCommand = new RelayCommand(OnAddStudent);
+            DeleteStudentCommand = new RelayCommand<Data.Student> (OnDeleteStudent);
             EditStudentCommand = new RelayCommand<Data.Student>(OnEditStudent);
             _studentsRepository = studentsRepository;
         }
@@ -35,10 +36,18 @@ namespace SJBCS.GUI.Student
         }
 
         public RelayCommand AddStudentCommand { get; private set; }
+        public RelayCommand<Data.Student> DeleteStudentCommand { get; private set; }
         public RelayCommand<Data.Student> EditStudentCommand { get; private set; }
 
         public event Action<Data.Student> AddStudentRequested = delegate { };
         public event Action<Data.Student> EditStudentRequested = delegate { };
+
+
+
+        private void OnDeleteStudent(Data.Student student)
+        {
+            //_studentsRepository.DeleteStudent(student.StudentGuid);
+        }
 
         public void OnAddStudent()
         {

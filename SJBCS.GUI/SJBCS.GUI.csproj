@@ -130,17 +130,13 @@
     </ApplicationDefinition>
     <Compile Include="AMS\AttendanceLog.cs" />
     <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Converters\CountVisibilityConverter.cs" />
     <Compile Include="Converters\IconConverter.cs" />
+    <Compile Include="Converters\NegatableBooleanConverter.cs" />
     <Compile Include="Converters\NegatableBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\NegatableStringToVisibilityConverter.cs" />
     <Compile Include="Converters\StringEmptyConverter.cs" />
-    <Compile Include="Student\AddContactView.xaml.cs">
-      <DependentUpon>AddContactView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Student\AddContactViewModel.cs" />
-    <Compile Include="Student\AddGroupView.xaml.cs">
-      <DependentUpon>AddGroupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Student\AddGroupViewModel.cs" />
+    <Compile Include="Converters\TimeConverter.cs" />
     <Compile Include="Dialogs\DialogBoxView.xaml.cs">
       <DependentUpon>DialogBoxView.xaml</DependentUpon>
     </Compile>
@@ -165,7 +161,12 @@
       <DependentUpon>AddEditStudentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\AddEditStudentViewModel.cs" />
+    <Compile Include="Student\AddSectionView.xaml.cs">
+      <DependentUpon>AddSectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Student\AddSectionViewModel.cs" />
     <Compile Include="Student\EditableContact.cs" />
+    <Compile Include="Student\EditableSection.cs" />
     <Compile Include="Student\EditableStudent.cs" />
     <Compile Include="Student\EnrollBiometricsView.xaml.cs">
       <DependentUpon>EnrollBiometricsView.xaml</DependentUpon>
@@ -179,14 +180,6 @@
       <DependentUpon>SectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\SectionViewModel.cs" />
-    <Compile Include="Student\StudentDetailsView.xaml.cs">
-      <DependentUpon>StudentDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Student\StudentDetailsViewModel.cs" />
-    <Compile Include="Student\StudentListView.xaml.cs">
-      <DependentUpon>StudentListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Student\StudentListViewModel.cs" />
     <Compile Include="Student\StudentView.xaml.cs">
       <DependentUpon>StudentView.xaml</DependentUpon>
     </Compile>
@@ -197,16 +190,9 @@
     <Compile Include="TestWindowViewModel.cs" />
     <Compile Include="Validation\PhoneValidationRule.cs" />
     <Compile Include="Validation\RequiredIfAttribute.cs" />
+    <Compile Include="Validation\TimeValidation.cs" />
     <Compile Include="Validation\UniqueStudentId.cs" />
     <Page Include="AMS\AttendanceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Student\AddContactView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Student\AddGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,6 +255,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Student\AddSectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Student\EnrollBiometricsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,14 +268,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Student\SectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Student\StudentDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Student\StudentListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

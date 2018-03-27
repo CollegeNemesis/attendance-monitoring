@@ -21,7 +21,7 @@ namespace SJBCS.Services.Repository
 
         public  void DeleteRelBiometric(Guid id)
         {
-            var relBiometric = _context.RelBiometrics.FirstOrDefault(r => r.RelBiometricID == id);
+            var relBiometric = _context.RelBiometrics.FirstOrDefault(r => r.FingerID == id);
             if (relBiometric != null)
             {
                 _context.RelBiometrics.Remove(relBiometric);

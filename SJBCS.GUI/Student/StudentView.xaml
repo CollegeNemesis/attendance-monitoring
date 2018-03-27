@@ -9,7 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d"
-             x:Name="StudentViewModel"
+             x:Name="StudentViewControl"
              d:DesignHeight="800"
              d:DesignWidth="800">
     <i:Interaction.Triggers>
@@ -22,120 +22,65 @@
         <CollectionViewSource x:Key="studentViewSource"
                               Source="{Binding Students}" />
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
-        <Style TargetType="TextBox">
-            <Style.Setters>
-                <Setter Property="FontSize"
-                        Value="10" />
-                <Setter Property="FontFamily"
-                        Value="Segoe UI" />
-                <Setter Property="FontWeight"
-                        Value="Regular" />
-            </Style.Setters>
-        </Style>
-        <Style TargetType="TextBlock">
-            <Style.Setters>
-                <Setter Property="FontSize"
-                        Value="10" />
-                <Setter Property="FontFamily"
-                        Value="Segoe UI" />
-                <Setter Property="FontWeight"
-                        Value="Regular" />
-            </Style.Setters>
-        </Style>
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Style.Setters>
-                <Setter Property="FontFamily"
-                        Value="Segoe UI" />
-                <Setter Property="FontWeight"
-                        Value="SemiBold" />
-                <Setter Property="FontSize"
-                        Value="12" />
-                <Setter Property="Background"
-                        Value="Transparent" />
-                <Setter Property="SeparatorVisibility"
-                        Value="Hidden" />
-                <Setter Property="Padding"
-                        Value="10" />
-            </Style.Setters>
-        </Style>
-        <Style TargetType="{x:Type DataGridCell}">
-            <Style.Triggers>
-                <Trigger Property="IsSelected"
-                         Value="True">
-                    <Setter Property="Background"
-                            Value="Transparent" />
-                    <Setter Property="Foreground"
-                            Value="Black" />
-                    <Setter Property="Foreground"
-                            Value="Black" />
-                    <Setter Property="BorderThickness"
-                            Value="0" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <DataTemplate x:Key="RowDetailTemplate">
-            <Grid Grid.Row="1">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="10"
-                            Grid.Column="0">
-                    <materialDesign:ColorZone Mode="Dark">
-                        <TextBlock Text="STUDENT DETAILS"
-                                   HorizontalAlignment="Center"
-                                   FontSize="10"
-                                   FontWeight="Regular"
-                                   FontFamily="Segoe UI" />
-                    </materialDesign:ColorZone>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Stretch="UniformToFill"
-                               Height="50"
-                               Width="50"
-                               Margin="10">
-                            <Image.Source>
-                                <Binding Path="ImageData"
-                                         Converter="{StaticResource StringEmptyConverter}"
-                                         ConverterParameter="/SJBCS.GUI;component/Image/default-user-image.png"
-                                         FallbackValue="/SJBCS.GUI;component/Image/default-user-image.png" />
-                            </Image.Source>
-                        </Image>
-                        <StackPanel>
-                            <TextBlock>
-                    <Run Text="{Binding FirstName}" />
-                    <Run Text="{Binding LastName}" />
-                            </TextBlock>
-                            <TextBlock Margin="0 0 0 5">
-                    <Run Text="{Binding StudentID}" />
-                    <LineBreak />
-                    <Run Text="{Binding Level.GradeLevel}" />
-                    <LineBreak />
-                    <Run Text="{Binding Section.SectionName}" />
-                            </TextBlock>
-                        </StackPanel>
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                    <StackPanel>
+                        <Border BorderBrush="#3D62B3"
+                                Height="100"
+                                Width="100"
+                                BorderThickness=".5">
+                            <Image Stretch="UniformToFill"
+                                   Height="100"
+                                   Width="100">
+                                <Image.Source>
+                                    <Binding Path="ImageData"
+                                             Converter="{StaticResource StringEmptyConverter}"
+                                             ConverterParameter="/SJBCS.GUI;component/Image/default-user-image.png"
+                                             FallbackValue="/SJBCS.GUI;component/Image/default-user-image.png" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom"
+                                HorizontalAlignment="Right"
+                                Margin="5">
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                FontSize="10"
-                                FontWeight="Regular"
-                                FontFamily="Segoe UI"
-                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.EditStudentCommand}"
-                                CommandParameter="{Binding}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountPlus" />
-                                <TextBlock Margin="8 0 0 0"
-                                           VerticalAlignment="Center">EDIT STUDENT</TextBlock>
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.EditStudentCommand}"
+                                CommandParameter="{Binding}"
+                                Margin="5 0 0 0"
+                                Foreground="#3D62B3">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Pencil"
+                                                         VerticalAlignment="Center"
+                                                         Margin="5" />
+                                <TextBlock Text="Edit"
+                                           VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                FontSize="10"
-                                FontWeight="Regular"
-                                FontFamily="Segoe UI"
-                                Command="{Binding ElementName=StudentViewModel, Path=DataContext.DeleteStudentCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Delete" />
-                                <TextBlock Margin="8 0 0 0"
-                                           VerticalAlignment="Center">DELETE STUDENT</TextBlock>
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.DeleteStudentCommand}"
+                                CommandParameter="{Binding}"
+                                Margin="5 0 0 0"
+                                Foreground="#3D62B3">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Delete"
+                                                         VerticalAlignment="Center"
+                                                         Margin="5" />
+                                <TextBlock Text="Delete"
+                                           VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -151,46 +96,92 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Grid>
-                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+            <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left"
-                        x:Name="ChatButton"
-                        Command="{Binding ElementName=StudentViewModel, Path=DataContext.AddStudentCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="AccountPlus" />
-                        <TextBlock Margin="8 0 0 0"
-                                   VerticalAlignment="Center">ADD STUDENT</TextBlock>
-                    </StackPanel>
-                </Button>
-            </Grid>
+                        Margin="20">
+                <StackPanel>
+                    <TextBlock Foreground="#00B4FF"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               Margin="5 0 0 5"
+                               FontSize="20">
+                        <Run Text="Student" />
+                    </TextBlock>
+                    <TextBlock Foreground="#00B4FF"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               Margin="5 0 0 5"
+                               FontSize="20">
+                        <Run Text="" />
+                    </TextBlock>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ElementName=StudentViewModel, Path=DataContext.AddStudentCommand}"
+                            Margin="5 0 0 0"
+                            Foreground="#3D62B3">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Plus"
+                                                     VerticalAlignment="Center"
+                                                     Margin="5" />
+                            <TextBlock Text="Add Student"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="2">
-            <DataGrid x:Name="studentDataGrid"
-                      AutoGenerateColumns="False"
-                      Background="White"
-                      IsReadOnly="True"
-                      ItemsSource="{Binding}"
-                      SelectionMode="Extended"
-                      RowDetailsTemplate="{StaticResource RowDetailTemplate}"
-                      RowDetailsVisibilityMode="VisibleWhenSelected">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding StudentID}"
-                                        Header="Student ID"
-                                        Width="150" />
-                    <DataGridTextColumn Binding="{Binding FirstName}"
-                                        Header="First Name"
-                                        Width="150" />
-                    <DataGridTextColumn Binding="{Binding LastName}"
-                                        Header="Last Name"
-                                        Width="150" />
-                    <DataGridTextColumn Binding="{Binding Level.GradeLevel}"
-                                        Header="Level"
-                                        Width="150" />
-                    <DataGridTextColumn Binding="{Binding Section.SectionName}"
-                                        Header="Section"
-                                        Width="150" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <StackPanel HorizontalAlignment="Center">
+                <DataGrid x:Name="studentDataGrid"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding}"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          RowDetailsVisibilityMode="VisibleWhenSelected"
+                          RowDetailsTemplate="{StaticResource RowDetailTemplate}"
+                          Style="{DynamicResource MaterialDesignDataGrid}"
+                          CellStyle="{DynamicResource MaterialDesignDataGridCell}"
+                          ColumnHeaderStyle="{DynamicResource MaterialDesignDataGridColumnHeader}"
+                          RowStyle="{DynamicResource MaterialDesignDataGridRow}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <materialDesign:PackIcon x:Name="icon"
+                                                             Kind="ChevronRight"
+                                                             Foreground="#3D62B3"
+                                                             Background="Transparent" />
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+                                                     Value="True">
+                                            <Setter TargetName="icon"
+                                                    Property="Kind"
+                                                    Value="ChevronDown" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Binding="{Binding StudentID}"
+                                            Header="Student ID"
+                                            Width="150" />
+                        <DataGridTextColumn Binding="{Binding FirstName}"
+                                            Header="First Name"
+                                            Width="150" />
+                        <DataGridTextColumn Binding="{Binding LastName}"
+                                            Header="Last Name"
+                                            Width="150" />
+                        <DataGridTextColumn Binding="{Binding Level.GradeLevel}"
+                                            Header="Level"
+                                            Width="150" />
+                        <DataGridTextColumn Binding="{Binding Section.SectionName}"
+                                            Header="Section"
+                                            Width="150" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

@@ -141,6 +141,18 @@ namespace SJBCS.GUI.Student
             get { return relOrganizations; }
             set { SetProperty(ref relOrganizations, value); }
         }
+        private ObservableCollection<Organization> organizations;
+        public ObservableCollection<Organization> Organizations
+        {
+            get { return organizations; }
+            set { SetProperty(ref organizations, value); }
+        }
+        private ObservableCollection<Biometric> biometrics;
+        public ObservableCollection<Biometric> Biometrics
+        {
+            get { return biometrics; }
+            set { SetProperty(ref biometrics, value); }
+        }
         private Section section;
         public Section Section
         {

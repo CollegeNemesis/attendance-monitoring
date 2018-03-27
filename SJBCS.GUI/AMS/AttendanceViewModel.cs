@@ -274,7 +274,6 @@ namespace SJBCS.GUI.AMS
 
         public void SwitchOff()
         {
-            Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
             Stop();
         }
 

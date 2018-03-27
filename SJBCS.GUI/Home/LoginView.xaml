@@ -29,16 +29,12 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Kind="Account"
-                                                 Opacity=".56"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center" />
                         <TextBox Grid.Column="1"
                                  MinWidth="200"
                                  Margin="8,0,0,0"
                                  VerticalAlignment="Center"
                                  materialDesign:HintAssist.Hint="Username"
-                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0"
                                  Text="{Binding Username}" />
                     </Grid>
@@ -54,17 +50,13 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Kind="Lock"
-                                                 Opacity=".56"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center" />
                         <PasswordBox x:Name="Password"
                                      Grid.Column="1"
                                      MinWidth="200"
                                      Margin="8,0,0,0"
                                      VerticalAlignment="Center"
                                      materialDesign:HintAssist.Hint="Password"
-                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     Style="{StaticResource MaterialDesignPasswordBox}"
                                      BorderThickness="0" />
                     </Grid>
                 </materialDesign:ColorZone>

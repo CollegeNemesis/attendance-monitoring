@@ -54,7 +54,7 @@ namespace AMS.Utilities
             {
                 _errors.Remove(propertyName);
             }
-            ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
     }
 }

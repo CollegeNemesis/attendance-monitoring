@@ -5,26 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              xmlns:local="clr-namespace:SJBCS.GUI.Student"
              mc:Ignorable="d"
-             d:DesignHeight="400"
-             d:DesignWidth="400">
+             d:DesignHeight="600"
+             d:DesignWidth="600">
+    <UserControl.Resources>
+        <converters:NegatableBooleanToVisibilityConverter x:Key="VisConverter" />
+        <converters:NegatableBooleanToVisibilityConverter x:Key="NegVisConverter"
+                                                          Negate="True" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="160" />
             <RowDefinition Height="60" />
-            <RowDefinition Height="280" />
+            <RowDefinition Height="350" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <materialDesign:ColorZone Mode="PrimaryMid"
+                                      Background="#335795"
                                       VerticalAlignment="Stretch">
                 <StackPanel VerticalAlignment="Bottom">
                     <TextBlock FontFamily="Segoe UI"
                                FontSize="18"
                                FontWeight="Regular"
-                               Text="{Binding Scanner}"
+                               Text="{Binding Status}"
                                Margin="10"
                                VerticalAlignment="top" />
                 </StackPanel>
@@ -33,13 +40,14 @@
         <Grid Grid.Row="1">
             <materialDesign:ColorZone Mode="Standard"
                                       VerticalAlignment="Stretch">
-                <StackPanel VerticalAlignment="Top">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
                     <TextBlock FontFamily="Segoe UI"
                                MaxWidth="350"
                                TextWrapping="Wrap"
-                               FontSize="12"
+                               FontSize="16"
                                FontWeight="Regular"
-                               Text="{Binding Status}"
+                               Text="{Binding Notification}"
                                Margin="10"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left" />
@@ -53,26 +61,55 @@
                     <Grid DockPanel.Dock="Top"
                           VerticalAlignment="Bottom"
                           Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Ellipse Grid.Row="0"
                                  Width="150"
                                  Height="150"
-                                 Stroke="LightBlue"
-                                 VerticalAlignment="Top">
+                                 Stroke="#335795"
+                                 StrokeThickness=".5"
+                                 VerticalAlignment="Top"
+                                 Margin="155,0">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="/SJBCS.GUI;component/Image/finger-icon.png"
                                             Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <Ellipse Grid.Row="0"
-                                 Width="100"
-                                 Height="100"
-                                 VerticalAlignment="Center"
-                                 Visibility="{Binding Visibility}">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="/SJBCS.GUI;component/Image/check-icon.png"
-                                            Stretch="UniformToFill" />
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <Image Grid.Row="0"
+                               Source="/SJBCS.GUI;component/Image/check-icon.png"
+                               Stretch="UniformToFill"
+                               Width="125"
+                               Height="125"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                        <ProgressBar HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     IsIndeterminate="False"
+                                     Foreground="Green"
+                                     Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Width="150"
+                                     Height="150"
+                                     Value="{Binding Completion}" />
+                        <materialDesign:ColorZone Grid.Row="1"
+                                                  Mode="Standard"
+                                                  VerticalAlignment="Stretch"
+                                                  Margin="10">
+                            <StackPanel VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                <TextBlock FontFamily="Segoe UI"
+                                           MaxWidth="350"
+                                           TextWrapping="Wrap"
+                                           FontSize="12"
+                                           Foreground="Orange"
+                                           FontWeight="Regular"
+                                           Text="{Binding Instruction}"
+                                           Margin="10"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </materialDesign:ColorZone>
                     </Grid>
                     <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right"
@@ -80,6 +117,7 @@
                                 Margin="20">
                         <Button Command="materialDesign:DialogHost.CloseDialogCommand"
                                 IsCancel="True"
+                                Visibility="{Binding IsDone, Converter={StaticResource VisConverter}}"
                                 Style="{StaticResource MaterialDesignFlatButton}"
                                 Content="DONE">
                             <Button.CommandParameter>
@@ -90,7 +128,7 @@
                         <Button IsCancel="True"
                                 Margin="8 0 0 0"
                                 Style="{DynamicResource MaterialDesignFlatButton}"
-                                Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
                             <Button.CommandParameter>
                                 <system:Boolean>False</system:Boolean>
                             </Button.CommandParameter>

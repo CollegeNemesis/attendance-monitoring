@@ -31,7 +31,9 @@ namespace SJBCS.Services.Repository
 
         public Attendance GetAttendance(Guid id)
         {
-            return _context.Attendances.FirstOrDefault(r => r.StudentID == id);
+            var today = DateTime.Today;
+
+            return _context.Attendances.Where(a => a.StudentID == id && DbFunctions.TruncateTime(a.TimeIn) >= today).FirstOrDefault();
         }
 
         public List<Attendance> GetAttendances()

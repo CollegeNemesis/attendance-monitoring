@@ -8,11 +8,7 @@ using System.Threading.Tasks;
 
 namespace SJBCS.GUI.Dialogs
 {
-    public enum MessageType
-    {
-        Error,
-        Informational
-    };
+    
     public static class MessageDialog
     {
         public static bool isDialogOpen;

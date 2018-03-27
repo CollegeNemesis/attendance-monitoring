@@ -26,14 +26,17 @@
         xmlns:local="clr-namespace:SJBCS.GUI"
         xmlns:home="clr-namespace:SJBCS.GUI.Home"
         xmlns:student="clr-namespace:SJBCS.GUI.Student"
+        xmlns:report="clr-namespace:SJBCS.GUI.Report"
+        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
         xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
+        xmlns:dialog="clr-namespace:SJBCS.GUI.Dialogs"
         mc:Ignorable="d"
         Title="SJBCS"
         ResizeMode="NoResize"
         Icon="Image/clock-icon-png.png"
         WindowStartupLocation="CenterScreen"
         MinHeight="768"
-        MinWidth="1024">-->
+        MinWidth="1366">-->
     <Window.Resources>
         <DataTemplate DataType="{x:Type home:LoginViewModel}">
             <home:LoginView />
@@ -136,9 +139,12 @@
                 <ContentControl x:Name="Menu"
                                 Grid.Column="0"
                                 Content="{Binding Menu}" />
-                <ContentControl x:Name="CurrentView"
-                                Grid.Column="1"
-                                Content="{Binding CurrentViewModel}" />
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto"
+                              Grid.Column="1">
+                    <ContentControl x:Name="CurrentView"
+                                    Content="{Binding CurrentViewModel}" />
+                </ScrollViewer>
             </Grid>
             <Grid x:Name="Footer"
                   Grid.Row="3"

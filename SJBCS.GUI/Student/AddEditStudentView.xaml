@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:SJBCS.GUI.Student"
              xmlns:Data="clr-namespace:SJBCS.Data;assembly=SJBCS.Data"
              xmlns:validation="clr-namespace:SJBCS.GUI.Validation"
+             xmlns:student="clr-namespace:SJBCS.GUI.Student"
              xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
@@ -16,7 +17,10 @@
              d:DesignWidth="1128"
              x:Name="AddEditControl">
     <UserControl.Resources>
+        <DiscreteObjectKeyFrame x:Key="proxy"
+                                Value="{Binding ElementName=AddEditControl}" />
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
+        <converters:CountVisibilityConverter x:Key="CountConverter" />
         <converters:NegatableBooleanToVisibilityConverter x:Key="VisConverter" />
         <converters:NegatableBooleanToVisibilityConverter x:Key="NegVisConverter"
                                                           Negate="True" />
@@ -210,10 +214,10 @@
                                         Width="150"
                                         Height="38"
                                         HorizontalAlignment="Left">
-                                <DatePicker.Text>
+                                <DatePicker.SelectedDate>
                                     <Binding Path="BirthDate"
                                              ValidatesOnNotifyDataErrors="True" />
-                                </DatePicker.Text>
+                                </DatePicker.SelectedDate>
                             </DatePicker>
                         </StackPanel>
 
@@ -255,6 +259,8 @@
                             </TextBox.Text>
                         </TextBox>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="20 0 0 0">
                     <StackPanel Orientation="Horizontal"
                                 Margin="0 20 0 0"
                                 VerticalAlignment="Top">
@@ -303,7 +309,8 @@
                                                            VerticalAlignment="Center"
                                                            FontSize="16" />
                                                 <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                                        HorizontalAlignment="Left"                                                Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteContactCommand}"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteContactCommand}"
                                                         CommandParameter="{Binding}"
                                                         Margin="5 0 0 0">
                                                     <StackPanel Orientation="Horizontal">
@@ -324,9 +331,7 @@
                              Foreground="Red" />
                         </TextBlock>
                     </StackPanel>
-                </StackPanel>
-                <StackPanel Margin="20 0 0 0">
-                    <TextBlock Text="Clubs and Organizations"
+                    <!--<TextBlock Text="Clubs and Organizations"
                                Foreground="#B5B5B5"
                                FontFamily="Segoe UI"
                                FontWeight="Regular"
@@ -346,7 +351,7 @@
                                       ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Organizations}"
                                       DisplayMemberPath="OrganizationName"
                                       SelectedValuePath="OrganizationID"
-                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedGroupId, ValidatesOnNotifyDataErrors=False}" />
+                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedGroupId,TargetNullValue=''}" />
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                     HorizontalAlignment="Left"
                                     Background="#3D62B3"
@@ -370,7 +375,7 @@
                                       Height="100"
                                       Width="260"
                                       Margin="5 0 0 0">
-                            <ItemsControl ItemsSource="{Binding RelOrganizations}"
+                            <ItemsControl ItemsSource="{Binding Organizations}"
                                           Margin="5 0 0 0"
                                           BorderBrush="#3D62B3"
                                           BorderThickness=".5"
@@ -378,7 +383,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Organization.OrganizationName}"
+                                            <TextBlock Text="{Binding OrganizationName}"
                                                        FontFamily="Segoe UI"
                                                        FontWeight="Regular"
                                                        VerticalAlignment="Center"
@@ -397,7 +402,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                    </StackPanel>
+                    </StackPanel>-->
                     <TextBlock Text="Biometrics"
                                Foreground="#B5B5B5"
                                FontFamily="Segoe UI"
@@ -423,8 +428,35 @@
                                     HorizontalAlignment="Left"
                                     Background="#3D62B3"
                                     BorderBrush="Transparent"
-                                    Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteContactCommand}"
-                                    CommandParameter="{Binding}"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                    VerticalAlignment="Center"
+                                    Margin="5 10 0 0"
+                                    Padding="5"
+                                    Height="Auto"
+                                    Width="Auto"
+                                    IsEnabled="{Binding Biometrics.Count,Converter={StaticResource CountConverter}}"
+                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                    materialDesign:DialogHost.DialogOpenedAttached="DialogOpeningEventHandler"
+                                    materialDesign:DialogHost.DialogClosingAttached="DialogClosingEventHandler">
+                                <Button.CommandParameter>
+                                    <StackPanel>
+                                        <StackPanel.Resources>
+                                            <DataTemplate DataType="{x:Type student:EnrollBiometricsViewModel}">
+                                                <student:EnrollBiometricsView />
+                                            </DataTemplate>
+                                        </StackPanel.Resources>
+                                        <ContentControl Content="{Binding Value.DataContext.CurrentViewModel, Source={StaticResource proxy}}" />
+                                    </StackPanel>
+                                </Button.CommandParameter>
+                                <materialDesign:PackIcon Width="20"
+                                                         Height="20"
+                                                         Kind="Plus" />
+                            </Button>
+                            <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                    HorizontalAlignment="Left"
+                                    Background="#3D62B3"
+                                    BorderBrush="Transparent"
+                                    Command="{Binding ElementName=AddEditControl, Path=DataContext.EnrollBiometricCommand}"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     VerticalAlignment="Center"
                                     Margin="5 10 0 0"
@@ -434,7 +466,7 @@
                                 <materialDesign:PackIcon Width="20"
                                                          Height="20"
                                                          Kind="Plus" />
-                            </Button>
+                            </Button>-->
                         </StackPanel>
                         <ScrollViewer HorizontalScrollBarVisibility="Hidden"
                                       VerticalScrollBarVisibility="Auto"
@@ -442,7 +474,7 @@
                                       Height="100"
                                       Width="260"
                                       Margin="5 0 0 0">
-                            <ItemsControl ItemsSource="{Binding Contacts, ValidatesOnNotifyDataErrors=True}"
+                            <ItemsControl ItemsSource="{Binding Biometrics}"
                                           Margin="5 0 0 0"
                                           BorderBrush="#3D62B3"
                                           BorderThickness=".5"
@@ -450,7 +482,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ContactNumber}"
+                                            <TextBlock Text="{Binding FingerName}"
                                                        FontFamily="Segoe UI"
                                                        FontWeight="Regular"
                                                        VerticalAlignment="Center"
@@ -458,7 +490,7 @@
                                             <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                                     HorizontalAlignment="Left"
                                                     Margin="5 0 0 0"
-                                                    Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteContactCommand}"
+                                                    Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteBiometricCommand}"
                                                     CommandParameter="{Binding}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Delete" />
@@ -534,7 +566,7 @@
                                         VerticalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Plus"
                                                          VerticalAlignment="Center"
-                                                         Margin="5"/>
+                                                         Margin="5" />
                                 <TextBlock Text="Add"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -573,386 +605,5 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-
-        <!--<Grid x:Name="AddEditGrid"
-              DataContext="{Binding Student}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Column="0"
-                  Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                -->
-        <!-- Student ID -->
-        <!--
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Student ID" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <TextBox Grid.Row="0"
-                         Grid.Column="2"
-                         materialDesign:HintAssist.Hint="Student ID"
-                         materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Left"
-                         Width="200">
-                    <TextBox.Text>
-                        <Binding Path="StudentID"
-                                 ValidatesOnNotifyDataErrors="True" />
-                    </TextBox.Text>
-                </TextBox>
-                -->
-        <!-- Name -->
-        <!--
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Name" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="1"
-                            Grid.Column="2">
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding FirstName, ValidatesOnNotifyDataErrors=True}" />
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding MiddleName}" />
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding LastName, ValidatesOnNotifyDataErrors=True}" />
-                </StackPanel>
-                -->
-        <!-- Level & Section -->
-        <!--
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Level" />
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="2"
-                            Grid.Column="2">
-                    <ComboBox Margin="5"
-                              HorizontalAlignment="Left"
-                              Width="200"
-                              ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Levels}"
-                              DisplayMemberPath="GradeLevel"
-                              SelectedValuePath="LevelID"
-                              SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedLevelId}" />
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Margin="5"
-                               Text="Section" />
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="1"
-                               Margin="5"
-                               Text=":" />
-                    <ComboBox Margin="5"
-                              HorizontalAlignment="Left"
-                              Width="200"
-                              ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Sections}"
-                              DisplayMemberPath="SectionName"
-                              SelectedValuePath="SectionID"
-                              SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedSectionId}" />
-
-                </StackPanel>
-                -->
-        <!-- Birthdate -->
-        <!--
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Birthdate" />
-                <TextBlock Grid.Row="3"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <DatePicker Grid.Row="3"
-                            Grid.Column="2"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Width="200"
-                            SelectedDate="{Binding BirthDate}" />
-                -->
-        <!-- Gender -->
-        <!--
-                <TextBlock Grid.Row="4"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Gender" />
-                <TextBlock Grid.Row="4"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <ComboBox Grid.Row="4"
-                          Grid.Column="2"
-                          Margin="5"
-                          HorizontalAlignment="Left"
-                          Width="200"
-                          Text="{Binding Gender}">
-                    <ComboBoxItem>Male</ComboBoxItem>
-                    <ComboBoxItem>Female</ComboBoxItem>
-                </ComboBox>
-                -->
-        <!-- Address -->
-        <!--
-                <TextBlock Grid.Row="5"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Address" />
-                <TextBlock Grid.Row="5"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="5"
-                            Grid.Column="2">
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding Street}" />
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding City}" />
-                    <TextBox Width="200"
-                             Margin="5"
-                             HorizontalAlignment="Left"
-                             Text="{Binding State}" />
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Column="1"
-                  Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                -->
-        <!-- Avatar -->
-        <!--
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Avatar" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="0"
-                            Grid.Column="2">
-                    <TextBlock Width="100"
-                               Margin="5"
-                               HorizontalAlignment="Left"
-                               Text="{Binding ElementName=AddEditControl, Path=DataContext.SelectedImage}" />
-                    <Button Width="Auto"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Content="Select picture"
-                            Command="{Binding ElementName=AddEditControl, Path=DataContext.OpenFileCommand}" />
-                </StackPanel>
-                -->
-        <!-- Contact -->
-        <!--
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Contact" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Grid.Row="1"
-                            Grid.Column="2">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Width="Auto"
-                                Margin="5"
-                                HorizontalAlignment="Left"
-                                Content="ADD"
-                                Command="{Binding ElementName=AddEditControl, Path=DataContext.AddContactCommand}" />
-                        <ItemsControl Grid.Row="7"
-                                      Grid.Column="2"
-                                      Margin="5"
-                                      ItemsSource="{Binding Contacts, ValidatesOnNotifyDataErrors=True}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Width="100"
-                                                   Margin="5"
-                                                   HorizontalAlignment="Left"
-                                                   Text="{Binding ContactNumber}" />
-                                        <Button Width="Auto"
-                                                Margin="5"
-                                                HorizontalAlignment="Left"
-                                                Content="DELETE"
-                                                Command="{Binding ElementName=AddEditControl, Path=DataContext.DeleteContactCommand}"
-                                                CommandParameter="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </StackPanel>
-                -->
-        <!-- Contact -->
-        <!--
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Group" />
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Grid.Row="2"
-                            Grid.Column="2">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Width="Auto"
-                                Margin="5"
-                                HorizontalAlignment="Left"
-                                Content="ADD"
-                                Command="{Binding ElementName=AddEditControl, Path= DataContext.AddGroupCommand}" />
-                        <ItemsControl Grid.Row="7"
-                                      Grid.Column="2"
-                                      Margin="5"
-                                      ItemsSource="{Binding RelOrganizations}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Width="100"
-                                                   Margin="5"
-                                                   HorizontalAlignment="Left"
-                                                   Text="{Binding Organization.OrganizationName}" />
-                                        <Button Width="Auto"
-                                                Margin="5"
-                                                HorizontalAlignment="Left"
-                                                Content="DELETE"
-                                                Command="{Binding ElementName=AddEditControl, Path= DataContext.DeleteGroupCommand}"
-                                                CommandParameter="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-
-                </StackPanel>
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="Biometrics" />
-                <TextBlock Grid.Row="3"
-                           Grid.Column="1"
-                           Margin="5"
-                           Text=":" />
-                <StackPanel Grid.Row="3"
-                            Grid.Column="2">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Width="Auto"
-                                Margin="5"
-                                HorizontalAlignment="Left"
-                                Content="ADD"
-                                Command="{Binding ElementName=AddEditControl, Path= DataContext.EnrollBiometricCommand}" />
-                        <ItemsControl Grid.Row="7"
-                                      Grid.Column="2"
-                                      Margin="5"
-                                      ItemsSource="{Binding RelBiometrics}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Width="100"
-                                                   Margin="5"
-                                                   HorizontalAlignment="Left"
-                                                   Text="{Binding Biometric.FingerName}" />
-                                        <Button Width="Auto"
-                                                Margin="5"
-                                                HorizontalAlignment="Left"
-                                                Content="DELETE"
-                                                Command="{Binding ElementName=AddEditControl, Path= DataContext.DeleteBiometricCommand}"
-                                                CommandParameter="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-
-                </StackPanel>
-            </Grid>
-            -->
-        <!-- Buttons -->
-        <!--
-            <Grid Grid.Row="1"
-                  Grid.ColumnSpan="2">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <Button Grid.Row="8"
-                            Grid.Column="0"
-                            Width="Auto"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Content="SAVE"
-                            Visibility="{Binding ElementName=AddEditControl, Path=DataContext.EditMode, Converter={StaticResource VisConverter}}"
-                            Command="{Binding ElementName=AddEditControl, Path=DataContext.SaveCommand}" />
-                    <Button Grid.Row="8"
-                            Grid.Column="1"
-                            Width="Auto"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Content="ADD"
-                            Visibility="{Binding ElementName=AddEditControl, Path=DataContext.EditMode, Converter={StaticResource NegVisConverter}}"
-                            Command="{Binding ElementName=AddEditControl, Path=DataContext.SaveCommand}" />
-                    <Button Grid.Row="8"
-                            Grid.Column="2"
-                            Width="Auto"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Content="CANCEL"
-                            Command="{Binding ElementName=AddEditControl, Path=DataContext.CancelCommand}" />
-                </StackPanel>
-            </Grid>
-        </Grid>-->
     </materialDesign:ColorZone>
 </UserControl>

@@ -16,16 +16,25 @@ namespace SJBCS.GUI.Student
     {
         delegate void Function();
 
-        private int counter;
+        private bool IsInitial;
+
         private IBiometricsRepository _biometricsRepository;
         private IRelBiometricsRepository _relBiometricsRepository;
-
 
         private DPFP.Template Template;
         private DPFP.Processing.Enrollment Enroller;
         private Verification Verificator;
 
         private bool IsFingerEnrolled;
+
+        private bool isDone;
+
+        public bool IsDone
+        {
+            get { return isDone; }
+            set { SetProperty(ref isDone, value); }
+        }
+
 
         private Biometric _biometric;
 
@@ -43,12 +52,28 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref _biometrics, value); }
         }
 
-        private string _scanner;
+        private int _completion;
 
-        public string Scanner
+        public int Completion
         {
-            get { return _scanner; }
-            set { SetProperty(ref _scanner, value); }
+            get { return _completion; }
+            set { SetProperty(ref _completion, value); }
+        }
+
+        private string _notification;
+
+        public string Notification
+        {
+            get { return _notification; }
+            set { SetProperty(ref _notification, value); }
+        }
+
+        private string _instruction;
+
+        public string Instruction
+        {
+            get { return _instruction; }
+            set { SetProperty(ref _instruction, value); }
         }
 
         private string _status;
@@ -63,16 +88,26 @@ namespace SJBCS.GUI.Student
         {
             _biometricsRepository = biometricsRepository;
             _relBiometricsRepository = relBiometricsRepository;
+        }
+
+        private void Initialize()
+        {
+            IsFingerEnrolled = false;
+            IsInitial = true;
+            IsDone = false;
 
             Biometrics = new ObservableCollection<Biometric>(_biometricsRepository.GetBiometrics());
             Biometric = new Biometric();
-            IsFingerEnrolled = false;
 
-            counter = 0;
+            Status = "Let\'s start";
+            Notification = "Put your finger on the sensor and lift after you see next instruction.";
+            Instruction = "";
 
-            Start();
+            Completion = 0;
+
+            Enroller = new DPFP.Processing.Enrollment();    // Create an enrollment.
+
         }
-
 
         protected override void Process(DPFP.Sample Sample)
         {
@@ -88,9 +123,11 @@ namespace SJBCS.GUI.Student
                 MemoryStream fingerprintData = null;
                 Result result = null;
 
-                //Check first if finger is already enrolled
+                //Check if finger is already enrolled
                 foreach (Biometric biometric in Biometrics)
                 {
+                    features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
+
                     fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
                     Template = new Template(fingerprintData);
                     result = new Result();
@@ -105,14 +142,23 @@ namespace SJBCS.GUI.Student
                         break;
                     }
                 }
+
+                //Check user try to enroll duplicate finger at one transaction.
+
                 if (!IsFingerEnrolled)
                 {
                     Verificator = new DPFP.Verification.Verification();
-                    Enroller = new DPFP.Processing.Enrollment();    // Create an enrollment.
+
+                    features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
 
                     try
                     {
                         Enroller.AddFeatures(features);     // Add feature set to template.
+                        Completion += 25;
+
+                        Status = "Great. Now repeat.";
+                        Instruction = "Move your finger slightly to add all different parts of your fingerprint.";
+                        Notification = "Lift finger, then touch the sensor again. Completion - " + Completion + "%.";
                     }
                     finally
                     {
@@ -124,19 +170,38 @@ namespace SJBCS.GUI.Student
                             case DPFP.Processing.Enrollment.Status.Ready:   // report success and stop capturing
                                 OnTemplate(Enroller.Template);
                                 Stop();
+                                Status = "Fingerprint enrolled.";
+                                Instruction = "Fingerprint enrollment completed succesfully. You may close this window.";
+                                IsDone = true;
                                 break;
 
                             case DPFP.Processing.Enrollment.Status.Failed:  // report failure and restart capturing
                                 Enroller.Clear();
                                 Stop();
                                 OnTemplate(null);
+
+                                Status = "Fingerprint not enrolled.";
+                                Instruction = "Fingerprint enrollment not completed succesfully. Please try again.";
+
+                                Notification = "Put your finger on the sensor again and lift after you see next instruction.";
+                                Instruction = "";
+                                Completion = 0;
+
                                 Start();
                                 break;
                         }
                     }
                 }
+                else
+                {
+
+                    SwitchOff();
+
+                    Status = "Finger has been enrolled already. Please try a another finger.";
+
+                    Start();
+                }
             }
-            Status = "Scanning " + ++counter;
 
         }
 
@@ -154,7 +219,7 @@ namespace SJBCS.GUI.Student
                 Biometric.FingerID = Guid.NewGuid();
                 Biometric.FingerPrintTemplate = bytes;
 
-                Status = "Done";
+                Stop();
 
             }
             else
@@ -165,29 +230,33 @@ namespace SJBCS.GUI.Student
 
         public override void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
-            Scanner = "Scanner connected.";
-
+            if (!IsInitial)
+            {
+                Status = "Scanner reconnected.";
+                Notification = "Put your finger on the sensor and lift after you see next instruction.";
+                Instruction = "";
+            }
         }
 
         public override void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
         {
-            Scanner = "Scanner disconnected.";
+            Status = "Scanner disconnected. Unable to capture finger.";
+            Notification = "Reconnect the scanner to resume finger enrollment.";
+            Instruction = "";
+            IsInitial = false;
+
         }
 
         public void SwitchOff()
         {
-            Verificator = new DPFP.Verification.Verification();
             Stop();
+            Initialize();
         }
 
         public void SwitchOn()
         {
+            Initialize();
             Start();
-        }
-
-        protected override void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-            SwitchOff();
         }
     }
 }

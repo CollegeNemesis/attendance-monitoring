@@ -12,9 +12,22 @@ namespace SJBCS.GUI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string state = (string)value;
+            if (value == null)
+                return null;
+
+            string state = value.ToString();
+
             switch (state)
             {
+                case "Error":
+                    return "MessageAlert";
+
+                case "Information":
+                    return "Information";
+
+                case "Warning":
+                    return "CommentAlert";
+
                 case "Connected":
                     return "CheckCircle";
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AMS.Utilities;
+using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity;
 
 namespace SJBCS.GUI.Student
 {
@@ -23,6 +26,20 @@ namespace SJBCS.GUI.Student
         public AddEditStudentView()
         {
             InitializeComponent();
+        }
+
+        public void DialogOpeningEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        {
+            ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOn();
+        }
+
+        public void DialogClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if (((AddEditStudentViewModel)DataContext).CurrentViewModel.IsDone)
+                ((AddEditStudentViewModel)DataContext).OnEnrollBiometric(((AddEditStudentViewModel)DataContext).CurrentViewModel.Biometric);
+
+            ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOff();
+            Console.WriteLine("Closed.");
         }
     }
 }

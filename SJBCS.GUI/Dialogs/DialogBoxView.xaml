@@ -4,43 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
+             xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              xmlns:local="clr-namespace:SJBCS.GUI.Dialogs"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="16">
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
+        <converters:ColorConverter x:Key="ColorConverter" />
+        <converters:IconConverter x:Key="IconConverter" />
+        <converters:NegatableStringToVisibilityConverter x:Key="VisConverter" />
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily"
+                    Value="Segoe UI" />
+            <Setter Property="FontWeight"
+                    Value="Regular" />
+            <Setter Property="FontSize"
+                    Value="12" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Width="300"
+          Height="150"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock wpf:HintAssist.Hint="Number"
-                 x:Name="Contact"
-                 Text="{Binding Message}"
-                 Margin="0 8 0 0"
-                 FontSize="16"
-                 Grid.Row="1" />
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="3"
-                    HorizontalAlignment="Center">
-            <Button IsCancel="False"
-                    Margin="8 0 0 0"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="5">
+            <materialDesign:PackIcon Kind="{Binding MessageType, Converter={StaticResource IconConverter}}"
+                                     Foreground="{Binding MessageType, Converter={StaticResource ColorConverter}}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Margin="10"
+                                     Width="25"
+                                     Height="25"/>
+            <TextBlock Foreground="#B5B5B5"
+                       FontFamily="Segoe UI"
+                       FontWeight="Regular"
+                       Width="200"
+                       FontSize="12"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Text="{Binding Message}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="70,0"
+                    Grid.Row="1">
+            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                    HorizontalAlignment="Left"
+                    IsCancel="False"
+                    Foreground="#3D62B3"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="OK"
+                               VerticalAlignment="Center" />
+                </StackPanel>
                 <Button.CommandParameter>
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
-                OK
             </Button>
-            <Button IsCancel="True"
-                    Margin="8 0 0 0"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                    HorizontalAlignment="Left"
+                    IsCancel="True"
+                    Foreground="#3D62B3"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Visibility="{Binding MessageType, Converter={StaticResource VisConverter}}">
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="CANCEL"
+                               VerticalAlignment="Center" />
+                </StackPanel>
                 <Button.CommandParameter>
                     <system:Boolean>False</system:Boolean>
                 </Button.CommandParameter>
-                CANCEL
             </Button>
         </StackPanel>
     </Grid>

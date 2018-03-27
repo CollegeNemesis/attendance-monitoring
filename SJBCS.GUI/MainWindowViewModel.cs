@@ -68,8 +68,8 @@ namespace SJBCS.GUI
             _smsViewModel = ContainerHelper.Container.Resolve<SmsViewModel>();
             _addEditStudentViewModel = ContainerHelper.Container.Resolve<AddEditStudentViewModel>();
 
-            _currentViewModel = _studentViewModel;
-            _menu = _menuViewModel;
+            _currentViewModel = _loginViewModel;
+            _menu = null;
 
             _addEditStudentViewModel.EditMode = false;
 
@@ -121,17 +121,19 @@ namespace SJBCS.GUI
 
         private void NavToAddStudent(Data.Student selectedStudent)
         {
+            _attendanceViewModel.SwitchOff();
             _addEditStudentViewModel.EditMode = false;
             _addEditStudentViewModel.SetStudent(selectedStudent);
-            _attendanceViewModel.SwitchOff();
+            _addEditStudentViewModel.Initialize();
             CurrentViewModel = _addEditStudentViewModel;
         }
 
         private void NavToEditStudent(Data.Student selectedStudent)
         {
+            _attendanceViewModel.SwitchOff();
             _addEditStudentViewModel.EditMode = true;
             _addEditStudentViewModel.SetStudent(selectedStudent);
-            _attendanceViewModel.SwitchOff();
+            _addEditStudentViewModel.Initialize();
             CurrentViewModel = _addEditStudentViewModel;
         }
         private void NavToMenu(User user)

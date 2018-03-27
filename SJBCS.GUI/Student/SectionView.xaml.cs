@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,15 @@ namespace SJBCS.GUI.Student
         public SectionView()
         {
             InitializeComponent();
+        }
+
+        public void DialogOpeningEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        {
+        }
+
+        public void DialogClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+            ((SectionViewModel)DataContext).Initialize();
         }
     }
 }
