@@ -8,18 +8,16 @@ namespace SJBCS.SMS
     {
         private SMSImpl smsImpl = new SMSImpl();
 
-        public ResponseData acknowledgeSMS(AcknowledgeRequestData rData)
+        public bool acknowledgeSMS(AcknowledgeRequestData rData)
         {
             bool ret = smsImpl.UpdateSMSStatus(rData.id, rData.state);
-            var response = new ResponseData { Response = ret.ToString() };
-            return response;
+            return ret;
         }
 
-        public ResponseData sendSMS(SendRequestData rData)
+        public bool sendSMS(SendRequestData rData)
         {
             bool ret = smsImpl.SendSMS(rData);
-            var response = new ResponseData { Response = ret.ToString() };
-            return response;
+            return ret;
         }
 
         public string testServer()

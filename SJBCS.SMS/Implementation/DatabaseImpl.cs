@@ -1,11 +1,12 @@
-﻿using SJBCS.SMS.Logging;
-using System;
+﻿using System;
 using System.Data.SqlClient;
 
 namespace SJBCS.SMS.Implementation
 {
     public class DatabaseImpl
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static SqlConnection open()
         {
             SqlConnection connection = new SqlConnection();
@@ -41,18 +42,18 @@ namespace SJBCS.SMS.Implementation
                     return 0;
                 }
 
-                SqlCommand selectCommand = new SqlCommand("SELECT TimeInSMSID, TimeOutSMSID FROM Attendance WHERE AttendanceID = @0", connection);
+                SqlCommand selectCommand = new SqlCommand("SELECT TimeIn, TimeOut FROM Attendance WHERE AttendanceID = @0", connection);
                 selectCommand.Parameters.Add(new SqlParameter("0", attendanceID));
 
                 using (SqlDataReader reader = selectCommand.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (String.IsNullOrEmpty(reader[0].ToString()))
+                        if (!String.IsNullOrEmpty(reader[0].ToString()) && String.IsNullOrEmpty(reader[1].ToString()))
                         {
                             columnName = "TimeInSMSID";
                         }
-                        else if (String.IsNullOrEmpty(reader[1].ToString()))
+                        else if (!String.IsNullOrEmpty(reader[0].ToString()) && !String.IsNullOrEmpty(reader[1].ToString()))
                         {
                             columnName = "TimeOutSMSID";
                         }
@@ -69,11 +70,11 @@ namespace SJBCS.SMS.Implementation
             }
             catch(SqlException e)
             {
-                Log.ERROR("Failed to update database", e);
+                Logger.Error("Failed to update database", e);
             }
             catch (Exception e)
             {
-                Log.ERROR("Exception encountered", e);
+                Logger.Error("Exception encountered", e);
             }
             finally
             {
@@ -125,11 +126,11 @@ namespace SJBCS.SMS.Implementation
             }
             catch (SqlException e)
             {
-                Log.ERROR("Failed to update database", e);
+                Logger.Error("Failed to update database", e);
             }
             catch (Exception e)
             {
-                Log.ERROR("Exception encountered", e);
+                Logger.Error("Exception encountered", e);
             }
             finally
             {

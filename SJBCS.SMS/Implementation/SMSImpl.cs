@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using SJBCS.SMS.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,6 +8,8 @@ namespace SJBCS.SMS.Implementation
 {
     public class SMSImpl
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public bool SendSMS(SendRequestData requestData)
         {
             bool ret = false;
@@ -32,17 +33,17 @@ namespace SJBCS.SMS.Implementation
                     {
                         int rowsAffected = DatabaseImpl.updateAttendanceSMSID(requestData.AttendanceID, smsID);
                         ret = rowsAffected > 0;
-                        Log.DEBUG("Update SMS ID rows affected: " + rowsAffected);
+                        Logger.Debug("Update SMS ID rows affected: " + rowsAffected);
                     }
                 }
                 else
                 {
-                    Log.ERROR("Failed to send SMS: " + response.ErrorMessage);
+                    Logger.Error("Failed to send SMS: " + response.ErrorMessage);
                 }
             }
             catch (Exception error)
             {
-                Log.ERROR("Error encountered when sending SMS: ", error);
+                Logger.Error("Error encountered when sending SMS: ", error);
             }
 
             return ret;
@@ -53,7 +54,7 @@ namespace SJBCS.SMS.Implementation
             bool ret;
             int rowsAffected = DatabaseImpl.updateAttendaceSMSStatus(smsID, status);
             ret = rowsAffected > 0;
-            Log.DEBUG("Update status rows affected: " + rowsAffected);
+            Logger.Debug("Update status rows affected: " + rowsAffected);
 
             return ret;
         }

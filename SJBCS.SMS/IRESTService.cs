@@ -20,7 +20,7 @@ namespace SJBCS.SMS
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "AcknowledgeSMS")]
-        ResponseData acknowledgeSMS(AcknowledgeRequestData rData);
+        bool acknowledgeSMS(AcknowledgeRequestData rData);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -28,7 +28,7 @@ namespace SJBCS.SMS
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "SendSMS")]
-        ResponseData sendSMS(SendRequestData AttendanceID);
+        bool sendSMS(SendRequestData AttendanceID);
     }
 
     [DataContract]
@@ -55,12 +55,5 @@ namespace SJBCS.SMS
         public string Number { get; set; }
         [DataMember]
         public string URL { get; set; }
-    }
-
-    [DataContract]
-    public class ResponseData
-    {
-        [DataMember]
-        public string Response { get; set; }
     }
 }
