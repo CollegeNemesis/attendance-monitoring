@@ -1,25 +1,17 @@
 ﻿using AMS.Utilities;
-using SJBCS.GUI.Dialogs;
 using DPFP;
 using DPFP.Verification;
-using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 using static DPFP.Verification.Verification;
 using SJBCS.Data;
 using SJBCS.Services.Repository;
+using SJBCS.SMS;
+using System.ServiceModel;
+using RestSharp;
+using System.Net;
 
 namespace SJBCS.GUI.AMS
 {
@@ -177,6 +169,8 @@ namespace SJBCS.GUI.AMS
                                             _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
 
                                         });
+
+                                        ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime) _attendance.TimeOut);
                                         Remarks = "Student logged out.";
                                     }
                                     else
@@ -218,6 +212,7 @@ namespace SJBCS.GUI.AMS
                                     _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
                                 });
 
+                                ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn);
                                 Remarks = "Student logged in.";
                             }
 
@@ -281,6 +276,55 @@ namespace SJBCS.GUI.AMS
         {
             Initialize();
             Start();
+        }
+
+        private void ProcessSMSIntegration(string attendanceID, bool isTimeIn, DateTime time)
+        {
+            foreach (Contact contact in _student.Contacts)
+            {
+                string text = String.Format("STJOHNBCS Messaging:\nPlease be informed that {0} {1} St. John the Baptist Catholic School at {2:h:mm tt}.",
+                    _student.FirstName, isTimeIn ? "ENTERED" : "EXITED", time);
+
+                SendSMS(attendanceID, text, contact.ContactNumber);
+            }
+        }
+
+        private void SendSMS(string attendaceID, string text, string number)
+        {
+            try
+            {
+                RestClient client = new RestClient("http://localhost:54000/RESTService.svc/SendSMS");
+                RestRequest request = new RestRequest(Method.POST);
+                request.AddJsonBody(new
+                {
+                    AttendanceID = attendaceID,
+                    Text = text,
+                    Number = number,
+                    URL = "http://192.168.0.11:8080/"
+                });
+                client.ExecuteAsync(request, response =>
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        if (Boolean.Parse(response.Content))
+                        {
+                            // success
+                        }
+                        else
+                        {
+                            // fail
+                        }
+                    }
+                    else
+                    {
+                        // fail
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

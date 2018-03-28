@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using AMS.Utilities;
 using SJBCS.Data;
 using SJBCS.GUI.AMS;
@@ -9,6 +11,7 @@ using SJBCS.GUI.Report;
 using SJBCS.GUI.SMS;
 using SJBCS.GUI.Student;
 using SJBCS.Services.Repository;
+using SJBCS.SMS;
 using Unity;
 
 namespace SJBCS.GUI
@@ -85,6 +88,8 @@ namespace SJBCS.GUI
             _studentViewModel.EditStudentRequested += NavToEditStudent;
 
             _addEditStudentViewModel.Done += NavToStudent;
+
+            RunSMSService();
         }
 
         private void NavToReport()
@@ -153,6 +158,26 @@ namespace SJBCS.GUI
                 CurrentViewModel = null;
             }
 
+        }
+
+        private void RunSMSService()
+        {
+            Uri baseAddress = new Uri("http://localhost:54000/RESTService.svc");
+            ServiceHost selfHost = new ServiceHost(typeof(RESTService), baseAddress);
+
+            try
+            {
+                selfHost.AddServiceEndpoint(typeof(IRESTService), new WSHttpBinding(), "RESTService");
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                smb.HttpGetEnabled = true;
+                selfHost.Description.Behaviors.Add(smb);
+                selfHost.Open();
+            }
+            catch (CommunicationException ce)
+            {
+                Console.WriteLine("An exception occurred: {0}", ce.Message);
+                selfHost.Abort();
+            }
         }
     }
 }
