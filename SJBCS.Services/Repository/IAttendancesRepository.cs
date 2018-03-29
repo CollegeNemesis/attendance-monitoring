@@ -10,7 +10,8 @@ namespace SJBCS.Services.Repository
     public interface IAttendancesRepository
     {
         List<Attendance> GetAttendances();
-        Attendance GetAttendance(Guid id);
+        Attendance GetAttendanceByStudentID(Guid id);
+        Attendance GetAttendanceByID(Guid id);
         Attendance AddAttendance(Attendance Attendance);
         Attendance UpdateAttendance(Attendance Attendance);
         void DeleteAttendance(Guid id);

@@ -8,10 +8,7 @@ using System.IO;
 using static DPFP.Verification.Verification;
 using SJBCS.Data;
 using SJBCS.Services.Repository;
-using SJBCS.SMS;
-using System.ServiceModel;
-using RestSharp;
-using System.Net;
+using SJBCS.GUI.SMS;
 
 namespace SJBCS.GUI.AMS
 {
@@ -121,7 +118,7 @@ namespace SJBCS.GUI.AMS
                         {
                             _student = _studentsRepository.GetStudent(_relBiometric.StudentID);
                             Student = _student;
-                            _attendance = _attendancesRepository.GetAttendance(_student.StudentGuid);
+                            _attendance = _attendancesRepository.GetAttendanceByStudentID(_student.StudentGuid);
 
                             if (_attendance != null)    //Check if student has already logged in for the day.
                             {
@@ -285,45 +282,26 @@ namespace SJBCS.GUI.AMS
                 string text = String.Format("STJOHNBCS Messaging:\nPlease be informed that {0} {1} St. John the Baptist Catholic School at {2:h:mm tt}.",
                     _student.FirstName, isTimeIn ? "ENTERED" : "EXITED", time);
 
-                SendSMS(attendanceID, text, contact.ContactNumber);
-            }
-        }
+                SMSUtility.SendSMS(text, contact.ContactNumber, attendanceID, response =>
+                {
+                    Attendance attendanceObj = _attendancesRepository.GetAttendanceByID(Guid.Parse(response[1]));
 
-        private void SendSMS(string attendaceID, string text, string number)
-        {
-            try
-            {
-                RestClient client = new RestClient("http://localhost:54000/RESTService.svc/SendSMS");
-                RestRequest request = new RestRequest(Method.POST);
-                request.AddJsonBody(new
-                {
-                    AttendanceID = attendaceID,
-                    Text = text,
-                    Number = number,
-                    URL = "http://192.168.0.11:8080/"
-                });
-                client.ExecuteAsync(request, response =>
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    if ((isTimeIn && !String.IsNullOrEmpty(attendanceObj.TimeInSMSID)) ||
+                        (!isTimeIn && !String.IsNullOrEmpty(attendanceObj.TimeOutSMSID)))
                     {
-                        if (Boolean.Parse(response.Content))
-                        {
-                            // success
-                        }
-                        else
-                        {
-                            // fail
-                        }
+                        return;
+                    }
+
+                    if (isTimeIn)
+                    {
+                        attendanceObj.TimeInSMSID = response[0];
                     }
                     else
                     {
-                        // fail
+                        attendanceObj.TimeOutSMSID = response[0];
                     }
+                    _attendancesRepository.UpdateAttendance(attendanceObj);
                 });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
     }

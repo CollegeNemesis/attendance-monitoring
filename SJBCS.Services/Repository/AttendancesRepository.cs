@@ -29,11 +29,16 @@ namespace SJBCS.Services.Repository
             _context.SaveChanges();
         }
 
-        public Attendance GetAttendance(Guid id)
+        public Attendance GetAttendanceByStudentID(Guid studentID)
         {
             var today = DateTime.Today;
 
-            return _context.Attendances.Where(a => a.StudentID == id && DbFunctions.TruncateTime(a.TimeIn) >= today).FirstOrDefault();
+            return _context.Attendances.Where(a => a.StudentID == studentID && DbFunctions.TruncateTime(a.TimeIn) >= today).FirstOrDefault();
+        }
+
+        public Attendance GetAttendanceByID(Guid attendanceID)
+        {
+            return _context.Attendances.Where(a => a.AttendanceID == attendanceID).FirstOrDefault();
         }
 
         public List<Attendance> GetAttendances()
