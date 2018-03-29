@@ -8,7 +8,7 @@ namespace SJBCS.Services.Repository
 {
     public class UsersRepository : IUsersRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public User AddUser(User User)
         {

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace SJBCS.GUI.Validation
 {
-    public class PhoneValidationRule : ValidationAttribute
+    public class PHPhone : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

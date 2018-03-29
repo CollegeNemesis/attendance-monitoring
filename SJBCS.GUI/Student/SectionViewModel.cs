@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace SJBCS.GUI.Student
@@ -21,7 +19,6 @@ namespace SJBCS.GUI.Student
         private IStudentsRepository _studentsRepository;
 
         private AddSectionViewModel currentViewModel;
-
         public AddSectionViewModel CurrentViewModel
         {
             get { return currentViewModel; }
@@ -29,96 +26,20 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Level> _levels;
-
         public ObservableCollection<Level> Levels
         {
             get { return _levels; }
             set { SetProperty(ref _levels, value); }
         }
 
-        private bool _editMode;
-
-        public bool EditMode
-        {
-            get { return _editMode; }
-            set { SetProperty(ref _editMode, value); }
-        }
-
-        private EditableSection editableSection;
-
-        public EditableSection EditableSection
-        {
-            get { return editableSection; }
-            set
-            {
-                SetProperty(ref editableSection, value);
-            }
-        }
-
-        private Section _selectedSection;
-
-        public Section SelectedSection
-        {
-            get
-            {
-                return _selectedSection;
-            }
-            set
-            {
-                SetProperty(ref _selectedSection, value);
-                EditCommand.RaiseCanExecuteChanged();
-                DeleteCommand.RaiseCanExecuteChanged();
-            }
-        }
-        private Section _editingSection;
-
-        private void SetSection(Section section)
-        {
-            _editingSection = section;
-
-            if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;
-
-            EditableSection = new EditableSection();
-            EditableSection.ErrorsChanged += RaiseCanExecuteChanged;
-
-            CopySection(section, EditableSection);
-        }
-
-
-
-        public void AddSection(EditableSection source)
-        {
-            Section target = new Section();
-
-            target.LevelID = source.LevelID;
-            target.SectionID = source.SectionID;
-            target.SectionName = source.SectionName;
-            target.StartTime = DateTime.Parse(source.StartTime).TimeOfDay;
-            target.EndTime = DateTime.Parse(source.EndTime).TimeOfDay;
-
-            _sectionsRepository.AddSection(target);
-
-        }
-
-        private void CopySection(Section source, EditableSection target)
-        {
-            target.SectionID = source.SectionID;
-            target.LevelID = source.LevelID;
-
-            target.SectionName = source.SectionName;
-            target.StartTime = source.StartTime.ToString();
-            target.EndTime = source.EndTime.ToString();
-        }
-
         private ObservableCollection<Section> _sections;
-
         public ObservableCollection<Section> Sections
         {
             get { return _sections; }
             set { SetProperty(ref _sections, value); }
         }
-        private Guid _selectedLevelId;
 
+        private Guid _selectedLevelId;
         public Guid SelectedLevelId
         {
             get { return _selectedLevelId; }
@@ -136,7 +57,6 @@ namespace SJBCS.GUI.Student
         }
 
         private Guid _selectedSectionId;
-
         public Guid SelectedSectionId
         {
             get { return _selectedSectionId; }
@@ -147,6 +67,65 @@ namespace SJBCS.GUI.Student
                 {
                 }
             }
+        }
+        private bool _editMode;
+
+        public bool EditMode
+        {
+            get { return _editMode; }
+            set { SetProperty(ref _editMode, value); }
+        }
+
+        private EditableSection editableSection;
+        public EditableSection EditableSection
+        {
+            get { return editableSection; }
+            set
+            {
+                SetProperty(ref editableSection, value);
+            }
+        }
+
+        private Section _selectedSection;
+        public Section SelectedSection
+        {
+            get
+            {
+                return _selectedSection;
+            }
+            set
+            {
+                SetProperty(ref _selectedSection, value);
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private Section _editingSection;
+
+        private void SetSection(Section section)
+        {
+            _editingSection = section;
+
+            if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;
+
+            EditableSection = new EditableSection();
+            EditableSection.ErrorsChanged += RaiseCanExecuteChanged;
+
+            CopySection(section, EditableSection);
+        }
+
+        private void CopySection(Section source, EditableSection target)
+        {
+            target.SectionID = source.SectionID;
+            target.LevelID = source.LevelID;
+            target.Levels = Levels;
+            target.Level = _levelsRepository.GetLevel(SelectedLevelId);
+
+            target.OrigSectionName = source.SectionName;
+            target.SectionName = source.SectionName;
+            target.StartTime = source.StartTime.ToString();
+            target.EndTime = source.EndTime.ToString();
         }
 
         public RelayCommand EditCommand { get; private set; }
@@ -265,7 +244,6 @@ namespace SJBCS.GUI.Student
         private void PopulateLevelComboBox()
         {
             SelectedLevelId = Levels[0].LevelID;
-            SelectedSectionId = Sections[0].SectionID;
             EditMode = false;
         }
 

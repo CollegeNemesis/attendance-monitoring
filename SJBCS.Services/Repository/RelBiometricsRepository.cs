@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class RelBiometricsRepository : IRelBiometricsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public RelBiometric AddRelBiometric(RelBiometric relBiometric)
         {

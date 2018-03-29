@@ -6,35 +6,20 @@ namespace SJBCS.Data
 {
     public class AmsDbContext : AmsModel
     {
-        ///// <summary>
-        ///// creates a new instance of the Data Manager using
-        /////     the connection string from the configuration service
-        ///// </summary>
-        //public AmsDbContext()
-        //    : base(ConfigurationService.ConnectionString)
-        //{
+        protected string metaData = "res://*/AmsModel.csdl|res://*/AmsModel.ssdl|res://*/AmsModel.msl";
+        protected string dataSource = "DESKTOP-BQK5NF7";
+        protected string initialCatalog = "AMS";
+        protected string userId = "amsadmin";
+        protected string password = "password1";
 
-        //}
+        public AmsModel GetConnection()
+        {
+            return ConnectionHelper.CreateConnection(userId,
+                password,
+                metaData,
+                dataSource,
+                initialCatalog);
+        }
 
-        ///// <summary>
-        ///// creates a new instance of the Data Manager using
-        /////     a provided connection string
-        ///// </summary>
-        ///// <param name="ConnectionString"></param>
-        //public AmsDbContext(string ConnectionString)
-        //    : base(ConnectionString)
-        //{
-
-        //}
-
-        ///// <summary>
-        ///// close method, calls the dispose
-        /////     methods. Not important, just easy to remeber
-        /////     to 'close' all connections
-        ///// </summary>
-        //public void Close()
-        //{
-        //    this.Dispose();
-        //}
     }
 }

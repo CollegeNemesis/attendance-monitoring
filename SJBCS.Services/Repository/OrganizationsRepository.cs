@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class OrganizationsRepository : IOrganizationsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Organization AddOrganization(Organization Organization)
         {
@@ -36,7 +36,7 @@ namespace SJBCS.Services.Repository
 
         public List<Organization> GetOrganizations()
         {
-            _context = new AmsDbContext();
+            _context = ConnectionHelper.CreateConnection();
             return _context.Organizations.ToList();
         }
 

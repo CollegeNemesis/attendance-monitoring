@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class RelDistributionListsRepository : IRelDistributionListsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public RelDistributionList AddRelDistributionList(RelDistributionList RelDistributionList)
         {

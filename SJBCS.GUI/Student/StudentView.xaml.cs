@@ -24,5 +24,18 @@ namespace SJBCS.GUI.Student
         {
             InitializeComponent();
         }
+
+        //private void CompletedJobsMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //{
+        //    StudentViewModel viewModel = (StudentViewModel)DataContext;
+        //    if (viewModel.RowDetailsVisible == DataGridRowDetailsVisibilityMode.Collapsed)
+        //    {
+        //        viewModel.RowDetailsVisible = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
+        //    }
+        //    else
+        //    {
+        //        viewModel.RowDetailsVisible = DataGridRowDetailsVisibilityMode.Collapsed;
+        //    }
+        //}
     }
 }

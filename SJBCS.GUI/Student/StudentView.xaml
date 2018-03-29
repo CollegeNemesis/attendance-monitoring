@@ -22,6 +22,7 @@
         <CollectionViewSource x:Key="studentViewSource"
                               Source="{Binding Students}" />
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
+        <converters:IconConverter x:Key="IconConverter" />
         <DataTemplate x:Key="RowDetailTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -116,7 +117,7 @@
                     </TextBlock>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}"
                             HorizontalAlignment="Left"
-                            Command="{Binding ElementName=StudentViewModel, Path=DataContext.AddStudentCommand}"
+                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddStudentCommand}"
                             Margin="5 0 0 0"
                             Foreground="#3D62B3">
                         <StackPanel Orientation="Horizontal"
@@ -139,6 +140,7 @@
                           ItemsSource="{Binding}"
                           SelectionMode="Single"
                           SelectionUnit="FullRow"
+                          IsSynchronizedWithCurrentItem="False"
                           RowDetailsVisibilityMode="VisibleWhenSelected"
                           RowDetailsTemplate="{StaticResource RowDetailTemplate}"
                           Style="{DynamicResource MaterialDesignDataGrid}"

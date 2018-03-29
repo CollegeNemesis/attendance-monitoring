@@ -14,7 +14,7 @@ namespace SJBCS.GUI.Student
     {
         private string _contactNumber;
 
-        [PhoneValidationRule (ErrorMessage ="This is not a valid Philippine phone number.")]
+        [PHPhone (ErrorMessage ="This is not a valid Philippine phone number.")]
         public string ContactNumber
         {
             get { return _contactNumber; }

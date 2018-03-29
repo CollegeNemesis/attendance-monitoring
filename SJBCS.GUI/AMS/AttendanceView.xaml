@@ -135,50 +135,56 @@
                     </materialDesign:Chip.Icon>
                 </materialDesign:Chip>
                 <Grid Grid.Row="2">
-                    <materialDesign:Card Margin="10"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Top">
-                        <Grid Width="200">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="160" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <materialDesign:ColorZone VerticalAlignment="Stretch"
-                                                      Mode="PrimaryLight">
-                                <Ellipse Width="128"
-                                         Height="128"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Center">
-                                    <Ellipse.Fill>
-                                        <ImageBrush Stretch="UniformToFill"
-                                                    ImageSource="{Binding Student.ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                            </materialDesign:ColorZone>
-                            <StackPanel Grid.Row="1"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <TextBlock TextAlignment="Center"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="16"
-                                           MaxWidth="200"
-                                           TextWrapping="Wrap"
-                                           Margin="10">
+                    <StackPanel>
+                        <materialDesign:Card Margin="10"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Top">
+                            <Grid Width="200">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="160" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                                          Mode="PrimaryLight">
+                                    <Ellipse Width="128"
+                                             Height="128"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center">
+                                        <Ellipse.Fill>
+                                            <ImageBrush Stretch="UniformToFill"
+                                                        ImageSource="{Binding Student.ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                </materialDesign:ColorZone>
+                                <StackPanel Grid.Row="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock TextAlignment="Center"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="16"
+                                               MaxWidth="200"
+                                               TextWrapping="Wrap"
+                                               Margin="10">
                                 <Run Text="{Binding Student.FirstName}" />
                                 <Run Text="{Binding Student.LastName}" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.StudentID}"
-                                     FontSize="14" />
+                                        FontSize="14" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.Level.GradeLevel}"
-                                     FontSize="12" />
+                                        FontSize="12" />
                                 <Run Text="{Binding Student.Section.SectionName}"
-                                     FontSize="12" />
-                                </TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </materialDesign:Card>
+                                        FontSize="12" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                        <ContentControl HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Content="{Binding ClockViewModel}"
+                                        Foreground="Black" />
+                    </StackPanel>
                 </Grid>
 
             </Grid>

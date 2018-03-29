@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Unity;
 
 namespace SJBCS.GUI.Student
@@ -14,6 +15,14 @@ namespace SJBCS.GUI.Student
     {
         private IStudentsRepository _studentsRepository;
         private ObservableCollection<Data.Student> _students;
+
+        private DataGridRowDetailsVisibilityMode _rowDetailsVisible;
+
+        public DataGridRowDetailsVisibilityMode RowDetailsVisible
+        {
+            get { return _rowDetailsVisible; }
+            set { SetProperty(ref _rowDetailsVisible, value); }
+        }
 
         public ObservableCollection<Data.Student> Students
         {

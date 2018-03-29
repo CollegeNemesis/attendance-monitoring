@@ -90,7 +90,9 @@
                                  Width="150">
                             <TextBox.Text>
                                 <Binding Path="SectionName"
-                                         ValidatesOnNotifyDataErrors="True" />
+                                         ValidatesOnNotifyDataErrors="True"
+                                         ValidatesOnExceptions="True"
+                                         UpdateSourceTrigger="PropertyChanged" />
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"

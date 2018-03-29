@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class StudentsRepository : IStudentsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Student AddStudent(Student Student)
         {
@@ -35,13 +35,13 @@ namespace SJBCS.Services.Repository
         }
         public Student GetStudent(string id)
         {
-            _context = new AmsDbContext();
+            _context = ConnectionHelper.CreateConnection();
             return _context.Students.FirstOrDefault(r => r.StudentID == id);
         }
 
         public List<Student> GetStudents()
         {
-            _context = new AmsDbContext();
+            _context = ConnectionHelper.CreateConnection();
             return _context.Students.ToList();
         }
 

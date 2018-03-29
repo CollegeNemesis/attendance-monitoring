@@ -4,22 +4,18 @@ using SJBCS.GUI.Validation;
 using SJBCS.GUI.Wrapper;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SJBCS.GUI.Student
 {
-    public class EditableSection : ValidatableBindableBase, ISectionWrapper
+    public class AddableSection : ValidatableBindableBase, ISectionWrapper
     {
         private Guid sectionID;
         public Guid SectionID { get => sectionID; set => SetProperty(ref sectionID, value); }
 
         private ICollection<Level> levels;
         public ICollection<Level> Levels { get => levels; set => SetProperty(ref levels, value); }
-
-        private string origSectionName;
-        public string OrigSectionName { get => origSectionName; set => SetProperty(ref origSectionName, value); }
 
         private string sectionName;
         [Required(ErrorMessage = "This field is required.")]
@@ -30,6 +26,7 @@ namespace SJBCS.GUI.Student
             set
             {
                 ValidateUniqueSectionName(value);
+
                 SetProperty(ref sectionName, value);
             }
         }
@@ -41,6 +38,7 @@ namespace SJBCS.GUI.Student
 
             set
             {
+                OnPropertyChanged("SectionName");
                 SetProperty(ref levelID, value);
             }
         }
@@ -65,9 +63,6 @@ namespace SJBCS.GUI.Student
         private void ValidateUniqueSectionName(string value)
         {
             if (string.IsNullOrEmpty(value))
-                return;
-
-            if (OrigSectionName.Trim().ToUpper().Equals(value.Trim().ToUpper()))
                 return;
 
             foreach (Level level in Levels)

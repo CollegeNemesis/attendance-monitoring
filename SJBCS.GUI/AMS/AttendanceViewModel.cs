@@ -1,14 +1,26 @@
 ﻿using AMS.Utilities;
 using DPFP;
 using DPFP.Verification;
+<<<<<<< Updated upstream
+=======
+using SJBCS.Data;
+using SJBCS.GUI.Home;
+using SJBCS.Services.Repository;
+>>>>>>> Stashed changes
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+<<<<<<< Updated upstream
 using static DPFP.Verification.Verification;
 using SJBCS.Data;
 using SJBCS.Services.Repository;
 using SJBCS.GUI.SMS;
+=======
+using System.Linq;
+using Unity;
+using static DPFP.Verification.Verification;
+>>>>>>> Stashed changes
 
 namespace SJBCS.GUI.AMS
 {
@@ -49,7 +61,11 @@ namespace SJBCS.GUI.AMS
         public ObservableCollection<AttendanceLog> AttendanceLogs
         {
             get { return _attendanceLogs; }
-            set { SetProperty(ref _attendanceLogs, value); }
+            set
+            {
+                _attendanceLogs = new ObservableCollection<AttendanceLog>(_attendanceLogs.OrderByDescending(attendance => attendance.Timestamp));
+                SetProperty(ref _attendanceLogs, value);
+            }
         }
 
         private string _scannerStatus;
@@ -68,12 +84,21 @@ namespace SJBCS.GUI.AMS
             set { SetProperty(ref _remarks, value); }
         }
 
+        public ClockViewModel _clockViewModel;
+        public ClockViewModel ClockViewModel
+        {
+            get { return _clockViewModel; }
+            set { SetProperty(ref _clockViewModel, value); }
+
+        }
+
         #endregion
 
         public AttendanceViewModel()
         {
             Initialize();
             _attendanceLogs = new ObservableCollection<AttendanceLog>();
+            _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
             Start();    //Begin capture
         }
 
@@ -133,7 +158,7 @@ namespace SJBCS.GUI.AMS
                                     Console.WriteLine("Time Difference (hours): " + span.Hours);
                                     Console.WriteLine("Time Difference (days): " + span.Days);
 
-                                    if (span.Seconds > 30) //Check if span between login and logout is greater than allowed threshold
+                                    if (span.Minutes > 30) //Check if span between login and logout is greater than allowed threshold
                                     {
                                         //Update student logout
                                         _attendance.TimeOut = logout;

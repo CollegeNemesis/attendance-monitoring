@@ -182,8 +182,8 @@
     </Compile>
     <Compile Include="Student\AddSectionViewModel.cs" />
     <Compile Include="Student\EditableContact.cs" />
-    <Compile Include="Student\EditableSection.cs" />
     <Compile Include="Student\EditableStudent.cs" />
+    <Compile Include="Student\EditableSection.cs" />
     <Compile Include="Student\EnrollBiometricsView.xaml.cs">
       <DependentUpon>EnrollBiometricsView.xaml</DependentUpon>
     </Compile>
@@ -192,6 +192,7 @@
       <DependentUpon>GroupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\GroupViewModel.cs" />
+    <Compile Include="Student\AddableSection.cs" />
     <Compile Include="Student\SectionView.xaml.cs">
       <DependentUpon>SectionView.xaml</DependentUpon>
     </Compile>
@@ -204,10 +205,12 @@
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TestWindowViewModel.cs" />
-    <Compile Include="Validation\PhoneValidationRule.cs" />
+    <Compile Include="Validation\PHPhone.cs" />
     <Compile Include="Validation\RequiredIfAttribute.cs" />
     <Compile Include="Validation\TimeValidation.cs" />
-    <Compile Include="Validation\UniqueStudentId.cs" />
+    <Compile Include="Wrapper\IContactWrapper.cs" />
+    <Compile Include="Wrapper\ISectionWrapper.cs" />
+    <Compile Include="Wrapper\IStudentWrapper.cs" />
     <Page Include="AMS\AttendanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -319,9 +322,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+<<<<<<< Updated upstream
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+=======
+    <None Include="config\sjbcs.config" />
+>>>>>>> Stashed changes
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SJBCS.Data.Student.datasource" />
     <None Include="Properties\Settings.settings">

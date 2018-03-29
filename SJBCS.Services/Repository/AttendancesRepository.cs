@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class AttendancesRepository : IAttendancesRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Attendance AddAttendance(Attendance Attendance)
         {

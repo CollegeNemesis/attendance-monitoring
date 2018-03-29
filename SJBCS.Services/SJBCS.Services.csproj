@@ -60,6 +60,7 @@
     <Compile Include="Repository\ILevelsRepository.cs" />
     <Compile Include="Repository\IRelDistributionListsRepository.cs" />
     <Compile Include="Repository\LevelsRepository.cs" />
+    <Compile Include="Repository\NaturalSortComparer.cs" />
     <Compile Include="Repository\OrganizationsRepository.cs" />
     <Compile Include="Repository\IBiometricsRepository.cs" />
     <Compile Include="Repository\IOrganizationsRepository.cs" />

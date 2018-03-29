@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class RelOrganizationsRepository : IRelOrganizationsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public RelOrganization AddRelOrganization(RelOrganization RelOrganization)
         {

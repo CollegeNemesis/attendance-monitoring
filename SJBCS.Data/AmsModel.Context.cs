@@ -19,7 +19,7 @@ namespace SJBCS.Data
             : base("name=AmsModel")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

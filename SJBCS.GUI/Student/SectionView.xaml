@@ -133,7 +133,7 @@
                                                     <student:AddSectionView />
                                                 </DataTemplate>
                                             </StackPanel.Resources>
-                                            <ContentControl Content="{Binding Value.DataContext.CurrentViewModel, Source={StaticResource proxy}}"/>
+                                            <ContentControl Content="{Binding Value.DataContext.CurrentViewModel, Source={StaticResource proxy}}" />
                                         </StackPanel>
                                     </Button.CommandParameter>
                                     <materialDesign:PackIcon Width="20"
@@ -208,7 +208,7 @@
                                 <materialDesign:TimePicker.SelectedTime>
                                     <Binding Path="StartTime"
                                              ValidatesOnNotifyDataErrors="True"
-                                             Converter="{StaticResource TimeConverter}"/>
+                                             Converter="{StaticResource TimeConverter}" />
                                 </materialDesign:TimePicker.SelectedTime>
                             </materialDesign:TimePicker>
                         </StackPanel>
@@ -311,7 +311,8 @@
                                  Width="150">
                             <TextBox.Text>
                                 <Binding Path="SectionName"
-                                         ValidatesOnNotifyDataErrors="True" />
+                                         ValidatesOnNotifyDataErrors="True"
+                                         ValidatesOnExceptions="True"/>
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"

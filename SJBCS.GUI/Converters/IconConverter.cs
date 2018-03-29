@@ -43,6 +43,12 @@ namespace SJBCS.GUI.Converters
                 case "logged out.":
                     return "Logout";
 
+                case "Collapsed":
+                    return "ChevronRight";
+
+                case "VisibleWhenSelected":
+                    return "ChevronDown";
+
                 default:
                     return "InformationOutline";
             }

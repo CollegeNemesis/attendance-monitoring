@@ -20,22 +20,36 @@ namespace SJBCS.GUI.Student
         private IStudentsRepository _studentsRepository;
 
         private ObservableCollection<Level> _levels;
-
         public ObservableCollection<Level> Levels
         {
             get { return _levels; }
             set { SetProperty(ref _levels, value); }
         }
 
-        private EditableSection editableSection;
-
-        public EditableSection EditableSection
+        private Section _section;
+        public Section Section
         {
-            get { return editableSection; }
+            get { return _section; }
+            set { SetProperty(ref _section, value); }
+        }
+
+        private Guid _selectedLevelId;
+        public Guid SelectedLevelId
+        {
+            get => _selectedLevelId;
             set
             {
-                SetProperty(ref editableSection, value);
+                AddableSection.LevelID = value;
+                AddableSection.Level = _levelsRepository.GetLevel(value);
+                SetProperty(ref _selectedLevelId, value);
             }
+        }
+
+        private AddableSection addableSection;
+        public AddableSection AddableSection
+        {
+            get => addableSection;
+            set => SetProperty(ref addableSection, value);
         }
 
         private Section _editingSection;
@@ -44,71 +58,25 @@ namespace SJBCS.GUI.Student
         {
             _editingSection = section;
 
-            if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;
+            if (AddableSection != null) AddableSection.ErrorsChanged -= RaiseCanExecuteChanged;
 
-            EditableSection = new EditableSection();
-            EditableSection.ErrorsChanged += RaiseCanExecuteChanged;
+            AddableSection = new AddableSection();
+            AddableSection.ErrorsChanged += RaiseCanExecuteChanged;
 
-            CopySection(section, EditableSection);
+            CopySection(section, AddableSection);
         }
 
-        private void CopySection(Section source, EditableSection target)
+        private void CopySection(Section source, AddableSection target)
         {
             target.SectionID = source.SectionID;
             target.LevelID = SelectedLevelId;
+            target.Level = _levelsRepository.GetLevel(SelectedLevelId);
+            target.Levels = Levels;
 
             target.SectionName = source.SectionName;
             target.StartTime = source.StartTime.ToString();
             target.EndTime = source.EndTime.ToString();
-        }
-
-        private Section _section;
-
-        public Section Section
-        {
-            get { return _section; }
-            set { SetProperty(ref _section, value); }
-        }
-
-
-        private ObservableCollection<Section> _sections;
-
-        public ObservableCollection<Section> Sections
-        {
-            get { return _sections; }
-            set { SetProperty(ref _sections, value); }
-        }
-        private Guid _selectedLevelId;
-
-        public Guid SelectedLevelId
-        {
-            get { return _selectedLevelId; }
-            set
-            {
-                SetProperty(ref _selectedLevelId, value);
-                if (_selectedLevelId != null)
-                {
-                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(_selectedLevelId));
-                    if (Sections.Count > 0)
-                        SelectedSectionId = Sections[0].SectionID;
-
-                }
-            }
-        }
-
-        private Guid _selectedSectionId;
-
-        public Guid SelectedSectionId
-        {
-            get { return _selectedSectionId; }
-            set
-            {
-                SetProperty(ref _selectedSectionId, value);
-                if (_selectedLevelId != null && _selectedSectionId != null)
-                {
-                }
-            }
-        }
+        }        
 
         public RelayCommand AddCommand { get; private set; }
 
@@ -128,7 +96,7 @@ namespace SJBCS.GUI.Student
             if (Section == null)
                 return false;
 
-            if (EditableSection.SectionName == null || EditableSection.StartTime == null || EditableSection.EndTime == null || EditableSection.HasErrors)
+            if (AddableSection.SectionName == null || AddableSection.StartTime == null || AddableSection.EndTime == null || AddableSection.HasErrors)
                 return false;
 
             else
@@ -137,13 +105,13 @@ namespace SJBCS.GUI.Student
 
         private void OnAdd()
         {
-            UpdateSection(EditableSection, _editingSection);
+            UpdateSection(AddableSection, _editingSection);
             _sectionsRepository.AddSection(_editingSection);
 
             DialogHost.CloseDialogCommand.Execute(new object(), null);
         }
 
-        private void UpdateSection(EditableSection source, Section target)
+        private void UpdateSection(AddableSection source, Section target)
         {
             target.SectionID = source.SectionID;
             target.LevelID = SelectedLevelId;
@@ -160,20 +128,19 @@ namespace SJBCS.GUI.Student
         public void Initialize()
         {
             RefreshList();
-            PopulateLevelComboBox();
+            PopulateComboBox();
             SetSection(Section);
         }
 
-        private void PopulateLevelComboBox()
+        private void PopulateComboBox()
         {
             SelectedLevelId = Levels[0].LevelID;
-            SelectedSectionId = Sections[0].SectionID;
         }
 
         private void RefreshList()
         {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
-            EditableSection = new EditableSection();
+            AddableSection = new AddableSection();
             Section = new Section() { SectionID = Guid.NewGuid() };
         }
     }

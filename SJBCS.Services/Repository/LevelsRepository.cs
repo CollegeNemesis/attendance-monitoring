@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace SJBCS.Services.Repository
 {
     public class LevelsRepository : ILevelsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Level AddLevel(Level Level)
         {
@@ -36,8 +37,8 @@ namespace SJBCS.Services.Repository
 
         public List<Level> GetLevels()
         {
-            _context = new AmsDbContext();
-            return _context.Levels.ToList();
+            _context = ConnectionHelper.CreateConnection();            
+            return _context.Levels.AsEnumerable().OrderBy(level => level.GradeLevel, new NaturalSortComparer<string>()).ToList();
         }
 
         public Level UpdateLevel(Level Level)

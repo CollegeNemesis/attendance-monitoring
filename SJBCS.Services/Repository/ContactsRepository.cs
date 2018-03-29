@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class ContactsRepository : IContactsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Contact AddContact(Contact Contact)
         {

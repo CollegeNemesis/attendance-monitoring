@@ -24,7 +24,6 @@ namespace SJBCS.GUI
         #region ViewModel
         public LoginViewModel _loginViewModel;
         public MenuViewModel _menuViewModel;
-        public ClockViewModel _clockViewModel;
 
         public GroupViewModel _groupViewModel;
         public SmsViewModel _smsViewModel;
@@ -49,6 +48,7 @@ namespace SJBCS.GUI
             set { SetProperty(ref _menu, value); }
         }
 
+        public ClockViewModel _clockViewModel;
         public ClockViewModel ClockViewModel
         {
             get { return _clockViewModel; }
@@ -91,33 +91,50 @@ namespace SJBCS.GUI
 
         private void NavToReport()
         {
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _reportViewModel;
         }
 
         private void NavToGroup()
         {
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _groupViewModel;
         }
 
         private void NavToSection()
         {
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _sectionViewModel;
         }
 
         private void NavToStudent()
         {
             _studentViewModel.LoadStudents();
+
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _studentViewModel;
         }
 
         private void NavToSms()
         {
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _smsViewModel;
         }
 
         private void NavToAttendance()
         {
             _attendanceViewModel.SwitchOn();
+            ClockViewModel = null;
             CurrentViewModel = _attendanceViewModel;
         }
 
@@ -127,6 +144,10 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.EditMode = false;
             _addEditStudentViewModel.SetStudent(selectedStudent);
             _addEditStudentViewModel.Initialize();
+
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _addEditStudentViewModel;
         }
 
@@ -136,10 +157,17 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.EditMode = true;
             _addEditStudentViewModel.SetStudent(selectedStudent);
             _addEditStudentViewModel.Initialize();
+
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             CurrentViewModel = _addEditStudentViewModel;
         }
         private void NavToMenu(User user)
         {
+            if (ClockViewModel == null)
+                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+
             if (user.Type.ToLower().Equals("admin"))
             {
                 Menu = _menuViewModel;

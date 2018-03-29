@@ -10,7 +10,7 @@ namespace SJBCS.Services.Repository
 {
     public class SectionsRepository : ISectionsRepository
     {
-        AmsDbContext _context = new AmsDbContext();
+        AmsModel _context = ConnectionHelper.CreateConnection();
 
         public Section AddSection(Section Section)
         {
@@ -36,7 +36,7 @@ namespace SJBCS.Services.Repository
 
         public List<Section> GetSections(Guid id)
         {
-            _context = new AmsDbContext();
+            _context = ConnectionHelper.CreateConnection();
             return _context.Sections.Where(r => r.LevelID == id).ToList();
         }
 
