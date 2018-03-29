@@ -1,26 +1,17 @@
 ﻿using AMS.Utilities;
 using DPFP;
 using DPFP.Verification;
-<<<<<<< Updated upstream
-=======
 using SJBCS.Data;
 using SJBCS.GUI.Home;
+using SJBCS.GUI.SMS;
 using SJBCS.Services.Repository;
->>>>>>> Stashed changes
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-<<<<<<< Updated upstream
-using static DPFP.Verification.Verification;
-using SJBCS.Data;
-using SJBCS.Services.Repository;
-using SJBCS.GUI.SMS;
-=======
 using System.Linq;
 using Unity;
 using static DPFP.Verification.Verification;
->>>>>>> Stashed changes
 
 namespace SJBCS.GUI.AMS
 {

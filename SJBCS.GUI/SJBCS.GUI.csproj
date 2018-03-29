@@ -322,13 +322,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-<<<<<<< Updated upstream
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-=======
     <None Include="config\sjbcs.config" />
->>>>>>> Stashed changes
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SJBCS.Data.Student.datasource" />
     <None Include="Properties\Settings.settings">
