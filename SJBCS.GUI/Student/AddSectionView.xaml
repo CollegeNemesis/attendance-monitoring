@@ -173,22 +173,6 @@
                         </Button>
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                Command="{Binding ElementName=AddSectionControl, Path=DataContext.SaveCommand}"
-                                CommandParameter="{Binding}"
-                                Visibility="{Binding ElementName=AddEditControl, Path=DataContext.EditMode, Converter={StaticResource VisConverter}}"
-                                Margin="5 0 0 0"
-                                Foreground="#3D62B3">
-                            <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="ContentSave"
-                                                         VerticalAlignment="Center"
-                                                         Margin="5" />
-                                <TextBlock Text="Save"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
                                 Command="materialDesign:DialogHost.CloseDialogCommand"
                                 Margin="5 0 0 0"
                                 Foreground="#3D62B3">
