@@ -1,52 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AMS.Utilities;
+using System;
 
 namespace SJBCS.GUI.AMS
 {
-    public class AttendanceLog
+    public class AttendanceLog : BindableBase
     {
+        #region Properties
         private string _imageData;
-
         public string ImageData
         {
             get { return _imageData; }
-            set { _imageData = value; }
+            set { SetProperty(ref _imageData, value); }
         }
 
         private string _firstName;
-
         public string FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; }
+            set { SetProperty(ref _firstName, value); }
         }
 
         private string _lastName;
-
         public string LastName
         {
             get { return _lastName; }
-            set { _lastName = value; }
+            set { SetProperty(ref _lastName, value); }
         }
 
         private string _action;
-
         public string Action
         {
             get { return _action; }
-            set { _action = value; }
+            set { SetProperty(ref _action, value); }
         }
 
         private DateTime? _timestamp;
-
         public DateTime? Timestamp
         {
             get { return _timestamp; }
-            set { _timestamp = value; }
+            set { SetProperty(ref _timestamp, value); }
         }
+        #endregion
 
         public AttendanceLog(string imageData, string firstName, string lastName, string action, DateTime? timestamp)
         {

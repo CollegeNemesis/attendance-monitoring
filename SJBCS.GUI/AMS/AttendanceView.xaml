@@ -57,7 +57,7 @@
                                            Height="50"
                                            Width="50"
                                            Stretch="UniformToFill"
-                                           Source="{Binding ImageData}" />
+                                           Source="{Binding ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
                                     <StackPanel>
                                         <TextBlock Margin="5"
                                                    VerticalAlignment="Center"
@@ -88,7 +88,6 @@
             </Grid>
         </materialDesign:ColorZone>
         <materialDesign:Card></materialDesign:Card>
-
         <materialDesign:ColorZone Grid.Column="1"
                                   Background="White"
                                   HorizontalAlignment="Stretch"

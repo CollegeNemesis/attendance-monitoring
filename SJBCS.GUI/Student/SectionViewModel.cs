@@ -17,6 +17,7 @@ namespace SJBCS.GUI.Student
         private ILevelsRepository _levelsRepository;
         private ISectionsRepository _sectionsRepository;
         private IStudentsRepository _studentsRepository;
+        private Section _editingSection;
 
         private AddSectionViewModel currentViewModel;
         public AddSectionViewModel CurrentViewModel
@@ -68,8 +69,8 @@ namespace SJBCS.GUI.Student
                 }
             }
         }
-        private bool _editMode;
 
+        private bool _editMode;
         public bool EditMode
         {
             get { return _editMode; }
@@ -100,8 +101,28 @@ namespace SJBCS.GUI.Student
                 DeleteCommand.RaiseCanExecuteChanged();
             }
         }
+        
+        public RelayCommand EditCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand DeleteCommand { get; private set; }
 
-        private Section _editingSection;
+        public AddSectionViewModel _addSectionViewModel;
+
+        public SectionViewModel(ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IStudentsRepository studentsRepository)
+        {
+            _levelsRepository = levelsRepository;
+            _sectionsRepository = sectionsRepository;
+            _studentsRepository = studentsRepository;
+
+            _addSectionViewModel = ContainerHelper.Container.Resolve<AddSectionViewModel>();
+
+            currentViewModel = _addSectionViewModel;
+
+            EditCommand = new RelayCommand(OnEdit, CanEdit);
+            SaveCommand = new RelayCommand(OnSave, CanSave);
+            DeleteCommand = new RelayCommand(OnDelete, CanDelete);
+            Initialize();
+        }
 
         private void SetSection(Section section)
         {
@@ -126,28 +147,6 @@ namespace SJBCS.GUI.Student
             target.SectionName = source.SectionName;
             target.StartTime = source.StartTime.ToString();
             target.EndTime = source.EndTime.ToString();
-        }
-
-        public RelayCommand EditCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand DeleteCommand { get; private set; }
-
-        public AddSectionViewModel _addSectionViewModel;
-
-        public SectionViewModel(ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IStudentsRepository studentsRepository)
-        {
-            _levelsRepository = levelsRepository;
-            _sectionsRepository = sectionsRepository;
-            _studentsRepository = studentsRepository;
-
-            _addSectionViewModel = ContainerHelper.Container.Resolve<AddSectionViewModel>();
-
-            currentViewModel = _addSectionViewModel;
-
-            EditCommand = new RelayCommand(OnEdit, CanEdit);
-            SaveCommand = new RelayCommand(OnSave, CanSave);
-            DeleteCommand = new RelayCommand(OnDelete, CanDelete);
-            Initialize();
         }
 
         private bool CanSave()

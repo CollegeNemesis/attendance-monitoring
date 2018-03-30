@@ -18,29 +18,20 @@ namespace SJBCS.GUI.AMS
     public class AttendanceViewModel : FingerScanner
     {
 
-        #region Model Property
+        #region Properties
         private IStudentsRepository _studentsRepository;
         private IBiometricsRepository _biometricsRepository;
         private IRelBiometricsRepository _relBiometricsRepository;
         private IAttendancesRepository _attendancesRepository;
-
-        private bool IsFingerEnrolled;
-
+        private bool _IsFingerEnrolled;
         private Attendance _attendance;
         private Biometric _biometric;
         private RelBiometric _relBiometric;
-
-        private Template Template;
-        private Verification Verificator;
-        private List<Biometric> Biometrics;
-
-        #endregion
-
-        #region View Property
-
+        private Template _Template;
+        private Verification _Verificator;
+        private List<Biometric> _Biometrics;
 
         private Data.Student _student;
-
         public Data.Student Student
         {
             get { return _student; }
@@ -48,7 +39,6 @@ namespace SJBCS.GUI.AMS
         }
 
         private ObservableCollection<AttendanceLog> _attendanceLogs;
-
         public ObservableCollection<AttendanceLog> AttendanceLogs
         {
             get { return _attendanceLogs; }
@@ -60,7 +50,6 @@ namespace SJBCS.GUI.AMS
         }
 
         private string _scannerStatus;
-
         public string ScannerStatus
         {
             get { return _scannerStatus; }
@@ -68,7 +57,6 @@ namespace SJBCS.GUI.AMS
         }
 
         private string _remarks;
-
         public string Remarks
         {
             get { return _remarks; }
@@ -82,17 +70,22 @@ namespace SJBCS.GUI.AMS
             set { SetProperty(ref _clockViewModel, value); }
 
         }
-
         #endregion
 
-        public AttendanceViewModel()
+        public AttendanceViewModel(IStudentsRepository studentsRepository, BiometricsRepository biometricsRepository, RelBiometricsRepository relBiometricsRepository, AttendancesRepository attendancesRepository)
         {
+            _studentsRepository = studentsRepository;
+            _biometricsRepository = biometricsRepository;
+            _relBiometricsRepository = relBiometricsRepository;
+            _attendancesRepository = attendancesRepository;
+
             Initialize();
             _attendanceLogs = new ObservableCollection<AttendanceLog>();
             _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
             Start();    //Begin capture
         }
 
+        #region Methods
         public override void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
             ScannerStatus = "Connected";
@@ -118,16 +111,16 @@ namespace SJBCS.GUI.AMS
                 MemoryStream fingerprintData = null;
                 Result result = null;
 
-                foreach (Biometric biometric in Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates
+                foreach (Biometric biometric in _Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates
                 {
                     fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
-                    Template = new Template(fingerprintData);
+                    _Template = new Template(fingerprintData);
                     result = new Result();
-                    Verificator.Verify(features, Template, ref result);
+                    _Verificator.Verify(features, _Template, ref result);
 
                     if (result.Verified)
                     {
-                        Verificator = new DPFP.Verification.Verification();
+                        _Verificator = new DPFP.Verification.Verification();
                         _relBiometric = _relBiometricsRepository.GetRelBiometric(biometric.FingerID);
 
                         if (_relBiometric != null)  //Check if finger is enrolled.
@@ -144,12 +137,9 @@ namespace SJBCS.GUI.AMS
                                     DateTime logout = DateTime.Now;
                                     TimeSpan span = logout.Subtract(login);
 
-                                    Console.WriteLine("Time Difference (seconds): " + span.Seconds);
-                                    Console.WriteLine("Time Difference (minutes): " + span.Minutes);
-                                    Console.WriteLine("Time Difference (hours): " + span.Hours);
-                                    Console.WriteLine("Time Difference (days): " + span.Days);
+                                    TimeSpan gracePeriod = new TimeSpan(0, 30, 0);
 
-                                    if (span.Minutes > 30) //Check if span between login and logout is greater than allowed threshold
+                                    if (span.Minutes > 30) //Check if TimeSpan between login and logout is greater than allowed threshold
                                     {
                                         //Update student logout
                                         _attendance.TimeOut = logout;
@@ -159,36 +149,37 @@ namespace SJBCS.GUI.AMS
                                         TimeSpan endTime = _student.Section.EndTime;
                                         TimeSpan outSpan = endTime.Subtract(timeOut);
 
-                                        if (outSpan.Minutes > 0)
+                                        if (timeOut > endTime)
                                         {
                                             _attendance.IsOverstay = true;
                                             _attendance.IsEarlyOut = false;
                                         }
-                                        else if (outSpan.Minutes < 0)
+
+                                        if (timeOut < endTime)
                                         {
                                             _attendance.IsOverstay = false;
                                             _attendance.IsEarlyOut = true;
                                         }
-                                        else
+
+                                        if (timeOut == endTime)
                                         {
                                             _attendance.IsOverstay = false;
                                             _attendance.IsEarlyOut = false;
                                         }
 
                                         _attendancesRepository.UpdateAttendance(_attendance); //Updated attendance record
-
                                         Application.Current.Dispatcher.Invoke(delegate
                                         {
                                             _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
 
                                         });
 
-                                        ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime) _attendance.TimeOut);
+                                        ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime)_attendance.TimeOut);
                                         Remarks = "Student logged out.";
                                     }
                                     else
                                     {
-                                        Remarks = "Student is not allowed to logout 1 hour after logging in.";
+                                        Remarks = "Student is not allowed to logout 30 minutes after logging in.";
                                     }
                                 }
                                 else
@@ -207,19 +198,13 @@ namespace SJBCS.GUI.AMS
 
                                 TimeSpan timeIn = _attendance.TimeIn.TimeOfDay;
                                 TimeSpan startTime = _student.Section.StartTime;
-                                TimeSpan inSpan = startTime.Subtract(timeIn);
 
-                                if (inSpan.Minutes > 1) //Check if student is late
-                                {
+                                if (timeIn > startTime)
                                     _attendance.IsLate = true;
-                                }
                                 else
-                                {
                                     _attendance.IsLate = false;
-                                }
 
                                 _attendancesRepository.AddAttendance(_attendance); //Add Record
-
                                 Application.Current.Dispatcher.Invoke(delegate
                                 {
                                     _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
@@ -229,23 +214,25 @@ namespace SJBCS.GUI.AMS
                                 Remarks = "Student logged in.";
                             }
 
-                            IsFingerEnrolled = true;
+                            _IsFingerEnrolled = true;
                             break;
                         }
                         else
                         {
-                            //Fingerprint enrolled but not linked to any students!
+                            Remarks = "Fingerprint in system but not linked to any student.";
+                            break;
                         }
                     }
                 }
 
-                if (!IsFingerEnrolled)
+                if (!_IsFingerEnrolled)
                 {
                     Remarks = "Fingerprint not recognized.";
+                    Student = null;
                     Initialize();
                 }
 
-                IsFingerEnrolled = false;
+                _IsFingerEnrolled = false;
                 Start();
 
             }
@@ -253,26 +240,18 @@ namespace SJBCS.GUI.AMS
 
         private void Initialize()
         {
-            #region Models
+
             _student = new Data.Student();
             _biometric = new Biometric();
             _relBiometric = new RelBiometric();
             _attendance = new Attendance();
-            #endregion
 
-            IsFingerEnrolled = false;
-            Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
+            _IsFingerEnrolled = false;
+            _Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
 
-            #region Repositories
-            _studentsRepository = new StudentsRepository();
-            _biometricsRepository = new BiometricsRepository();
-            _relBiometricsRepository = new RelBiometricsRepository();
-            _attendancesRepository = new AttendancesRepository();
-            #endregion
+            _Biometrics = _biometricsRepository.GetBiometrics(); //Load all FingerPrintTemplate (fpt);
 
-            Biometrics = _biometricsRepository.GetBiometrics(); //Load all FingerPrintTemplate (fpt);
-
-            if (Biometrics.Count == 0)
+            if (_Biometrics.Count == 0)
             {
                 Remarks = "No fingerprint template available in our records.";
             }
@@ -320,5 +299,6 @@ namespace SJBCS.GUI.AMS
                 });
             }
         }
+        #endregion
     }
 }

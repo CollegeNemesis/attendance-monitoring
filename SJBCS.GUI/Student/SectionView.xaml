@@ -133,7 +133,8 @@
                                                     <student:AddSectionView />
                                                 </DataTemplate>
                                             </StackPanel.Resources>
-                                            <ContentControl Content="{Binding Value.DataContext.CurrentViewModel, Source={StaticResource proxy}}" />
+                                            <ContentControl Content="{Binding Value.DataContext.CurrentViewModel, Source={StaticResource proxy}}"
+                                                            />
                                         </StackPanel>
                                     </Button.CommandParameter>
                                     <materialDesign:PackIcon Width="20"
@@ -312,7 +313,7 @@
                             <TextBox.Text>
                                 <Binding Path="SectionName"
                                          ValidatesOnNotifyDataErrors="True"
-                                         ValidatesOnExceptions="True"/>
+                                         ValidatesOnExceptions="True" />
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"

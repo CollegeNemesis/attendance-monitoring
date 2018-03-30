@@ -15,7 +15,7 @@
              xmlns:dialogs="clr-namespace:SJBCS.GUI.Dialogs"
              mc:Ignorable="d"
              d:DesignHeight="600"
-             d:DesignWidth="1128"
+             d:DesignWidth="600"
              x:Name="AddSectionControl">
     <UserControl.Resources>
         <DiscreteObjectKeyFrame x:Key="proxy"
@@ -43,13 +43,13 @@
               Margin="10">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="20 10 0 0"
-                            DataContext="{Binding EditableSection}">
+                            DataContext="{Binding AddableSection}">
                     <TextBlock Foreground="#00B4FF"
                                FontFamily="Segoe UI"
                                FontWeight="Regular"
                                Margin="5 0 0 5"
                                FontSize="20">
-                        <Run Text="Add Section" />
+                        <Run Text="Section Details" />
                     </TextBlock>
 
                     <StackPanel>
@@ -91,8 +91,7 @@
                             <TextBox.Text>
                                 <Binding Path="SectionName"
                                          ValidatesOnNotifyDataErrors="True"
-                                         ValidatesOnExceptions="True"
-                                         UpdateSourceTrigger="PropertyChanged" />
+                                         ValidatesOnExceptions="True" />
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"
@@ -123,6 +122,8 @@
                                 <materialDesign:TimePicker.SelectedTime>
                                     <Binding Path="StartTime"
                                              ValidatesOnNotifyDataErrors="True"
+                                             ValidatesOnExceptions="True"
+                                             UpdateSourceTrigger="LostFocus"
                                              Converter="{StaticResource TimeConverter}" />
                                 </materialDesign:TimePicker.SelectedTime>
                             </materialDesign:TimePicker>
@@ -144,6 +145,8 @@
                                 <materialDesign:TimePicker.SelectedTime>
                                     <Binding Path="EndTime"
                                              ValidatesOnNotifyDataErrors="True"
+                                             ValidatesOnExceptions="True"
+                                             UpdateSourceTrigger="LostFocus"
                                              Converter="{StaticResource TimeConverter}" />
                                 </materialDesign:TimePicker.SelectedTime>
                             </materialDesign:TimePicker>
@@ -155,7 +158,8 @@
                                 HorizontalAlignment="Right">
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                Command="{Binding ElementName=AddSectionControl, Path=DataContext.AddCommand}"
+                                Visibility="{Binding ElementName=AddSectionControl, Path=DataContext.EditMode, Converter={StaticResource NegVisConverter}}"
+                                Command="{Binding ElementName=AddSectionControl, Path=DataContext.SaveCommand}"
                                 Margin="5 0 0 0"
                                 Foreground="#3D62B3">
                             <StackPanel Orientation="Horizontal"
@@ -164,6 +168,22 @@
                                                          VerticalAlignment="Center"
                                                          Margin="5" />
                                 <TextBlock Text="Add"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding ElementName=AddSectionControl, Path=DataContext.SaveCommand}"
+                                CommandParameter="{Binding}"
+                                Visibility="{Binding ElementName=AddEditControl, Path=DataContext.EditMode, Converter={StaticResource VisConverter}}"
+                                Margin="5 0 0 0"
+                                Foreground="#3D62B3">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="ContentSave"
+                                                         VerticalAlignment="Center"
+                                                         Margin="5" />
+                                <TextBlock Text="Save"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
