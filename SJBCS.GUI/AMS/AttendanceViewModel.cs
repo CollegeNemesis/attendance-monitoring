@@ -1,8 +1,11 @@
 ﻿using AMS.Utilities;
 using DPFP;
 using DPFP.Verification;
+using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
+using SJBCS.GUI.Dialogs;
 using SJBCS.GUI.Home;
+using SJBCS.GUI.Settings;
 using SJBCS.GUI.SMS;
 using SJBCS.Services.Repository;
 using System;
@@ -19,6 +22,7 @@ namespace SJBCS.GUI.AMS
 {
     public class AttendanceViewModel : FingerScanner
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Properties
         private IStudentsRepository _studentsRepository;
@@ -260,7 +264,6 @@ namespace SJBCS.GUI.AMS
 
         private void Initialize()
         {
-
             _student = new Data.Student();
             _biometric = new Biometric();
             _relBiometric = new RelBiometric();

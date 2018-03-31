@@ -2,6 +2,30 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
 
+    <Style x:Key="MaterialDesignTextBox"
+           BasedOn="{StaticResource MaterialDesignTextBox}"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Setter Property="BorderBrush"
+                Value="#B5B5B5" />
+        <Setter Property="BorderThickness"
+                Value=".5" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Height"
+                Value="50" />
+        <Setter Property="materialDesign:HintAssist.FloatingScale"
+                Value="0.6" />
+        <Setter Property="materialDesign:HintAssist.FloatingOffset"
+                Value="0,-25" />
+    </Style>
     <Style x:Key="MaterialDesignFloatingHintTextBox"
            BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}"
            TargetType="{x:Type TextBox}">
@@ -34,6 +58,8 @@
                 Value="Segoe UI" />
         <Setter Property="FontWeight"
                 Value="Regular" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
         <Setter Property="BorderBrush"
                 Value="#B5B5B5" />
         <Setter Property="BorderThickness"
@@ -63,6 +89,8 @@
                 Value=".5" />
         <Setter Property="Padding"
                 Value="2" />
+        <Setter Property="materialDesign:ShadowAssist.ShadowDepth"
+                Value="Depth0" />
         <Setter Property="materialDesign:HintAssist.FloatingScale"
                 Value="0.6" />
         <Setter Property="materialDesign:HintAssist.FloatingOffset"

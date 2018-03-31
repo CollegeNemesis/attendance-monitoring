@@ -1,7 +1,9 @@
 ﻿using AMS.Utilities;
+using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Converters;
 using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Home;
 using SJBCS.Services.Repository;
 using System;
 
@@ -53,6 +55,5 @@ namespace SJBCS.GUI.Home
                 }
             }
         }
-
     }
 }

@@ -22,37 +22,5 @@ namespace SJBCS.Data
                 Console.WriteLine(dbContext.Students.ToList().Count);
             }
         }
-
-        [Test]
-        public void ConnectionHelper_CreateConnection2()
-        {
-            using (AmsModel dbContext = ConnectionHelper.CreateConnection(userId,
-                password,
-                metaData,
-                dataSource,
-                initialCatalog))
-            {
-                Console.WriteLine(dbContext.Students.ToList().Count);
-            }
-        }
-
-        [Test]
-        public void ConnectionHelper_CreateConnection3()
-        {
-            var metaData = ConfigurationManager.AppSettings["MetaData"];
-            var dataSource = ConfigurationManager.AppSettings["DataSource"];
-            var initialCatalog = ConfigurationManager.AppSettings["InitialCatalog"];
-            var userId = ConfigurationManager.AppSettings["UserId"];
-            var password = ConfigurationManager.AppSettings["Password"];
-
-            using (AmsModel dbContext = ConnectionHelper.CreateConnection(userId,
-                password,
-                metaData,
-                dataSource,
-                initialCatalog))
-            {
-                Console.WriteLine(dbContext.Students.ToList().Count);
-            }
-        }
     }
 }

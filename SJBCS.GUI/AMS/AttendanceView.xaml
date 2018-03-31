@@ -93,7 +93,6 @@
                                   Background="White"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"
-                                  Margin="5 0 0 0"
                                   BorderBrush="#B5B5B5"
                                   BorderThickness="0 0 .5 0">
             <Grid>

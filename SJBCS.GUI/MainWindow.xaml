@@ -4,39 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SJBCS.GUI"
-        xmlns:home="clr-namespace:SJBCS.GUI.Home"
-        xmlns:student="clr-namespace:SJBCS.GUI.Student"
-        xmlns:report="clr-namespace:SJBCS.GUI.Report"
-        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
         xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
-        xmlns:dialog="clr-namespace:SJBCS.GUI.Dialogs"
+        xmlns:home="clr-namespace:SJBCS.GUI.Home"
+        xmlns:report="clr-namespace:SJBCS.GUI.Report"
+        xmlns:settings="clr-namespace:SJBCS.GUI.Settings"
+        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
+        xmlns:student="clr-namespace:SJBCS.GUI.Student"
         mc:Ignorable="d"
         Title=""
         ResizeMode="NoResize"
         Icon="Image/clock-icon-png.png"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
-    <!--<Window x:Class="SJBCS.GUI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SJBCS.GUI"
-        xmlns:home="clr-namespace:SJBCS.GUI.Home"
-        xmlns:student="clr-namespace:SJBCS.GUI.Student"
-        xmlns:report="clr-namespace:SJBCS.GUI.Report"
-        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
-        xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
-        xmlns:dialog="clr-namespace:SJBCS.GUI.Dialogs"
-        mc:Ignorable="d"
-        Title="SJBCS"
-        ResizeMode="NoResize"
-        Icon="Image/clock-icon-png.png"
-        WindowStartupLocation="CenterScreen"
-        MinHeight="768"
-        MinWidth="1366">-->
     <Window.Resources>
         <DataTemplate DataType="{x:Type home:LoginViewModel}">
             <home:LoginView />
@@ -67,6 +46,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type sms:SmsViewModel}">
             <sms:SmsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type settings:DbManagementViewModel}">
+            <settings:DbManagementView />
         </DataTemplate>
     </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog">
