@@ -7,7 +7,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="800"
-             d:DesignWidth="800">
+             d:DesignWidth="800"
+             x:Name="AttendanceControl">
     <UserControl.Resources>
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
         <converters:ColorConverter x:Key="ColorConverter" />
@@ -99,6 +100,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <materialDesign:Chip Margin="5 5 0 0"
@@ -120,9 +122,30 @@
                     </materialDesign:Chip.Icon>
                 </materialDesign:Chip>
                 <materialDesign:Chip Margin="5 5 0 0"
+                                     Grid.Row="1"
+                                     Visibility="{Binding SMSStatusVisibility}"
+                                     Command="{Binding ElementName=AttendanceControl, Path=DataContext.ResendCommand}">
+                    <materialDesign:Chip.Content>
+                        <TextBlock FontSize="16">
+                        <Run Text="{Binding SMSStatus}" />
+                        <Run Text="Please click here to resend." 
+                             Foreground="#3D62B3"/>
+                        </TextBlock>
+                    </materialDesign:Chip.Content>
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="CloseCircle"
+                                                 Height="40"
+                                                 Width="40"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="Red"
+                                                 Background="White" />
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+                <materialDesign:Chip Margin="5 5 0 0"
                                      FontSize="16"
                                      Content="{Binding Remarks}"
-                                     Grid.Row="1">
+                                     Grid.Row="2">
                     <materialDesign:Chip.Icon>
                         <materialDesign:PackIcon Kind="{Binding Remarks,Converter={StaticResource IconConverter}}"
                                                  Height="40"
@@ -133,7 +156,7 @@
                                                  Background="White" />
                     </materialDesign:Chip.Icon>
                 </materialDesign:Chip>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="3">
                     <StackPanel>
                         <materialDesign:Card Margin="10"
                                              HorizontalAlignment="Center"

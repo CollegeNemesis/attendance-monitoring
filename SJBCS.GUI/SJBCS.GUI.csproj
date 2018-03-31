@@ -351,6 +351,10 @@
       <Project>{2F344F6B-7BA9-408F-A809-BA8B7297F137}</Project>
       <Name>SJBCS.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SJBCS.SMS\SJBCS.SMS.csproj">
+      <Project>{a777631a-79c9-4854-8344-a3876e242acd}</Project>
+      <Name>SJBCS.SMS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\default-user-image.png" />

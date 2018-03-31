@@ -50,6 +50,8 @@ namespace SJBCS.SMS
         [DataMember]
         public string AttendanceID { get; set; }
         [DataMember]
+        public bool IsTimeIn { get; set; }
+        [DataMember]
         public string Text { get; set; }
         [DataMember]
         public string Number { get; set; }

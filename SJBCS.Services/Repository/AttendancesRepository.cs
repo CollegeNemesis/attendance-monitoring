@@ -33,17 +33,30 @@ namespace SJBCS.Services.Repository
         {
             var today = DateTime.Today;
 
-            return _context.Attendances.Where(a => a.StudentID == studentID && DbFunctions.TruncateTime(a.TimeIn) >= today).FirstOrDefault();
+            return _context.Attendances.Where(attendance => attendance.StudentID == studentID && DbFunctions.TruncateTime(attendance.TimeIn) >= today).FirstOrDefault();
         }
 
         public Attendance GetAttendanceByID(Guid attendanceID)
         {
-            return _context.Attendances.Where(a => a.AttendanceID == attendanceID).FirstOrDefault();
+            return _context.Attendances.Where(attendance => attendance.AttendanceID == attendanceID).FirstOrDefault();
         }
 
         public List<Attendance> GetAttendances()
         {
             return _context.Attendances.ToList();
+        }
+
+        public List<Attendance> GetAttendancesWithFailedSMSRecord()
+        {
+            var today = DateTime.Today;
+            return _context.Attendances.Where(attendance =>
+                        ((attendance.TimeIn != null &&
+                            (attendance.TimeInSMSID == null
+                            || attendance.TimeInSMSStatus == null))
+                         || (attendance.TimeOut != null &&
+                            (attendance.TimeOutSMSID == null
+                            || attendance.TimeOutSMSStatus == null)))
+                        && DbFunctions.TruncateTime(attendance.TimeIn) >= today).ToList();
         }
 
         public Attendance UpdateAttendance(Attendance Attendance)

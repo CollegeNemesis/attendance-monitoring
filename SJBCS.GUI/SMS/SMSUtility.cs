@@ -11,55 +11,55 @@ namespace SJBCS.GUI.SMS
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static string SMSURL = "http://192.168.43.1:8080/";
 
-        public static void SendSMS(string text, string number, string attendaceID, Action<string[]> callback)
+        public static void SendSMS(string text, string number, string attendaceID, bool isTimeIn, Action<string> success, Action<string> fail)
         {
-            SendSMSAsync(text, number, response =>
-            {
-                string[] responseData = new string[2];
-                responseData[0] = response;
-                responseData[1] = attendaceID;
-                callback(responseData);
-            });
+            SendSMSAsync(text, number, attendaceID, isTimeIn, success, fail);
         }
 
-        public static void SendSMS(string text, string number, Action<string[]> callback)
+        public static void SendSMS(string text, string number, Action<string> success, Action<string> fail)
         {
-            SendSMSAsync(text, number, response =>
-            {
-                string[] responseData = new string[1];
-                responseData[0] = response;
-                callback(responseData);
-            });
+            SendSMSAsync(text, number, null, false, success, fail);
         }
 
-        private static void SendSMSAsync(string text, string number, Action<string> callback)
+        private static void SendSMSAsync(string text, string number, string attendaceID, bool isTimeIn, Action<string> success, Action<string> fail)
         {
             try
             {
-                RestClient client = new RestClient(SMSURL);
+                RestClient client = new RestClient("http://localhost:54000/RESTService.svc/SendSMS");
                 RestRequest request = new RestRequest(Method.POST);
                 request.AddJsonBody(new
                 {
-                    number,
-                    text
+                    AttendanceID = attendaceID,
+                    IsTimeIn = isTimeIn,
+                    Number = number,
+                    Text = text,
+                    URL = SMSURL
                 });
 
                 client.ExecuteAsync(request, response =>
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content);
-                        string smsID = values["id"];
-                        callback(smsID);
+                        bool responseData = Boolean.Parse(response.Content);
+                        if (responseData)
+                        {
+                            success?.Invoke("Successfully sent SMS to Android Phone");
+                        }
+                        else
+                        {
+                            fail?.Invoke("Failed to send SMS");
+                        }
                     }
                     else
                     {
+                        fail?.Invoke(response.ErrorMessage);
                         Logger.Error("Failed to send SMS: " + response.ErrorMessage);
                     }
                 });
             }
             catch (Exception error)
             {
+                fail?.Invoke(error.Message);
                 Logger.Error("Error encountered when sending SMS: ", error);
             }
         }

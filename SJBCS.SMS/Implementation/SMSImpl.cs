@@ -31,9 +31,14 @@ namespace SJBCS.SMS.Implementation
 
                     if (!string.IsNullOrEmpty(requestData.AttendanceID))
                     {
-                        int rowsAffected = DatabaseImpl.updateAttendanceSMSID(requestData.AttendanceID, smsID);
+                        int rowsAffected = DatabaseImpl.updateAttendanceSMSID(requestData.AttendanceID, requestData.IsTimeIn, smsID);
                         ret = rowsAffected > 0;
                         Logger.Debug("Update SMS ID rows affected: " + rowsAffected);
+                    }
+                    else
+                    {
+                        // For bulk sending
+                        ret = true;
                     }
                 }
                 else

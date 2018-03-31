@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Timers;
+using System.Windows;
 using Unity;
 using static DPFP.Verification.Verification;
 
@@ -30,6 +32,9 @@ namespace SJBCS.GUI.AMS
         private Template _Template;
         private Verification _Verificator;
         private List<Biometric> _Biometrics;
+
+        public RelayCommand ResendCommand { get; private set; }
+        private Timer smsTimer;
 
         private Data.Student _student;
         public Data.Student Student
@@ -54,6 +59,20 @@ namespace SJBCS.GUI.AMS
         {
             get { return _scannerStatus; }
             set { SetProperty(ref _scannerStatus, value); }
+        }
+
+        private string _smsStatus;
+        public string SMSStatus
+        {
+            get { return _smsStatus; }
+            set { SetProperty(ref _smsStatus, value); }
+        }
+
+        private Visibility _smsStatusVisibility = Visibility.Collapsed;
+        public Visibility SMSStatusVisibility
+        {
+            get { return _smsStatusVisibility; }
+            set { SetProperty(ref _smsStatusVisibility, value); }
         }
 
         private string _remarks;
@@ -82,6 +101,7 @@ namespace SJBCS.GUI.AMS
             Initialize();
             _attendanceLogs = new ObservableCollection<AttendanceLog>();
             _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+            ResendCommand = new RelayCommand(OnResend);
             Start();    //Begin capture
         }
 
@@ -174,7 +194,7 @@ namespace SJBCS.GUI.AMS
 
                                         });
 
-                                        ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime)_attendance.TimeOut);
+                                        ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime)_attendance.TimeOut, _student);
                                         Remarks = "Student logged out.";
                                     }
                                     else
@@ -210,7 +230,7 @@ namespace SJBCS.GUI.AMS
                                     _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
                                 });
 
-                                ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn);
+                                ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn, _student);
                                 Remarks = "Student logged in.";
                             }
 
@@ -257,6 +277,13 @@ namespace SJBCS.GUI.AMS
             }
 
             Student.ImageData = "/SJBCS.GUI;component/Image/default-user-image.png";
+
+            if (smsTimer == null)
+            {
+                smsTimer = new Timer(1000 * 60 * 60);
+                smsTimer.Elapsed += new ElapsedEventHandler(OnSMSTimerEvent);
+                smsTimer.Start();
+            }
         }
 
         public void SwitchOff()
@@ -270,33 +297,57 @@ namespace SJBCS.GUI.AMS
             Start();
         }
 
-        private void ProcessSMSIntegration(string attendanceID, bool isTimeIn, DateTime time)
+        private void ProcessSMSIntegration(string attendanceID, bool isTimeIn, DateTime time, Data.Student student)
         {
-            foreach (Contact contact in _student.Contacts)
+            foreach (Contact contact in student.Contacts)
             {
                 string text = String.Format("STJOHNBCS Messaging:\nPlease be informed that {0} {1} St. John the Baptist Catholic School at {2:h:mm tt}.",
-                    _student.FirstName, isTimeIn ? "ENTERED" : "EXITED", time);
+                    student.FirstName, isTimeIn ? "ENTERED" : "EXITED", time);
 
-                SMSUtility.SendSMS(text, contact.ContactNumber, attendanceID, response =>
+                SMSUtility.SendSMS(text, contact.ContactNumber, attendanceID, isTimeIn, null, error =>
                 {
-                    Attendance attendanceObj = _attendancesRepository.GetAttendanceByID(Guid.Parse(response[1]));
-
-                    if ((isTimeIn && !String.IsNullOrEmpty(attendanceObj.TimeInSMSID)) ||
-                        (!isTimeIn && !String.IsNullOrEmpty(attendanceObj.TimeOutSMSID)))
-                    {
-                        return;
-                    }
-
-                    if (isTimeIn)
-                    {
-                        attendanceObj.TimeInSMSID = response[0];
-                    }
-                    else
-                    {
-                        attendanceObj.TimeOutSMSID = response[0];
-                    }
-                    _attendancesRepository.UpdateAttendance(attendanceObj);
+                    SMSStatus = "Failed to send SMS, please check the logs.";
+                    SMSStatusVisibility = Visibility.Visible;
                 });
+            }
+        }
+
+        private void OnResend()
+        {
+            SMSStatusVisibility = Visibility.Collapsed;
+            List<Attendance> attendanceList = _attendancesRepository.GetAttendancesWithFailedSMSRecord();
+
+            if (attendanceList == null || attendanceList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Attendance attendance in attendanceList)
+            {
+                Data.Student student = _studentsRepository.GetStudent(attendance.StudentID);
+                if (String.IsNullOrEmpty(attendance.TimeInSMSID) || String.IsNullOrEmpty(attendance.TimeInSMSStatus))
+                {
+                    ProcessSMSIntegration(attendance.AttendanceID.ToString(), true, attendance.TimeIn, student);
+                }
+
+                if (attendance.TimeOut.HasValue && (String.IsNullOrEmpty(attendance.TimeOutSMSID) || String.IsNullOrEmpty(attendance.TimeOutSMSStatus)))
+                {
+                    ProcessSMSIntegration(attendance.AttendanceID.ToString(), false, (DateTime)attendance.TimeOut, student);
+                }
+            }
+        }
+
+        private void OnSMSTimerEvent(object source, ElapsedEventArgs e)
+        {
+            List<Attendance> attendanceList = _attendancesRepository.GetAttendancesWithFailedSMSRecord();
+            if (attendanceList == null || attendanceList.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                SMSStatus = "Failed to send SMS, please check the logs.";
+                SMSStatusVisibility = Visibility.Visible;
             }
         }
         #endregion

@@ -28,13 +28,13 @@ namespace SJBCS.SMS.Implementation
             }
         }
 
-        public static int updateAttendanceSMSID(string attendanceID, string smsID)
+        public static int updateAttendanceSMSID(string attendanceID, bool isTimeIn, string smsID)
         {
             int rowsAffected = 0;
             SqlConnection connection = null;
             try
             {
-                string columnName = null;
+                string columnName = isTimeIn ? "TimeInSMSID" : "TimeOutSMSID";
                 connection = DatabaseImpl.open();
 
                 if (connection == null)
@@ -42,31 +42,10 @@ namespace SJBCS.SMS.Implementation
                     return 0;
                 }
 
-                SqlCommand selectCommand = new SqlCommand("SELECT TimeIn, TimeOut FROM Attendance WHERE AttendanceID = @0", connection);
-                selectCommand.Parameters.Add(new SqlParameter("0", attendanceID));
-
-                using (SqlDataReader reader = selectCommand.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (!String.IsNullOrEmpty(reader[0].ToString()) && String.IsNullOrEmpty(reader[1].ToString()))
-                        {
-                            columnName = "TimeInSMSID";
-                        }
-                        else if (!String.IsNullOrEmpty(reader[0].ToString()) && !String.IsNullOrEmpty(reader[1].ToString()))
-                        {
-                            columnName = "TimeOutSMSID";
-                        }
-                    }
-                }
-
-                if (columnName != null)
-                {
-                    SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET " + columnName + " = @0 WHERE AttendanceID = @1", connection);
-                    updateCommand.Parameters.Add(new SqlParameter("0", smsID));
-                    updateCommand.Parameters.Add(new SqlParameter("1", attendanceID));
-                    rowsAffected = updateCommand.ExecuteNonQuery();
-                }
+                SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET " + columnName + " = @0 WHERE AttendanceID = @1", connection);
+                updateCommand.Parameters.Add(new SqlParameter("0", smsID));
+                updateCommand.Parameters.Add(new SqlParameter("1", attendanceID));
+                rowsAffected = updateCommand.ExecuteNonQuery();
             }
             catch(SqlException e)
             {
@@ -93,7 +72,7 @@ namespace SJBCS.SMS.Implementation
                 string columnName = null;
                 connection = DatabaseImpl.open();
 
-                if (connection == null)
+                if (connection == null || (status != "Sent" && status != "Delivered"))
                 {
                     return 0;
                 }
