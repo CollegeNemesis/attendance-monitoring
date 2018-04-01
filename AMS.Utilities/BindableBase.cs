@@ -27,5 +27,11 @@ namespace AMS.Utilities
         protected void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs) { }
 
         protected void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs) { }
+
+        public event EventHandler CloseWindowRequested;
+        protected void OnCloseWindow()
+        {
+            CloseWindowRequested?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

@@ -4,15 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
         xmlns:home="clr-namespace:SJBCS.GUI.Home"
         xmlns:report="clr-namespace:SJBCS.GUI.Report"
         xmlns:settings="clr-namespace:SJBCS.GUI.Settings"
-        xmlns:sms="clr-namespace:SJBCS.GUI.SMS"
         xmlns:student="clr-namespace:SJBCS.GUI.Student"
         mc:Ignorable="d"
         Title=""
         ResizeMode="NoResize"
+        dialogs:DialogParticipation.Register="{Binding}"
         Icon="Image/clock-icon-png.png"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
@@ -44,11 +45,17 @@
         <DataTemplate DataType="{x:Type report:ReportViewModel}">
             <report:ReportView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type sms:SmsViewModel}">
-            <sms:SmsView />
+        <DataTemplate DataType="{x:Type settings:SettingsViewModel}">
+            <settings:SettingsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type settings:DbManagementViewModel}">
             <settings:DbManagementView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type settings:UserManagementViewModel}">
+            <settings:UserManagementView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type settings:SmsManagementViewModel}">
+            <settings:SmsManagementView />
         </DataTemplate>
     </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog">

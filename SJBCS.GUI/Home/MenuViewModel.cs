@@ -10,14 +10,14 @@ namespace SJBCS.GUI.Home
     public class MenuViewModel : BindableBase
     {
         public RelayCommand NavToAttendanceCommand { get; private set; }
-        public RelayCommand NavToSmsCommand { get; private set; }
+        public RelayCommand NavToSettingsCommand { get; private set; }
         public RelayCommand NavToStudentCommand { get; private set; }
         public RelayCommand NavToSectionCommand { get; private set; }
         public RelayCommand NavToGroupCommand { get; private set; }
         public RelayCommand NavToReportCommand { get; private set; }
 
         public event Action NavToAttendanceRequested = delegate { };
-        public event Action NavToSmsRequested = delegate { };
+        public event Action NavToSettingsRequested = delegate { };
         public event Action NavToStudentRequested = delegate { };
         public event Action NavToSectionRequested = delegate { };
         public event Action NavToGroupRequested = delegate { };
@@ -26,7 +26,7 @@ namespace SJBCS.GUI.Home
         public MenuViewModel()
         {
             NavToAttendanceCommand = new RelayCommand(OnNavToAttendance);
-            NavToSmsCommand = new RelayCommand(OnNavToSms);
+            NavToSettingsCommand = new RelayCommand(OnNavToSettings);
             NavToStudentCommand = new RelayCommand(OnNavToStudent);
             NavToSectionCommand = new RelayCommand(OnNavToSection);
             NavToReportCommand = new RelayCommand(OnNavToReport);
@@ -53,9 +53,9 @@ namespace SJBCS.GUI.Home
             NavToStudentRequested();
         }
 
-        private void OnNavToSms()
+        private void OnNavToSettings()
         {
-            NavToSmsRequested();
+            NavToSettingsRequested();
         }
 
         private void OnNavToAttendance()

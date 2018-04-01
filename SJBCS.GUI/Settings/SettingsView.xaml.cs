@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SJBCS.GUI.SMS
+namespace SJBCS.GUI.Settings
 {
     /// <summary>
-    /// Interaction logic for SmsView.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SmsView : UserControl
+    public partial class SettingsView : UserControl
     {
-        public SmsView()
+        public SettingsView()
         {
             InitializeComponent();
         }

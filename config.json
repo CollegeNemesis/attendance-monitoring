@@ -1,1 +1,0 @@
-{"AppConfiguration":{"Settings":{"DataSource":{"Metadata":"res://*/AmsModel.csdl|res://*/AmsModel.ssdl|res://*/AmsModel.msl","Hostname":"DESKTOP-BQK5NF7","InitialCatalog":"AMS","Username":"amsadmin","Password":"password1"},"SmsService":{"Url":"http://192.168.43.1:8081/"}}}}

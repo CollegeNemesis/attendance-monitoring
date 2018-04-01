@@ -29,7 +29,6 @@ namespace SJBCS.GUI.Student
         private IOrganizationsRepository _organizationsRepository;
 
         private EnrollBiometricsViewModel currentViewModel;
-
         public EnrollBiometricsViewModel CurrentViewModel
         {
             get { return currentViewModel; }
@@ -342,7 +341,6 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteBiometric(Biometric biometric)
         {
-            //Show Delete Biometric Dialog
             var view = new DialogBoxView
             {
                 DataContext = new DialogBoxViewModel(MessageType.Informational, "Are you sure you want to unenroll this finger?")

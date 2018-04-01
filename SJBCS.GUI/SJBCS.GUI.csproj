@@ -85,8 +85,14 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.11\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
@@ -111,7 +117,10 @@
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -152,8 +161,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AMS\AttendanceLog.cs" />
-    <Compile Include="ConfigurationWindow.xaml.cs">
-      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    <Compile Include="Converters\PasswordAssistant.cs" />
+    <Compile Include="Settings\EditableSmsConfig.cs" />
+    <Compile Include="Settings\StartupConfigWindow.xaml.cs">
+      <DependentUpon>StartupConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Converters\CountVisibilityConverter.cs" />
@@ -179,19 +190,25 @@
       <DependentUpon>ReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Report\ReportViewModel.cs" />
+    <Compile Include="Settings\StartupConfigWindowViewModel.cs" />
     <Compile Include="Settings\DbManagementView.xaml.cs">
       <DependentUpon>DbManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\DbManagementViewModel.cs" />
+    <Compile Include="Settings\EditableDbConfig.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Settings\UserManagementView.xaml.cs">
       <DependentUpon>UserManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\UserManagementViewModel.cs" />
     <Compile Include="SMS\SMSUtility.cs" />
-    <Compile Include="SMS\SmsView.xaml.cs">
-      <DependentUpon>SmsView.xaml</DependentUpon>
+    <Compile Include="Settings\SmsManagementView.xaml.cs">
+      <DependentUpon>SmsManagementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SMS\SmsViewModel.cs" />
+    <Compile Include="Settings\SmsManagementViewModel.cs" />
     <Compile Include="Student\AddEditStudentView.xaml.cs">
       <DependentUpon>AddEditStudentView.xaml</DependentUpon>
     </Compile>
@@ -230,7 +247,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ConfigurationWindow.xaml">
+    <Page Include="Settings\StartupConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,11 +306,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\UserManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SMS\SmsView.xaml">
+    <Page Include="Settings\SmsManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

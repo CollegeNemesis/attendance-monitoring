@@ -13,19 +13,19 @@ namespace SJBCS.Data
 {
     public class ConnectionHelper
     {
+
+        public static Config Config;
+
         public static string CreateConnectionString()
         {
             const string appName = "EntityFramework";
             const string providerName = "System.Data.SqlClient";
 
-            string json = File.ReadAllText(ConfigurationManager.AppSettings["configPath"]);
-            Config config = JsonConvert.DeserializeObject<Config>(json);
-
-            string metaData = config.AppConfiguration.Settings.DataSource.Metadata;
-            string dataSource = config.AppConfiguration.Settings.DataSource.Hostname;
-            string initialCatalog = config.AppConfiguration.Settings.DataSource.InitialCatalog;
-            string userId = config.AppConfiguration.Settings.DataSource.Username;
-            string password = config.AppConfiguration.Settings.DataSource.Password;
+            string metaData = Config.AppConfiguration.Settings.DataSource.Metadata;
+            string dataSource = Config.AppConfiguration.Settings.DataSource.Hostname;
+            string initialCatalog = Config.AppConfiguration.Settings.DataSource.InitialCatalog;
+            string userId = Config.AppConfiguration.Settings.DataSource.Username;
+            string password = Config.AppConfiguration.Settings.DataSource.Password;
 
 
             SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
@@ -47,15 +47,7 @@ namespace SJBCS.Data
 
         public static AmsModel CreateConnection()
         {
-            try
-            {
-                return new AmsModel(ConnectionHelper.CreateConnectionString());
-            }
-            catch (Exception error)
-            {
-                throw error;
-            }
-
+            return new AmsModel(ConnectionHelper.CreateConnectionString());
         }
     }
 }
