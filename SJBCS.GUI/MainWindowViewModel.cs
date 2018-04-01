@@ -86,11 +86,11 @@ namespace SJBCS.GUI
             _smsManagementViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
             _startupConfigWindowViewModel = ContainerHelper.Container.Resolve<StartupConfigWindowViewModel>();
 
-            //_currentViewModel = _loginViewModel;
-            //_menu = null;
+            _currentViewModel = _loginViewModel;
+            _menu = null;
 
-            _currentViewModel = _studentViewModel;
-            _menu = _menuViewModel;
+            //_currentViewModel = _studentViewModel;
+            //_menu = _menuViewModel;
 
             _addEditStudentViewModel.Done += NavToStudent;
             _addEditStudentViewModel.EditMode = false;
@@ -262,14 +262,16 @@ namespace SJBCS.GUI
                 StartupConfigWindow = new StartupConfigWindow();
                 StartupConfigWindow.ShowDialog();
                 Logger.Error("File not found: ", error);
-                System.Environment.Exit(0);
+                LoadConfiguration();
+                //System.Environment.Exit(0);
             }
             catch (Exception error)
             {
                 StartupConfigWindow = new StartupConfigWindow();
                 StartupConfigWindow.ShowDialog();
                 Logger.Error("ERROR: ", error);
-                System.Environment.Exit(0);
+                LoadConfiguration();
+                //System.Environment.Exit(0);
             }
         }
 
