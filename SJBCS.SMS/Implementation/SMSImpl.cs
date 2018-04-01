@@ -13,8 +13,15 @@ namespace SJBCS.SMS.Implementation
         public bool SendSMS(SendRequestData requestData)
         {
             bool ret = false;
-            var client = new RestClient(requestData.URL);
-            var request = new RestRequest(Method.POST);
+
+            if (String.IsNullOrWhiteSpace(requestData.URL))
+            {
+                Logger.Error("Failed to send SMS: URL is not setup.");
+                return ret;
+            }
+
+            RestClient client = new RestClient(requestData.URL);
+            RestRequest request = new RestRequest(Method.POST);
             request.AddJsonBody(new {
                 number = requestData.Number,
                 text = requestData.Text
@@ -26,14 +33,14 @@ namespace SJBCS.SMS.Implementation
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content);
-                    var smsID = values["id"];
+                    Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content);
+                    string smsID = values["id"];
 
                     if (!string.IsNullOrEmpty(requestData.AttendanceID))
                     {
-                        int rowsAffected = DatabaseImpl.updateAttendanceSMSID(requestData.AttendanceID, requestData.IsTimeIn, smsID);
-                        ret = rowsAffected > 0;
-                        Logger.Debug("Update SMS ID rows affected: " + rowsAffected);
+                        DatabaseImpl dbImpl = new DatabaseImpl();
+                        ret = dbImpl.UpdateAttendanceSMSID(requestData.AttendanceID, requestData.IsTimeIn, smsID);
+                        Logger.Debug("SMS ID update: " + ret);
                     }
                     else
                     {
@@ -56,11 +63,9 @@ namespace SJBCS.SMS.Implementation
 
         public bool UpdateSMSStatus(string smsID, string status)
         {
-            bool ret;
-            int rowsAffected = DatabaseImpl.updateAttendaceSMSStatus(smsID, status);
-            ret = rowsAffected > 0;
-            Logger.Debug("Update status rows affected: " + rowsAffected);
-
+            DatabaseImpl dbImpl = new DatabaseImpl();
+            bool ret = dbImpl.UpdateAttendaceSMSStatus(smsID, status);
+            Logger.Debug("SMS status update: " + ret);
             return ret;
         }
     }

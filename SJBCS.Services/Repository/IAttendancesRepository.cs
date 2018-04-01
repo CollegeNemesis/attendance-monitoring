@@ -13,6 +13,7 @@ namespace SJBCS.Services.Repository
         List<Attendance> GetAttendancesWithFailedSMSRecord();
         Attendance GetAttendanceByStudentID(Guid id);
         Attendance GetAttendanceByID(Guid id);
+        Attendance GetAttendanceBySMSID(string smsID);
         Attendance AddAttendance(Attendance Attendance);
         Attendance UpdateAttendance(Attendance Attendance);
         void DeleteAttendance(Guid id);

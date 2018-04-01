@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using SJBCS.Data;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,7 +10,7 @@ namespace SJBCS.GUI.SMS
     public class SMSUtility
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static string SMSURL = "http://192.168.43.1:8080/";
+        private static string SMSURL = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
 
         public static void SendSMS(string text, string number, string attendaceID, bool isTimeIn, Action<string> success, Action<string> fail)
         {
