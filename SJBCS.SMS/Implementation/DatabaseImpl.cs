@@ -14,20 +14,20 @@ namespace SJBCS.SMS.Implementation
 
         public DatabaseImpl()
         {
-            attendanceRepository = new AttendancesRepository();
             ConnectionHelper.Config = SetConfiguration();
+            attendanceRepository = new AttendancesRepository();
         }
 
         public DatabaseImpl(IAttendancesRepository attendanceRepository)
         {
-            this.attendanceRepository = attendanceRepository;
             ConnectionHelper.Config = SetConfiguration();
+            this.attendanceRepository = attendanceRepository;
         }
 
         private Config SetConfiguration()
         {
-            Config config = null;
-            if (ConnectionHelper.Config == null)
+            Config config = ConnectionHelper.Config;
+            if (config == null)
             {
                 string json = File.ReadAllText(ConfigurationManager.AppSettings["configPath"]);
                 config = JsonConvert.DeserializeObject<Config>(json);
