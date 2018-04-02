@@ -1,122 +1,98 @@
-﻿using System;
-using System.Data.SqlClient;
+﻿using Newtonsoft.Json;
+using SJBCS.Data;
+using SJBCS.Services.Repository;
+using System;
+using System.Configuration;
+using System.IO;
 
 namespace SJBCS.SMS.Implementation
 {
     public class DatabaseImpl
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IAttendancesRepository attendanceRepository;
 
-        public static SqlConnection open()
+        public DatabaseImpl()
         {
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = "Data Source = PHMANLAPANGAN1;" +
-                "Initial Catalog=AMS;" +
-                "User id=sa;" +
-                "Password=Infor123;";
-            connection.Open();
-
-            return connection;
+            ConnectionHelper.Config = SetConfiguration();
+            attendanceRepository = new AttendancesRepository();
         }
 
-        public static void close(SqlConnection connection)
+        public DatabaseImpl(IAttendancesRepository attendanceRepository)
         {
-            if (connection != null)
+            ConnectionHelper.Config = SetConfiguration();
+            this.attendanceRepository = attendanceRepository;
+        }
+
+        private Config SetConfiguration()
+        {
+            Config config = ConnectionHelper.Config;
+            if (config == null)
             {
-                connection.Close();
-                connection.Dispose();
+                string json = File.ReadAllText(ConfigurationManager.AppSettings["configPath"]);
+                config = JsonConvert.DeserializeObject<Config>(json);
             }
+            return config;
         }
 
-        public static int updateAttendanceSMSID(string attendanceID, bool isTimeIn, string smsID)
+        public bool UpdateAttendanceSMSID(string attendanceID, bool isTimeIn, string smsID)
         {
-            int rowsAffected = 0;
-            SqlConnection connection = null;
             try
             {
-                string columnName = isTimeIn ? "TimeInSMSID" : "TimeOutSMSID";
-                connection = DatabaseImpl.open();
+                Attendance attendance = attendanceRepository.GetAttendanceByID(Guid.Parse(attendanceID));
 
-                if (connection == null)
+                if (isTimeIn)
                 {
-                    return 0;
+                    attendance.TimeInSMSID = smsID;
+                }
+                else
+                {
+                    attendance.TimeOutSMSID = smsID;
                 }
 
-                SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET " + columnName + " = @0 WHERE AttendanceID = @1", connection);
-                updateCommand.Parameters.Add(new SqlParameter("0", smsID));
-                updateCommand.Parameters.Add(new SqlParameter("1", attendanceID));
-                rowsAffected = updateCommand.ExecuteNonQuery();
-            }
-            catch(SqlException e)
-            {
-                Logger.Error("Failed to update database", e);
+                attendanceRepository.UpdateAttendance(attendance);
+                return true;
             }
             catch (Exception e)
             {
-                Logger.Error("Exception encountered", e);
+                Logger.Error("Exception encountered when updating sms ID", e);
+                return false;
             }
-            finally
-            {
-                DatabaseImpl.close(connection);
-            }
-
-            return rowsAffected;
         }
 
-        public static int updateAttendaceSMSStatus(string smsID, string status)
+        public bool UpdateAttendaceSMSStatus(string smsID, string status)
         {
-            int rowsAffected = 0;
-            SqlConnection connection = null;
             try
             {
-                string columnName = null;
-                connection = DatabaseImpl.open();
-
-                if (connection == null || (status != "Sent" && status != "Delivered"))
+                if ((status != "Sent" && status != "Delivered"))
                 {
-                    return 0;
+                    return false;
                 }
 
-                SqlCommand selectCommand = new SqlCommand("SELECT TimeInSMSID, TimeOutSMSID FROM Attendance WHERE TimeInSMSID = @0 OR TimeOutSMSID = @0", connection);
-                selectCommand.Parameters.Add(new SqlParameter("0", smsID));
+                Attendance attendance = attendanceRepository.GetAttendanceBySMSID(smsID);
 
-                using (SqlDataReader reader = selectCommand.ExecuteReader())
+                if (attendance == null)
                 {
-                    while (reader.Read())
-                    {
-                        if (!String.IsNullOrEmpty(reader[0].ToString()) && reader[0].Equals(smsID))
-                        {
-                            columnName = "TimeInSMSStatus";
-                        }
-                        else if (!String.IsNullOrEmpty(reader[1].ToString()) && reader[1].Equals(smsID))
-                        {
-                            columnName = "TimeOutSMSStatus";
-                        }
-                    }
+                    return false;
                 }
 
-                if (columnName != null)
+                if (!String.IsNullOrEmpty(attendance.TimeInSMSID) && attendance.TimeInSMSID.Equals(smsID))
                 {
-                    SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET " + columnName + " = @0 WHERE TimeInSMSID = @1 OR TimeOutSMSID = @1", connection);
-                    updateCommand.Parameters.Add(new SqlParameter("0", status));
-                    updateCommand.Parameters.Add(new SqlParameter("1", smsID));
-                    rowsAffected = updateCommand.ExecuteNonQuery();
+                    attendance.TimeInSMSStatus = status;
                 }
-            }
-            catch (SqlException e)
-            {
-                Logger.Error("Failed to update database", e);
+                else if (!String.IsNullOrEmpty(attendance.TimeOutSMSID) && attendance.TimeOutSMSID.Equals(smsID))
+                {
+                    attendance.TimeOutSMSStatus = status;
+                }
+
+                attendanceRepository.UpdateAttendance(attendance);
+                return true;
             }
             catch (Exception e)
             {
-                Logger.Error("Exception encountered", e);
+                Logger.Error("Exception encountered when updating sms status", e);
+                return false;
             }
-            finally
-            {
-                DatabaseImpl.close(connection);
-            }
-
-            return rowsAffected;
         }
     }
 }

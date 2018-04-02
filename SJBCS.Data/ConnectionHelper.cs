@@ -13,7 +13,6 @@ namespace SJBCS.Data
 {
     public class ConnectionHelper
     {
-
         public static Config Config;
 
         public static string CreateConnectionString()

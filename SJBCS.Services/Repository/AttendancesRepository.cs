@@ -41,6 +41,11 @@ namespace SJBCS.Services.Repository
             return _context.Attendances.Where(attendance => attendance.AttendanceID == attendanceID).FirstOrDefault();
         }
 
+        public Attendance GetAttendanceBySMSID(string smsID)
+        {
+            return _context.Attendances.Where(attendance => attendance.TimeInSMSID == smsID || attendance.TimeOutSMSID == smsID).FirstOrDefault();
+        }
+
         public List<Attendance> GetAttendances()
         {
             return _context.Attendances.ToList();
