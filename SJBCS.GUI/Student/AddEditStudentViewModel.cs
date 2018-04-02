@@ -35,9 +35,7 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref currentViewModel, value); }
         }
 
-
         private bool _editMode;
-
         public bool EditMode
         {
             get { return _editMode; }
@@ -45,7 +43,6 @@ namespace SJBCS.GUI.Student
         }
 
         private Guid _selectedGroupId;
-
         public Guid SelectedGroupId
         {
             get { return _selectedGroupId; }
@@ -53,7 +50,6 @@ namespace SJBCS.GUI.Student
         }
 
         private Organization _selectedOrganization;
-
         public Organization SelectedOrganization
         {
             get { return _selectedOrganization; }
@@ -62,7 +58,6 @@ namespace SJBCS.GUI.Student
 
 
         private Guid _selectedLevelId;
-
         public Guid SelectedLevelId
         {
             get { return _selectedLevelId; }
@@ -78,7 +73,6 @@ namespace SJBCS.GUI.Student
         }
 
         private Guid _selectedSectionId;
-
         public Guid SelectedSectionId
         {
             get { return _selectedSectionId; }
@@ -94,7 +88,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Organization> _organizations;
-
         public ObservableCollection<Organization> Organizations
         {
             get { return _organizations; }
@@ -102,7 +95,6 @@ namespace SJBCS.GUI.Student
         }
 
         private string _selectedImage;
-
         public string SelectedImage
         {
             get { return _selectedImage; }
@@ -110,15 +102,23 @@ namespace SJBCS.GUI.Student
         }
 
         private EditableContact _editableContact;
-
         public EditableContact EditableContact
         {
-            get { return _editableContact; }
-            set { SetProperty(ref _editableContact, value); }
+            get
+            {
+                return _editableContact;
+            }
+
+            set
+            {
+                if (Student.Contacts != null)
+                    value.Contacts = Student.Contacts;
+                SetProperty(ref _editableContact, value);
+                AddContactCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private EditableStudent _student;
-
         public EditableStudent Student
         {
             get { return _student; }
@@ -126,7 +126,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Level> _levels;
-
         public ObservableCollection<Level> Levels
         {
             get { return _levels; }
@@ -134,7 +133,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Section> _sections;
-
         public ObservableCollection<Section> Sections
         {
             get { return _sections; }
@@ -142,7 +140,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Contact> _addedContacts;
-
         public ObservableCollection<Contact> AddedContacts
         {
             get { return _addedContacts; }
@@ -150,7 +147,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Contact> _deletedContacts;
-
         public ObservableCollection<Contact> DeletedContacts
         {
             get { return _deletedContacts; }
@@ -158,7 +154,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<RelOrganization> _addedGroups;
-
         public ObservableCollection<RelOrganization> AddedGroups
         {
             get { return _addedGroups; }
@@ -166,7 +161,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<RelOrganization> _deletedGroups;
-
         public ObservableCollection<RelOrganization> DeletedGroups
         {
             get { return _deletedGroups; }
@@ -174,7 +168,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Biometric> _addedBiometrics;
-
         public ObservableCollection<Biometric> AddedBiometrics
         {
             get { return _addedBiometrics; }
@@ -182,7 +175,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Biometric> _deletedBiometrics;
-
         public ObservableCollection<Biometric> DeletedBiometrics
         {
             get { return _deletedBiometrics; }
@@ -190,7 +182,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<RelBiometric> _addedRelBiometrics;
-
         public ObservableCollection<RelBiometric> AddedRelBiometrics
         {
             get { return _addedRelBiometrics; }
@@ -198,7 +189,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<RelBiometric> _deletedRelBiometrics;
-
         public ObservableCollection<RelBiometric> DeletedRelBiometrics
         {
             get { return _deletedRelBiometrics; }
@@ -206,15 +196,55 @@ namespace SJBCS.GUI.Student
         }
 
         private Biometric _biometric;
-
         public Biometric Biometric
         {
             get { return _biometric; }
-            set { _biometric = value; }
+            set { SetProperty(ref _biometric, value); }
         }
 
-
         private Data.Student _editingStudent;
+
+        public RelayCommand CancelCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand OpenFileCommand { get; private set; }
+        public RelayCommand AddContactCommand { get; private set; }
+        public RelayCommand<Contact> DeleteContactCommand { get; private set; }
+        public RelayCommand AddGroupCommand { get; private set; }
+        public RelayCommand<Organization> DeleteGroupCommand { get; private set; }
+        public RelayCommand<Biometric> DeleteBiometricCommand { get; private set; }
+
+        public event Action Done = delegate { };
+
+        public EnrollBiometricsViewModel _enrollBiometricsViewModel;
+
+        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository, IRelOrganizationsRepository relOrganizationsRepository, IOrganizationsRepository organizationsRepository)
+        {
+            _studentsRepository = studentsRepository;
+            _levelsRepository = levelsRepository;
+            _sectionsRepository = sectionsRepository;
+            _contactsRepository = contactsRepository;
+            _relOrganizationsRepository = relOrganizationsRepository;
+            _relBiometricsRepository = relBiometricsRepository;
+            _biometricsRepository = biometricsRepository;
+            _organizationsRepository = organizationsRepository;
+
+            _enrollBiometricsViewModel = ContainerHelper.Container.Resolve<EnrollBiometricsViewModel>();
+
+            currentViewModel = _enrollBiometricsViewModel;
+
+            CancelCommand = new RelayCommand(OnCancel);
+            SaveCommand = new RelayCommand(OnSave, CanSave);
+            OpenFileCommand = new RelayCommand(OnOpenFile);
+
+            AddContactCommand = new RelayCommand(OnAddContact, CanAddContact);
+            DeleteContactCommand = new RelayCommand<Contact>(OnDeleteContact);
+
+            AddGroupCommand = new RelayCommand(OnAddGroup, CanAddGroup);
+            DeleteGroupCommand = new RelayCommand<Organization>(OnDeleteGroup);
+
+            DeleteBiometricCommand = new RelayCommand<Biometric>(OnDeleteBiometric);
+
+        }
 
         public void SetStudent(Data.Student student)
         {
@@ -235,11 +265,20 @@ namespace SJBCS.GUI.Student
             CopyStudent(student, Student);
         }
 
-        private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
+        private void UpdateStudent(EditableStudent source, Data.Student target)
         {
-            SaveCommand.RaiseCanExecuteChanged();
-            AddContactCommand.RaiseCanExecuteChanged();
-            AddGroupCommand.RaiseCanExecuteChanged();
+            target.StudentID = source.StudentID;
+            target.FirstName = source.FirstName;
+            target.MiddleName = source.MiddleName;
+            target.LastName = source.LastName;
+            target.LevelID = source.LevelID;
+            target.SectionID = source.SectionID;
+            target.BirthDate = source.BirthDate;
+            target.Gender = source.Gender;
+            target.Street = source.Street;
+            target.City = source.City;
+            target.State = source.State;
+            target.ImageData = source.ImageData;
         }
 
         private void CopyStudent(Data.Student source, EditableStudent target)
@@ -270,8 +309,6 @@ namespace SJBCS.GUI.Student
 
                 Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(Student.LevelID));
 
-
-
                 SelectedImage = Student.ImageData;
             }
 
@@ -295,48 +332,11 @@ namespace SJBCS.GUI.Student
 
         }
 
-        public RelayCommand CancelCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand OpenFileCommand { get; private set; }
-        public RelayCommand AddContactCommand { get; private set; }
-        public RelayCommand<Contact> DeleteContactCommand { get; private set; }
-        public RelayCommand AddGroupCommand { get; private set; }
-        public RelayCommand<Organization> DeleteGroupCommand { get; private set; }
-        public RelayCommand<Biometric> DeleteBiometricCommand { get; private set; }
-
-        public event Action Done = delegate { };
-
-
-        public EnrollBiometricsViewModel _enrollBiometricsViewModel;
-
-        public AddEditStudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository, IRelOrganizationsRepository relOrganizationsRepository, IOrganizationsRepository organizationsRepository)
+        private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
         {
-            _studentsRepository = studentsRepository;
-            _levelsRepository = levelsRepository;
-            _sectionsRepository = sectionsRepository;
-            _contactsRepository = contactsRepository;
-            _relOrganizationsRepository = relOrganizationsRepository;
-            _relBiometricsRepository = relBiometricsRepository;
-            _biometricsRepository = biometricsRepository;
-            _organizationsRepository = organizationsRepository;
-
-
-            _enrollBiometricsViewModel = ContainerHelper.Container.Resolve<EnrollBiometricsViewModel>();
-
-            currentViewModel = _enrollBiometricsViewModel;
-
-            CancelCommand = new RelayCommand(OnCancel);
-            SaveCommand = new RelayCommand(OnSave, CanSave);
-            OpenFileCommand = new RelayCommand(OnOpenFile);
-
-            AddContactCommand = new RelayCommand(OnAddContact, CanAddContact);
-            DeleteContactCommand = new RelayCommand<Contact>(OnDeleteContact);
-
-            AddGroupCommand = new RelayCommand(OnAddGroup, CanAddGroup);
-            DeleteGroupCommand = new RelayCommand<Organization>(OnDeleteGroup);
-
-            DeleteBiometricCommand = new RelayCommand<Biometric>(OnDeleteBiometric);
-
+            SaveCommand.RaiseCanExecuteChanged();
+            AddContactCommand.RaiseCanExecuteChanged();
+            AddGroupCommand.RaiseCanExecuteChanged();
         }
 
         private async void OnDeleteBiometric(Biometric biometric)
@@ -536,7 +536,7 @@ namespace SJBCS.GUI.Student
 
         private bool CanAddContact()
         {
-            if (EditableContact.ContactNumber == null || EditableContact.ContactNumber == String.Empty)
+            if (string.IsNullOrEmpty(EditableContact.ContactNumber))
                 return false;
             return !EditableContact.HasErrors;
         }
@@ -611,22 +611,6 @@ namespace SJBCS.GUI.Student
             Done();
         }
 
-        private void UpdateStudent(EditableStudent source, Data.Student target)
-        {
-            target.StudentID = source.StudentID;
-            target.FirstName = source.FirstName;
-            target.MiddleName = source.MiddleName;
-            target.LastName = source.LastName;
-            target.LevelID = source.LevelID;
-            target.SectionID = source.SectionID;
-            target.BirthDate = source.BirthDate;
-            target.Gender = source.Gender;
-            target.Street = source.Street;
-            target.City = source.City;
-            target.State = source.State;
-            target.ImageData = source.ImageData;
-        }
-
         private void OnCancel()
         {
 
@@ -650,8 +634,6 @@ namespace SJBCS.GUI.Student
 
             Organizations = new ObservableCollection<Organization>(_organizationsRepository.GetOrganizations());
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
-
-
         }
 
         public void PopulateLevelComboBox()
@@ -688,13 +670,11 @@ namespace SJBCS.GUI.Student
             }
         }
 
-
         public void Initialize()
         {
             RefreshList();
             PopulateLevelComboBox();
             PopulateOrganizationComboBox();
-
         }
 
 

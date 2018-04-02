@@ -58,5 +58,16 @@ namespace SJBCS.Data
             json = JsonConvert.SerializeObject(config);
             File.WriteAllText("config.json", json);
         }
+
+        [Test]
+        public void TestTime ()
+        {
+            TimeSpan timeOut = new TimeSpan(8, 0, 1);
+            TimeSpan endTime = new TimeSpan(7, 30, 0);
+            if (timeOut > endTime.Add(new TimeSpan(0, 30, 0)))
+                Console.WriteLine("Overstay.");
+            Console.WriteLine(timeOut);
+            Console.WriteLine(endTime.Add(new TimeSpan(0, 30, 0)));
+        }
     }
 }

@@ -15,77 +15,58 @@
             <TextBlock Foreground="#00B4FF"
                        FontFamily="Segoe UI"
                        FontWeight="Regular"
-                       Margin="5 0 0 5"
+                       Margin="0 0 0 5"
                        FontSize="20">
+                <Run Text="Please note that all fields marked with an asterisk ("
+                     FontSize="12"
+                     Foreground="Black" />
+                <Run Text="*"
+                                               FontSize="12"
+                                               Foreground="Red" />
+                <Run Text=") are required."
+                     FontSize="12"
+                     Foreground="Black" />
+                <LineBreak />
+                <LineBreak />
                         <Run Text="Manage Data Source" />
-                        <LineBreak />
-                        <Run Text="All fields with ("
-                             FontSize="12"
-                             Foreground="Black" />
-                        <Run Text="*"
-                             FontSize="12"
-                             Foreground="Red" />
-                        <Run Text=") are required."
-                             FontSize="12"
-                             Foreground="Black" />
             </TextBlock>
-            <StackPanel HorizontalAlignment="Left"
-                        Margin="0 20 0 0">
-                <TextBlock Text="SQL Server"
-                           Foreground="#3D62B3"
-                           FontFamily="Segoe UI"
-                           FontWeight="Regular"
-                           FontSize="12" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Grid.Column="1"
-                             Width="150"
-                             VerticalAlignment="Center"
-                             Style="{StaticResource MaterialDesignTextBox}"
-                             Text="{Binding Hostname ,ValidatesOnNotifyDataErrors=True}" />
-                    <TextBlock HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Margin="5">
-                        <Run Text="*"
-                             FontSize="16"
-                             Foreground="Red" />
-                    </TextBlock>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Left"
-                        Margin="0 20 0 0">
-                <TextBlock Text="Login"
-                           Foreground="#3D62B3"
-                           FontFamily="Segoe UI"
-                           FontWeight="Regular"
-                           FontSize="12" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Grid.Column="1"
-                             Width="150"
-                             VerticalAlignment="Center"
-                             Style="{StaticResource MaterialDesignTextBox}"
-                             Text="{Binding Username ,ValidatesOnNotifyDataErrors=True}" />
-                    <TextBlock HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Margin="5">
-                        <Run Text="*"
-                             FontSize="16"
-                             Foreground="Red" />
-                    </TextBlock>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Left"
-                        Margin="0 20 0 0">
-                <TextBlock Text="Password"
-                           Foreground="#3D62B3"
-                           FontFamily="Segoe UI"
-                           FontWeight="Regular"
-                           FontSize="12" />
-                <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+
+                <StackPanel HorizontalAlignment="Left"
+                            Margin="0 20 0 0">
+                    <TextBlock Text="SQL Server"
+                               Foreground="#3D62B3"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12" />
                     <StackPanel Orientation="Horizontal">
-                        <PasswordBox Style="{StaticResource MaterialDesignPasswordBox}"
-                                     converter:PasswordBoxAssistant.BindPassword="True"
-                                     converter:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                     Width="150" />
+                        <TextBox Grid.Column="1"
+                                 Width="200"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding Hostname ,ValidatesOnNotifyDataErrors=True}" />
+                        <TextBlock HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        <Run Text="*"
+                             FontSize="16"
+                             Foreground="Red" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Left"
+                            Margin="0 20 0 0">
+                    <TextBlock Text="Database"
+                               Foreground="#3D62B3"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Grid.Column="1"
+                                 Width="200"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding InitialCatalog ,ValidatesOnNotifyDataErrors=True}" />
                         <TextBlock HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Margin="5">
@@ -96,41 +77,99 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Left"
-                        Margin="0 20 0 0">
-                <TextBlock Text="Database"
-                           Foreground="#3D62B3"
-                           FontFamily="Segoe UI"
-                           FontWeight="Regular"
-                           FontSize="12" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Grid.Column="1"
-                             Width="150"
-                             VerticalAlignment="Center"
-                             Style="{StaticResource MaterialDesignTextBox}"
-                             Text="{Binding InitialCatalog ,ValidatesOnNotifyDataErrors=True}" />
-                    <TextBlock HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Left"
+                            Margin="0 20 0 0">
+                    <TextBlock Text="Login"
+                               Foreground="#3D62B3"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Grid.Column="1"
+                                 Width="200"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding Username ,ValidatesOnNotifyDataErrors=True}" />
+                        <TextBlock HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
                         <Run Text="*"
                              FontSize="16"
                              Foreground="Red" />
-                    </TextBlock>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Left"
+                            Margin="0 20 0 0">
+                    <TextBlock Text="Password"
+                               Foreground="#3D62B3"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <PasswordBox Style="{StaticResource MaterialDesignPasswordBox}"
+                                         converter:PasswordBoxAssistant.BindPassword="True"
+                                         converter:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                         Width="200" />
+                            <TextBlock HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Margin="5">
+                        <Run Text="*"
+                                FontSize="16"
+                                Foreground="Red" />
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
             <StackPanel HorizontalAlignment="Left"
                         Orientation="Horizontal"
-                        Margin="0 50 0 0">
+                        Margin="0 40 0 0">
                 <Button Style="{DynamicResource MaterialDesignRaisedButton}"
                         Content="Test Connection"
                         Width="150"
-                        Margin="0 0 20 0"
                         Command="{Binding ElementName=DbManagementControl, Path=DataContext.TestDbCommand}" />
-                <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                        Content="Update"
-                        Command="{Binding ElementName=DbManagementControl, Path=DataContext.UpdateDbConfigCommand}"
-                        Width="150"/>
             </StackPanel>
+            <StackPanel Margin="0 30 0 0">
+                <TextBlock Foreground="#00B4FF"
+                           FontFamily="Segoe UI"
+                           FontWeight="Regular"
+                           Margin="0 0 0 5"
+                           FontSize="20">
+                        <Run Text="Manage SMS Web Service" />
+                </TextBlock>
+                <StackPanel HorizontalAlignment="Left"
+                            Margin="0 20 0 0">
+                    <TextBlock Text="SMS URL"
+                               Foreground="#3D62B3"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12" />
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Top">
+                        <TextBox Grid.Column="1"
+                                 Width="420"
+                                 VerticalAlignment="Top"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding Url ,ValidatesOnNotifyDataErrors=True}" />
+                        <TextBlock HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        <Run Text="*"
+                             FontSize="16"
+                             Foreground="Red" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <Button Style="{DynamicResource MaterialDesignRaisedButton}"
+                    Content="Save Settings"
+                    HorizontalAlignment="Left"
+                    Margin="0 50 0 0"
+                    Command="{Binding ElementName=DbManagementControl, Path=DataContext.UpdateDbConfigCommand}"
+                    Width="150" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -102,6 +102,36 @@
     <Compile Include="Organization.cs">
       <DependentUpon>AmsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PRC_AttendanceReport_Absentees_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_AttendanceReport_ByFirstName_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_AttendanceReport_ByGradeAndSection_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_AttendanceReport_ByGrade_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_AttendanceReport_ByLastName_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_AttendanceReport_ByStudentID_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_ConsolidatedReport_ByGradeAndSection_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_FiltersList_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_ReportsList_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRC_SPName_Result.cs">
+      <DependentUpon>AmsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelBiometric.cs">
       <DependentUpon>AmsModel.tt</DependentUpon>

@@ -269,6 +269,56 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="PRC_AttendanceReport_Absentees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="GradeLevel" Type="nchar" Mode="In" />
+          <Parameter Name="Section" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_AttendanceReport_ByFirstName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_AttendanceReport_ByGrade" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="GradeLevel" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_AttendanceReport_ByGradeAndSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="GradeLevel" Type="nchar" Mode="In" />
+          <Parameter Name="Section" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_AttendanceReport_ByLastName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="LastName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_AttendanceReport_ByStudentID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="StudentID" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_ConsolidatedReport_ByGradeAndSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="date" Mode="In" />
+          <Parameter Name="endDate" Type="date" Mode="In" />
+          <Parameter Name="GradeLevel" Type="nchar" Mode="In" />
+          <Parameter Name="Section" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_FiltersList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ReportType" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_GradeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PRC_ReportsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PRC_SectionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GradeLevel" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="PRC_SPName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ReportType" Type="varchar" Mode="In" />
+          <Parameter Name="Filter" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
@@ -676,7 +726,151 @@
             <End Role="Section" EntitySet="Sections" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
+          <FunctionImport Name="PRC_AttendanceReport_Absentees" ReturnType="Collection(Model.PRC_AttendanceReport_Absentees_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+            <Parameter Name="Section" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_AttendanceReport_ByFirstName" ReturnType="Collection(Model.PRC_AttendanceReport_ByFirstName_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_AttendanceReport_ByGrade" ReturnType="Collection(Model.PRC_AttendanceReport_ByGrade_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_AttendanceReport_ByGradeAndSection" ReturnType="Collection(Model.PRC_AttendanceReport_ByGradeAndSection_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+            <Parameter Name="Section" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_AttendanceReport_ByLastName" ReturnType="Collection(Model.PRC_AttendanceReport_ByLastName_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_AttendanceReport_ByStudentID" ReturnType="Collection(Model.PRC_AttendanceReport_ByStudentID_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="StudentID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_ConsolidatedReport_ByGradeAndSection" ReturnType="Collection(Model.PRC_ConsolidatedReport_ByGradeAndSection_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+            <Parameter Name="Section" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_FiltersList" ReturnType="Collection(Model.PRC_FiltersList_Result)">
+            <Parameter Name="ReportType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_GradeList" ReturnType="Collection(String)" />
+          <FunctionImport Name="PRC_ReportsList" ReturnType="Collection(Model.PRC_ReportsList_Result)" />
+          <FunctionImport Name="PRC_SectionList" ReturnType="Collection(String)">
+            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PRC_SPName" ReturnType="Collection(Model.PRC_SPName_Result)">
+            <Parameter Name="ReportType" Mode="In" Type="String" />
+            <Parameter Name="Filter" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="PRC_AttendanceReport_Absentees_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+        </ComplexType>
+        <ComplexType Name="PRC_AttendanceReport_ByFirstName_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Time_In" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Time_Out" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Standard_Hours" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Hours_Rendered" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="Late" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Overstay" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Undertime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="PRC_AttendanceReport_ByGrade_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Time_In" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Time_Out" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Standard_Hours" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Hours_Rendered" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="Late" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Overstay" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Undertime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="PRC_AttendanceReport_ByGradeAndSection_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Time_In" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Time_Out" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Standard_Hours" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Hours_Rendered" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="Late" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Overstay" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Undertime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="PRC_AttendanceReport_ByLastName_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Time_In" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Time_Out" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Standard_Hours" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Hours_Rendered" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="Late" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Overstay" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Undertime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="PRC_AttendanceReport_ByStudentID_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Time_In" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Time_Out" Nullable="false" MaxLength="4000" />
+          <Property Type="String" Name="Standard_Hours" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Hours_Rendered" Nullable="true" MaxLength="29" />
+          <Property Type="String" Name="Attendance" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="Late" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Overstay" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Undertime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="PRC_ConsolidatedReport_ByGradeAndSection_Result">
+          <Property Type="String" Name="Date" Nullable="false" MaxLength="43" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="102" />
+          <Property Type="String" Name="Student_ID" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Number_of_Absents" Nullable="true" />
+          <Property Type="Int32" Name="Late" Nullable="true" />
+          <Property Type="Int32" Name="Overstay" Nullable="true" />
+          <Property Type="Int32" Name="Early_Out" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="PRC_FiltersList_Result">
+          <Property Type="String" Name="FilterName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="FilterValue" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="PRC_ReportsList_Result">
+          <Property Type="String" Name="ReportName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Report_SP" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Filter" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="PRC_SPName_Result">
+          <Property Type="String" Name="ReportName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Report_SP" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Filter" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -828,6 +1022,142 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_Absentees" FunctionName="Model.Store.PRC_AttendanceReport_Absentees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_Absentees_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByFirstName" FunctionName="Model.Store.PRC_AttendanceReport_ByFirstName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByFirstName_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGrade" FunctionName="Model.Store.PRC_AttendanceReport_ByGrade">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByGrade_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGradeAndSection" FunctionName="Model.Store.PRC_AttendanceReport_ByGradeAndSection">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByGradeAndSection_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByLastName" FunctionName="Model.Store.PRC_AttendanceReport_ByLastName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByLastName_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByStudentID" FunctionName="Model.Store.PRC_AttendanceReport_ByStudentID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByStudentID_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_ConsolidatedReport_ByGradeAndSection" FunctionName="Model.Store.PRC_ConsolidatedReport_ByGradeAndSection">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_ConsolidatedReport_ByGradeAndSection_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Number_of_Absents" ColumnName="Number of Absents" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Early_Out" ColumnName="Early Out" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_FiltersList" FunctionName="Model.Store.PRC_FiltersList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_FiltersList_Result">
+                <ScalarProperty Name="FilterName" ColumnName="FilterName" />
+                <ScalarProperty Name="FilterValue" ColumnName="FilterValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_GradeList" FunctionName="Model.Store.PRC_GradeList" />
+          <FunctionImportMapping FunctionImportName="PRC_ReportsList" FunctionName="Model.Store.PRC_ReportsList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_ReportsList_Result">
+                <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+                <ScalarProperty Name="Report_SP" ColumnName="Report_SP" />
+                <ScalarProperty Name="Filter" ColumnName="Filter" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_SectionList" FunctionName="Model.Store.PRC_SectionList" />
+          <FunctionImportMapping FunctionImportName="PRC_SPName" FunctionName="Model.Store.PRC_SPName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.PRC_SPName_Result">
+                <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+                <ScalarProperty Name="Report_SP" ColumnName="Report_SP" />
+                <ScalarProperty Name="Filter" ColumnName="Filter" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -12,6 +12,8 @@ namespace SJBCS.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AmsModel : DbContext
     {
@@ -19,7 +21,7 @@ namespace SJBCS.Data
             : base("name=AmsModel")
         {
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -38,5 +40,177 @@ namespace SJBCS.Data
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<User> Users { get; set; }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_Absentees_Result> PRC_AttendanceReport_Absentees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string gradeLevel, string section)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var gradeLevelParameter = gradeLevel != null ?
+                new ObjectParameter("GradeLevel", gradeLevel) :
+                new ObjectParameter("GradeLevel", typeof(string));
+    
+            var sectionParameter = section != null ?
+                new ObjectParameter("Section", section) :
+                new ObjectParameter("Section", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_Absentees_Result>("PRC_AttendanceReport_Absentees", startDateParameter, endDateParameter, gradeLevelParameter, sectionParameter);
+        }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_ByFirstName_Result> PRC_AttendanceReport_ByFirstName(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string firstName)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_ByFirstName_Result>("PRC_AttendanceReport_ByFirstName", startDateParameter, endDateParameter, firstNameParameter);
+        }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_ByGrade_Result> PRC_AttendanceReport_ByGrade(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string gradeLevel)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var gradeLevelParameter = gradeLevel != null ?
+                new ObjectParameter("GradeLevel", gradeLevel) :
+                new ObjectParameter("GradeLevel", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_ByGrade_Result>("PRC_AttendanceReport_ByGrade", startDateParameter, endDateParameter, gradeLevelParameter);
+        }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_ByGradeAndSection_Result> PRC_AttendanceReport_ByGradeAndSection(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string gradeLevel, string section)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var gradeLevelParameter = gradeLevel != null ?
+                new ObjectParameter("GradeLevel", gradeLevel) :
+                new ObjectParameter("GradeLevel", typeof(string));
+    
+            var sectionParameter = section != null ?
+                new ObjectParameter("Section", section) :
+                new ObjectParameter("Section", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_ByGradeAndSection_Result>("PRC_AttendanceReport_ByGradeAndSection", startDateParameter, endDateParameter, gradeLevelParameter, sectionParameter);
+        }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_ByLastName_Result> PRC_AttendanceReport_ByLastName(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string lastName)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_ByLastName_Result>("PRC_AttendanceReport_ByLastName", startDateParameter, endDateParameter, lastNameParameter);
+        }
+    
+        public virtual ObjectResult<PRC_AttendanceReport_ByStudentID_Result> PRC_AttendanceReport_ByStudentID(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string studentID)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var studentIDParameter = studentID != null ?
+                new ObjectParameter("StudentID", studentID) :
+                new ObjectParameter("StudentID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_AttendanceReport_ByStudentID_Result>("PRC_AttendanceReport_ByStudentID", startDateParameter, endDateParameter, studentIDParameter);
+        }
+    
+        public virtual ObjectResult<PRC_ConsolidatedReport_ByGradeAndSection_Result> PRC_ConsolidatedReport_ByGradeAndSection(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string gradeLevel, string section)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var gradeLevelParameter = gradeLevel != null ?
+                new ObjectParameter("GradeLevel", gradeLevel) :
+                new ObjectParameter("GradeLevel", typeof(string));
+    
+            var sectionParameter = section != null ?
+                new ObjectParameter("Section", section) :
+                new ObjectParameter("Section", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_ConsolidatedReport_ByGradeAndSection_Result>("PRC_ConsolidatedReport_ByGradeAndSection", startDateParameter, endDateParameter, gradeLevelParameter, sectionParameter);
+        }
+    
+        public virtual ObjectResult<PRC_FiltersList_Result> PRC_FiltersList(string reportType)
+        {
+            var reportTypeParameter = reportType != null ?
+                new ObjectParameter("ReportType", reportType) :
+                new ObjectParameter("ReportType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_FiltersList_Result>("PRC_FiltersList", reportTypeParameter);
+        }
+    
+        public virtual ObjectResult<string> PRC_GradeList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("PRC_GradeList");
+        }
+    
+        public virtual ObjectResult<PRC_ReportsList_Result> PRC_ReportsList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_ReportsList_Result>("PRC_ReportsList");
+        }
+    
+        public virtual ObjectResult<string> PRC_SectionList(string gradeLevel)
+        {
+            var gradeLevelParameter = gradeLevel != null ?
+                new ObjectParameter("GradeLevel", gradeLevel) :
+                new ObjectParameter("GradeLevel", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("PRC_SectionList", gradeLevelParameter);
+        }
+    
+        public virtual ObjectResult<PRC_SPName_Result> PRC_SPName(string reportType, Nullable<int> filter)
+        {
+            var reportTypeParameter = reportType != null ?
+                new ObjectParameter("ReportType", reportType) :
+                new ObjectParameter("ReportType", typeof(string));
+    
+            var filterParameter = filter.HasValue ?
+                new ObjectParameter("Filter", filter) :
+                new ObjectParameter("Filter", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PRC_SPName_Result>("PRC_SPName", reportTypeParameter, filterParameter);
+        }
     }
 }

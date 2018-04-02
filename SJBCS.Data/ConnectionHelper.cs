@@ -32,7 +32,7 @@ namespace SJBCS.Data
             sqlBuilder.DataSource = dataSource;
             sqlBuilder.InitialCatalog = initialCatalog;
             sqlBuilder.MultipleActiveResultSets = true;
-            sqlBuilder.IntegratedSecurity = true;
+            sqlBuilder.IntegratedSecurity = false;
             sqlBuilder.UserID = userId;
             sqlBuilder.Password = password;
             sqlBuilder.ApplicationName = appName;

@@ -22,11 +22,23 @@ namespace SJBCS.Services.Repository
         public void DeleteStudent(Guid id)
         {
             var Student = _context.Students.FirstOrDefault(r => r.StudentGuid == id);
+
             if (Student != null)
             {
-                _context.Students.Remove(Student);
+                foreach (Contact contact in Student.Contacts.ToList())
+                {
+                    _context.Entry(contact).State = EntityState.Deleted;
+                }
+                foreach (RelBiometric relBiometric in Student.RelBiometrics.ToList())
+                {
+                    _context.Entry(relBiometric.Biometric).State = EntityState.Deleted;
+                    _context.Entry(relBiometric).State = EntityState.Deleted;
+                }
+                _context.Entry(Student).State = EntityState.Deleted;
+                //_context.Students.Remove(Student);
             }
             _context.SaveChanges();
+
         }
 
         public Student GetStudent(Guid id)

@@ -14,6 +14,7 @@ namespace SJBCS.GUI.Student
 {
     public class EditableStudent : ValidatableBindableBase
     {
+        public bool EditMode;
 
         private System.Guid studentGuid;
         public System.Guid StudentGuid
@@ -101,7 +102,15 @@ namespace SJBCS.GUI.Student
         public string StudentID
         {
             get { return studentID; }
-            set { SetProperty(ref studentID, value); }
+            set
+            {
+                ValidateUniqueID(value);
+                SetProperty(ref studentID, value);
+            }
+        }
+
+        private void ValidateUniqueID(string value)
+        {
         }
 
         private ICollection<Attendance> attendances;

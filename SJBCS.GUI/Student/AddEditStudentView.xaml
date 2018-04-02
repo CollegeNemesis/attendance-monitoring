@@ -267,7 +267,7 @@
                                      HorizontalAlignment="Left"
                                      Width="150"
                                      Height="50"
-                                     Text="{Binding ElementName=AddEditControl, Path=DataContext.EditableContact.ContactNumber, ValidatesOnNotifyDataErrors=True}" />
+                                     Text="{Binding ElementName=AddEditControl, Path=DataContext.EditableContact.ContactNumber, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True}" />
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                     Background="#3D62B3"
                                     BorderBrush="Transparent"

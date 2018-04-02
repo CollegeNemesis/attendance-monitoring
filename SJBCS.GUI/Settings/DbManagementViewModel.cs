@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace SJBCS.GUI.Settings
 {
@@ -19,7 +20,11 @@ namespace SJBCS.GUI.Settings
         public EditableDbConfig EditableDbConfig
         {
             get { return _editableDbConfig; }
-            set { SetProperty(ref _editableDbConfig, value); }
+            set
+            {
+                SetProperty(ref _editableDbConfig, value);
+                TestDbCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public RelayCommand UpdateDbConfigCommand { get; private set; }
@@ -29,7 +34,7 @@ namespace SJBCS.GUI.Settings
         {
             Config config = ConnectionHelper.Config;
             UpdateDbConfigCommand = new RelayCommand(OnUpdateDbConfig, CanUpdate);
-            TestDbCommand = new RelayCommand(OnTestDb, CanUpdate);
+            TestDbCommand = new RelayCommand(OnTestDb, CanTest);
             if (EditableDbConfig != null) EditableDbConfig.ErrorsChanged -= RaiseCanExecuteChanged;
 
             EditableDbConfig = new EditableDbConfig();
@@ -40,9 +45,16 @@ namespace SJBCS.GUI.Settings
             EditableDbConfig.InitialCatalog = config.AppConfiguration.Settings.DataSource.InitialCatalog;
             EditableDbConfig.Username = config.AppConfiguration.Settings.DataSource.Username;
             EditableDbConfig.Password = config.AppConfiguration.Settings.DataSource.Password;
+            EditableDbConfig.Url = config.AppConfiguration.Settings.SmsService.Url;
         }
 
-        private async void OnTestDb()
+        private void OnTestDb()
+        {
+            WaitingScreenView waitingScreen = new WaitingScreenView();//YourProgressForm is a WinForm Object
+            TestConnection();
+        }
+
+        private async void TestConnection()
         {
             Config tempConfig = new Config()
             {
@@ -90,7 +102,7 @@ namespace SJBCS.GUI.Settings
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 var view = new DialogBoxView
                 {
@@ -111,6 +123,13 @@ namespace SJBCS.GUI.Settings
             return !EditableDbConfig.HasErrors;
         }
 
+        private bool CanTest()
+        {
+            if (string.IsNullOrEmpty(EditableDbConfig.Hostname) || string.IsNullOrEmpty(EditableDbConfig.InitialCatalog) || string.IsNullOrEmpty(EditableDbConfig.Username) || string.IsNullOrEmpty(EditableDbConfig.Password))
+                return false;
+            return true;
+        }
+
         private async void OnUpdateDbConfig()
         {
             try
@@ -121,12 +140,13 @@ namespace SJBCS.GUI.Settings
                 config.AppConfiguration.Settings.DataSource.InitialCatalog = EditableDbConfig.InitialCatalog;
                 config.AppConfiguration.Settings.DataSource.Username = EditableDbConfig.Username;
                 config.AppConfiguration.Settings.DataSource.Password = EditableDbConfig.Password;
+                config.AppConfiguration.Settings.SmsService.Url = EditableDbConfig.Url;
                 string json = JsonConvert.SerializeObject(config);
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
 
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Data source information updated.")
+                    DataContext = new DialogBoxViewModel(MessageType.Informational, "All changes has been saved.")
                 };
 
                 //show the dialog

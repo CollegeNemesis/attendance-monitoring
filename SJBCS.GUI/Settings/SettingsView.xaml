@@ -1,39 +1,160 @@
 ﻿<UserControl x:Class="SJBCS.GUI.Settings.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <StackPanel>
-            <TextBlock Foreground="#00B4FF"
-                       FontFamily="Segoe UI"
-                       FontWeight="Regular"
-                       Margin="5 0 0 5"
-                       FontSize="20">
-                        <Run Text="Settings" />
-                        <LineBreak />
-                        <Run Text=""
-                             FontSize="12"
-                             Foreground="Black" />
-            </TextBlock>
-            <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                    Command="{Binding NavToUserManagementCommand}"
-                    Content="Users"
-                    Width="150"
-                    Margin="10" />
-            <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                    Command="{Binding NavToDbManagementCommand}"
-                    Content="Data Source"
-                    Width="150"
-                    Margin="10" />
-            <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                    Command="{Binding NavToSmsManagementCommand}"
-                    Content="SMS"
-                    Width="150"
-                    Margin="10" />
-        </StackPanel>
-    </Grid>
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="300">
+    <materialDesign:ColorZone Background="White"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              BorderBrush="#B5B5B5"
+                              BorderThickness="0 0 .5 0">
+        <Grid MinWidth="270"
+              MaxWidth="300"
+              HorizontalAlignment="Left">
+            <StackPanel Margin="0 10 0 0">
+                <Button HorizontalAlignment="Stretch"
+                        Height="Auto"
+                        Width="Auto"
+                        Command="{Binding NavToAttendanceCommand}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Foreground"
+                                    Value="#272C33" />
+                            <Setter Property="Background"
+                                    Value="Transparent" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="#3D62B3" />
+                                    <Setter Property="Background"
+                                            Value="#e9ebee" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="50"
+                               Width="50"
+                               Margin="10"
+                               Stretch="UniformToFill"
+                               Source="/SJBCS.GUI;component/Image/go-back.png" />
+                        <TextBlock FontFamily="Segoe UI"
+                                   FontWeight="Regular"
+                                   FontSize="16"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Text="Home" />
+                    </StackPanel>
+                </Button>
+                <Button HorizontalAlignment="Stretch"
+                        Height="Auto"
+                        Width="Auto"
+                        Command="{Binding NavToStudentCommand}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Foreground"
+                                    Value="#272C33" />
+                            <Setter Property="Background"
+                                    Value="Transparent" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="#3D62B3" />
+                                    <Setter Property="Background"
+                                            Value="#e9ebee" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="50"
+                               Width="50"
+                               Margin="10"
+                               Stretch="UniformToFill"
+                               Source="/SJBCS.GUI;component/Image/group-icon.png" />
+                        <TextBlock FontFamily="Segoe UI"
+                                   FontWeight="Regular"
+                                   FontSize="16"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Text="Users" />
+                    </StackPanel>
+                </Button>
+                <Button HorizontalAlignment="Stretch"
+                        Height="Auto"
+                        Width="Auto"
+                        Command="{Binding NavToSectionCommand}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Foreground"
+                                    Value="#272C33" />
+                            <Setter Property="Background"
+                                    Value="Transparent" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="#3D62B3" />
+                                    <Setter Property="Background"
+                                            Value="#e9ebee" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="50"
+                               Width="50"
+                               Margin="10"
+                               Stretch="UniformToFill"
+                               Source="/SJBCS.GUI;component/Image/wrench-512.png" />
+                        <TextBlock FontFamily="Segoe UI"
+                                   FontWeight="Regular"
+                                   FontSize="16"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Text="Configuration" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:ColorZone>
 </UserControl>

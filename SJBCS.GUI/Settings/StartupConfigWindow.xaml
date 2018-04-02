@@ -1,17 +1,18 @@
-﻿<Window x:Class="SJBCS.GUI.Settings.StartupConfigWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SJBCS.GUI.Settings"
-        mc:Ignorable="d"
-        Title="ConfigurationWindow"
-        ResizeMode="NoResize"
-        Icon="/SJBCS.GUI;component/Image/settings-icon.png"
-        WindowStartupLocation="CenterScreen"
-        Height="Auto"
-        Width="Auto">
+﻿<controls:MetroWindow x:Class="SJBCS.GUI.Settings.StartupConfigWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:SJBCS.GUI.Settings"
+                      mc:Ignorable="d"
+                      Title="Settings"
+                      ResizeMode="NoResize"
+                      Icon="/SJBCS.GUI;component/Image/settings-icon.png"
+                      WindowStartupLocation="CenterScreen"
+                      Height="700"
+                      Width="470">
     <Window.Resources>
         <DataTemplate DataType="{x:Type local:DbManagementViewModel}">
             <local:DbManagementView />
@@ -30,30 +31,20 @@
                                FontWeight="Regular"
                                Margin="10"
                                FontSize="20">
-                        <Run Text="Let's get your started." />
+                        <Run Text="Let's get you started." />
                         <LineBreak />
                         <Run Text="Seems like some of your settings hasn't been setup yet."
-                             FontSize="12"
-                             Foreground="Black" />
-                <LineBreak />
-                        <Run Text="Update all required fields marked by ("
-                             FontSize="12"
-                             Foreground="Black" />
-                        <Run Text="*"
-                             FontSize="12"
-                             Foreground="Red" />
-                        <Run Text=")."
                              FontSize="12"
                              Foreground="Black" />
                     </TextBlock>
                     <StackPanel Orientation="Horizontal">
                         <ContentControl Content="{Binding DbManagementViewModel}" />
-                        <ContentControl Content="{Binding SmsManagementViewModel}"
-                                        Margin="20 0 0 0"/>
+                        <!--<ContentControl Content="{Binding SmsManagementViewModel}"
+                                        Margin="20 0 0 0"/>-->
                     </StackPanel>
                 </StackPanel>
 
             </ScrollViewer>
         </Grid>
     </materialDesign:DialogHost>
-</Window>
+</controls:MetroWindow>

@@ -1,4 +1,7 @@
 ﻿using AMS.Utilities;
+using MaterialDesignThemes.Wpf;
+using SJBCS.Data;
+using SJBCS.GUI.Dialogs;
 using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,9 @@ namespace SJBCS.GUI.Student
     public class StudentViewModel : BindableBase
     {
         private IStudentsRepository _studentsRepository;
+        private IContactsRepository _contactsRepository;
+        private IRelBiometricsRepository _relBiometricsRepository;
+        private IBiometricsRepository _biometricsRepository;
         private ObservableCollection<Data.Student> _students;
 
         private DataGridRowDetailsVisibilityMode _rowDetailsVisible;
@@ -30,12 +36,15 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref _students, value); }
         }
 
-        public StudentViewModel(IStudentsRepository studentsRepository)
+        public StudentViewModel(IStudentsRepository studentsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository)
         {
             AddStudentCommand = new RelayCommand(OnAddStudent);
-            DeleteStudentCommand = new RelayCommand<Data.Student> (OnDeleteStudent);
+            DeleteStudentCommand = new RelayCommand<Data.Student>(OnDeleteStudent);
             EditStudentCommand = new RelayCommand<Data.Student>(OnEditStudent);
             _studentsRepository = studentsRepository;
+            _contactsRepository = contactsRepository;
+            _biometricsRepository = biometricsRepository;
+            _relBiometricsRepository = relBiometricsRepository;
         }
 
         public void LoadStudents()
@@ -53,9 +62,28 @@ namespace SJBCS.GUI.Student
 
 
 
-        private void OnDeleteStudent(Data.Student student)
+        private async void OnDeleteStudent(Data.Student student)
         {
-            //_studentsRepository.DeleteStudent(student.StudentGuid);
+            try
+            {
+                if (student.Attendances.Count == 0)
+                {
+                    _studentsRepository.DeleteStudent(student.StudentGuid);
+                    LoadStudents();
+                }
+                else
+                    throw new ArgumentException("Cannot delete an active student");
+            }
+            catch (Exception error)
+            {
+                var view = new DialogBoxView
+                {
+                    DataContext = new DialogBoxViewModel(MessageType.Warning, "You cannot delete an active student.")
+                };
+
+                //show the dialog
+                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            }
         }
 
         public void OnAddStudent()

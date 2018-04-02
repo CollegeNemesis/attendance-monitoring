@@ -6,7 +6,7 @@ namespace SJBCS.GUI.Settings
     public class EditableDbConfig : ValidatableBindableBase
     {
         private string hostname;
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string Hostname
         {
             get { return hostname; }
@@ -14,7 +14,7 @@ namespace SJBCS.GUI.Settings
         }
 
         private string initialCatalog;
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string InitialCatalog
         {
             get { return initialCatalog; }
@@ -22,7 +22,7 @@ namespace SJBCS.GUI.Settings
         }
 
         private string username;
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string Username
         {
             get { return username; }
@@ -30,11 +30,19 @@ namespace SJBCS.GUI.Settings
         }
 
         private string password;
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string Password
         {
             get { return password; }
             set { SetProperty(ref password, value); }
+        }
+
+        private string url;
+        [Required(ErrorMessage = "This field is required.")]
+        public string Url
+        {
+            get { return url; }
+            set { SetProperty(ref url, value); }
         }
     }
 }
