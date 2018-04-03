@@ -53,7 +53,6 @@ namespace SJBCS.GUI.AMS
             get { return _attendanceLogs; }
             set
             {
-                _attendanceLogs = new ObservableCollection<AttendanceLog>(_attendanceLogs.OrderByDescending(attendance => attendance.Timestamp));
                 SetProperty(ref _attendanceLogs, value);
             }
         }
@@ -93,6 +92,7 @@ namespace SJBCS.GUI.AMS
             set { SetProperty(ref _clockViewModel, value); }
 
         }
+
         #endregion
 
         public AttendanceViewModel(IStudentsRepository studentsRepository, BiometricsRepository biometricsRepository, RelBiometricsRepository relBiometricsRepository, AttendancesRepository attendancesRepository)
@@ -110,6 +110,7 @@ namespace SJBCS.GUI.AMS
         }
 
         #region Methods
+
         public override void OnReaderConnect(object Capture, string ReaderSerialNumber)
         {
             ScannerStatus = "Connected";
@@ -188,7 +189,7 @@ namespace SJBCS.GUI.AMS
                                             _attendancesRepository.UpdateAttendance(_attendance); //Updated attendance record
                                             Application.Current.Dispatcher.Invoke(delegate
                                             {
-                                                _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
+                                                _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
 
                                             });
 
@@ -225,7 +226,7 @@ namespace SJBCS.GUI.AMS
                                     _attendancesRepository.AddAttendance(_attendance); //Add Record
                                     Application.Current.Dispatcher.Invoke(delegate
                                     {
-                                        _attendanceLogs.Add(new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
+                                        _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
                                     });
 
                                     ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn, _student);

@@ -15,8 +15,9 @@ namespace SJBCS.GUI.Settings
 {
     public class StartupConfigWindowViewModel : BindableBase
     {
-        private EditableDbConfig _editableDbConfig;
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private EditableDbConfig _editableDbConfig;
         public EditableDbConfig EditableDbConfig
         {
             get { return _editableDbConfig; }
@@ -24,6 +25,16 @@ namespace SJBCS.GUI.Settings
             {
                 SetProperty(ref _editableDbConfig, value);
                 TestDbCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private bool closeTrigger;
+        public bool CloseTrigger
+        {
+            get { return this.closeTrigger; }
+            set
+            {
+                SetProperty(ref closeTrigger, value);
             }
         }
 
@@ -48,13 +59,32 @@ namespace SJBCS.GUI.Settings
             EditableDbConfig.Url = config.AppConfiguration.Settings.SmsService.Url;
         }
 
-        private void OnTestDb()
+        private async void OnTestDb()
         {
-            WaitingScreenView waitingScreen = new WaitingScreenView();//YourProgressForm is a WinForm Object
-            TestConnection();
+            WaitingScreenView waitingScreen = new WaitingScreenView();
+            if (TestConnection())
+            {
+                var view = new DialogBoxView
+                {
+                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Connection has been established.")
+                };
+
+                //show the dialog
+                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            }
+            else
+            {
+                var view = new DialogBoxView
+                {
+                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Connection cannot be established.")
+                };
+
+                //show the dialog
+                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            }
         }
 
-        private async void TestConnection()
+        private bool TestConnection()
         {
             Config tempConfig = new Config()
             {
@@ -93,24 +123,12 @@ namespace SJBCS.GUI.Settings
                 {
                     new LevelsRepository().GetLevels().ToList();
                 }
-
-                var view = new DialogBoxView
-                {
-                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Connection to database established!")
-                };
-
-                //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                return true;
             }
             catch (Exception error)
             {
-                var view = new DialogBoxView
-                {
-                    DataContext = new DialogBoxViewModel(MessageType.Error, error.Message)
-                };
-
-                //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                Logger.Error(error);
+                return false;
             }
             finally
             {
@@ -132,7 +150,7 @@ namespace SJBCS.GUI.Settings
 
         private async void OnUpdateDbConfig()
         {
-            try
+            if (TestConnection())
             {
                 Config config = ConnectionHelper.Config;
                 config.AppConfiguration.Settings.DataSource.Hostname = EditableDbConfig.Hostname;
@@ -145,21 +163,23 @@ namespace SJBCS.GUI.Settings
 
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Informational, "All changes has been saved.")
+                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Connection has been established. Settings has been saved.")
                 };
 
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                CloseTrigger = true;
             }
-            catch (Exception error)
+            else
             {
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Error, error.Message)
+                    DataContext = new DialogBoxViewModel(MessageType.Error, "Settings cannot be save. Connection cannot be established.")
                 };
 
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+
             }
         }
 

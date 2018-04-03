@@ -172,6 +172,7 @@
     </ApplicationDefinition>
     <Compile Include="AMS\AttendanceLog.cs" />
     <Compile Include="Converters\PasswordAssistant.cs" />
+    <Compile Include="Dialogs\CloseWindowBehavior.cs" />
     <Compile Include="Dialogs\WaitingScreenView.xaml.cs">
       <DependentUpon>WaitingScreenView.xaml</DependentUpon>
     </Compile>

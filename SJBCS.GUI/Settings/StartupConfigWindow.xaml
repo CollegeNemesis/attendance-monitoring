@@ -7,6 +7,8 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:converter="clr-namespace:SJBCS.GUI.Converters"
                       xmlns:local="clr-namespace:SJBCS.GUI.Settings"
+                      xmlns:dialogs="clr-namespace:SJBCS.GUI.Dialogs"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                       mc:Ignorable="d"
                       Title="Settings"
                       ResizeMode="NoResize"
@@ -15,6 +17,9 @@
                       Height="700"
                       Width="470"
                       x:Name="DbManagementControl">
+    <i:Interaction.Behaviors>
+        <dialogs:CloseWindowBehavior CloseTrigger="{Binding CloseTrigger}" />
+    </i:Interaction.Behaviors>
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid DataContext="{Binding EditableDbConfig}">
             <ScrollViewer VerticalScrollBarVisibility="Auto"
