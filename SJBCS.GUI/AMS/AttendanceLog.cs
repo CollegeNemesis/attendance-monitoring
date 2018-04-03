@@ -6,8 +6,8 @@ namespace SJBCS.GUI.AMS
     public class AttendanceLog : BindableBase
     {
         #region Properties
-        private string _imageData;
-        public string ImageData
+        private byte[] _imageData;
+        public byte[] ImageData
         {
             get { return _imageData; }
             set { SetProperty(ref _imageData, value); }
@@ -42,7 +42,7 @@ namespace SJBCS.GUI.AMS
         }
         #endregion
 
-        public AttendanceLog(string imageData, string firstName, string lastName, string action, DateTime? timestamp)
+        public AttendanceLog(byte[] imageData, string firstName, string lastName, string action, DateTime? timestamp)
         {
             _imageData = imageData;
             _firstName = firstName;

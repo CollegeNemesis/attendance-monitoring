@@ -39,7 +39,7 @@ namespace SJBCS.GUI
         public AddEditStudentViewModel _addEditStudentViewModel;
         public StudentViewModel _studentViewModel;
         public UserManagementViewModel _userManagementViewModel;
-        public DbManagementViewModel _dbManagementViewModel;
+        public ConfigManagementViewModel _configManagementViewModel;
         public SmsManagementViewModel _smsManagementViewModel;
         public SettingsViewModel _settingsViewModel;
         public StartupConfigWindow StartupConfigWindow;
@@ -59,12 +59,13 @@ namespace SJBCS.GUI
             set { SetProperty(ref _menu, value); }
         }
 
-        public ClockViewModel _clockViewModel;
+        private ClockViewModel _clockViewModel1;
+
+        private ClockViewModel _clockViewModel;
         public ClockViewModel ClockViewModel
         {
             get { return _clockViewModel; }
             set { SetProperty(ref _clockViewModel, value); }
-
         }
 
         public MainWindowViewModel()
@@ -72,7 +73,8 @@ namespace SJBCS.GUI
             LoadConfiguration();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _menuViewModel = ContainerHelper.Container.Resolve<MenuViewModel>();
-            _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+            _clockViewModel1 = ContainerHelper.Container.Resolve<ClockViewModel>();
+            _clockViewModel = _clockViewModel1;
             _attendanceViewModel = ContainerHelper.Container.Resolve<AttendanceViewModel>();
             _sectionViewModel = ContainerHelper.Container.Resolve<SectionViewModel>();
             _groupViewModel = ContainerHelper.Container.Resolve<GroupViewModel>();
@@ -81,7 +83,7 @@ namespace SJBCS.GUI
             _smsViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
             _addEditStudentViewModel = ContainerHelper.Container.Resolve<AddEditStudentViewModel>();
             _settingsViewModel = ContainerHelper.Container.Resolve<SettingsViewModel>();
-            _dbManagementViewModel = ContainerHelper.Container.Resolve<DbManagementViewModel>();
+            _configManagementViewModel = ContainerHelper.Container.Resolve<ConfigManagementViewModel>();
             _userManagementViewModel = ContainerHelper.Container.Resolve<UserManagementViewModel>();
             _smsManagementViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
             _startupConfigWindowViewModel = ContainerHelper.Container.Resolve<StartupConfigWindowViewModel>();
@@ -101,80 +103,62 @@ namespace SJBCS.GUI
             _menuViewModel.NavToSectionRequested += NavToSection;
             _menuViewModel.NavToGroupRequested += NavToGroup;
             _menuViewModel.NavToReportRequested += NavToReport;
-            _studentViewModel.AddStudentRequested += NavToAddStudent;
-            _studentViewModel.EditStudentRequested += NavToEditStudent;
-            _settingsViewModel.NavToDbManagementRequested += NavToDbManagement;
-            _settingsViewModel.NavToUserManagementRequested += NavToUserManagement;
-            _settingsViewModel.NavToSmsManagementRequested += NavToSmsManagement;
+            _studentViewModel.AddRequested += NavToAddStudent;
+            _studentViewModel.EditRequested += NavToEditStudent;
+            _settingsViewModel.NavToHomeRequested += NavToHome;
+            _settingsViewModel.NavToConfigRequested += NavToConfig;
+            _settingsViewModel.NavToUserRequested += NavToUser;
         }
 
-        private void NavToSmsManagement()
+        private void NavToUser()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
-            LoadConfiguration();
-            CurrentViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
+            ClockViewModel = _clockViewModel1;
+            CurrentViewModel = _userManagementViewModel;
         }
 
-        private void NavToUserManagement()
+        private void NavToConfig()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
-            LoadConfiguration();
-            CurrentViewModel = ContainerHelper.Container.Resolve<UserManagementViewModel>();
+            ClockViewModel = _clockViewModel1;
+            CurrentViewModel = _configManagementViewModel;
         }
 
-        private void NavToDbManagement()
+        private void NavToHome()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
-            LoadConfiguration();
-            CurrentViewModel = ContainerHelper.Container.Resolve<DbManagementViewModel>();
+            _studentViewModel.LoadStudents();
+            Menu = _menuViewModel;
+            ClockViewModel = _clockViewModel1;
+            CurrentViewModel = _studentViewModel;
         }
 
         private void NavToReport()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
             CurrentViewModel = _reportViewModel;
         }
 
         private void NavToGroup()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
+            ClockViewModel = _clockViewModel1;
             CurrentViewModel = _groupViewModel;
         }
 
         private void NavToSection()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
+            ClockViewModel = _clockViewModel1;
             CurrentViewModel = _sectionViewModel;
         }
 
         private void NavToStudent()
         {
             _studentViewModel.LoadStudents();
-
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
+            ClockViewModel = _clockViewModel1;
             CurrentViewModel = _studentViewModel;
         }
 
         private void NavToSettings()
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
-            CurrentViewModel = _settingsViewModel;
+            Menu = _settingsViewModel;
+            ClockViewModel = _clockViewModel1;
+            CurrentViewModel = _userManagementViewModel;
         }
 
         private void NavToAttendance()
@@ -190,10 +174,6 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.EditMode = false;
             _addEditStudentViewModel.SetStudent(selectedStudent);
             _addEditStudentViewModel.Initialize();
-
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
             CurrentViewModel = _addEditStudentViewModel;
         }
 
@@ -203,25 +183,16 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.EditMode = true;
             _addEditStudentViewModel.SetStudent(selectedStudent);
             _addEditStudentViewModel.Initialize();
-
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
             CurrentViewModel = _addEditStudentViewModel;
         }
 
         private void NavToMenu(User user)
         {
-            if (ClockViewModel == null)
-                ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
+            ClockViewModel = _clockViewModel1;
             if (user.Type.ToLower().Equals("admin"))
             {
                 _studentViewModel.LoadStudents();
-
-                if (ClockViewModel == null)
-                    ClockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
-
+                ClockViewModel = _clockViewModel1;
                 Menu = _menuViewModel;
                 CurrentViewModel = _studentViewModel;
             }
@@ -247,7 +218,7 @@ namespace SJBCS.GUI
                 ConnectionHelper.Config = JsonConvert.DeserializeObject<Config>(json);
 
                 //Test connection
-                
+
                 using (AmsModel dbContext = ConnectionHelper.CreateConnection())
                 {
                     new LevelsRepository().GetLevels().ToList();
@@ -285,7 +256,7 @@ namespace SJBCS.GUI
                     {
                         DataSource = new DataSource()
                         {
-                            Metadata = "res://*/AmsModel.csdl|res://*/AmsModel.ssdl|res://*/AmsModel.msl",
+                            Metadata = "res://*/DataModel.csdl|res://*/DataModel.ssdl|res://*/DataModel.msl",
                             Hostname = "",
                             InitialCatalog = "AMS",
                             Username = "",
@@ -303,21 +274,5 @@ namespace SJBCS.GUI
             ConnectionHelper.Config = config;
             File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
         }
-
-        private async void ProgressDialog()
-        {
-            var metroDialogSettings = new MetroDialogSettings
-            {
-                CustomResourceDictionary = DialogDictionary,
-                NegativeButtonText = "CANCEL",
-                SuppressDefaultResources = true
-            };
-
-            var controller = await DialogCoordinator.Instance.ShowProgressAsync(this, "MahApps Dialog", "Using Material Design Themes (WORK IN PROGRESS)", true, metroDialogSettings);
-            controller.SetIndeterminate();
-            await Task.Delay(3000);
-            await controller.CloseAsync();
-        }
-
     }
 }

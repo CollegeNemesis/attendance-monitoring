@@ -175,7 +175,7 @@ namespace SJBCS.GUI.AMS
                                             TimeSpan endTime = _student.Section.EndTime;
                                             TimeSpan outSpan = endTime.Subtract(timeOut);
 
-                                            if (timeOut > endTime.Add(new TimeSpan(0, 30, 0)))
+                                            if (timeOut > endTime.Add(new TimeSpan(1, 0, 0)))
                                             {
                                                 _attendance.IsOverstay = true;
                                             }
@@ -197,7 +197,7 @@ namespace SJBCS.GUI.AMS
                                         }
                                         else
                                         {
-                                            Remarks = "Student is not allowed to logout 30 minutes after logging in.";
+                                            Remarks = "Student is not allowed to logout 1 hour after logging in.";
                                         }
                                     }
                                     else
@@ -288,7 +288,7 @@ namespace SJBCS.GUI.AMS
                 Remarks = "No fingerprint template available in our records.";
             }
 
-            Student.ImageData = "/SJBCS.GUI;component/Image/default-user-image.png";
+            Student.ImageData = null;
 
             if (smsTimer == null)
             {

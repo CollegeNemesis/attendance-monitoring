@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
@@ -62,6 +62,16 @@
           <Property Name="DistributionListID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DistributionListName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AMS.dbo.Filters' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Filters">
+          <Key>
+            <PropertyRef Name="FilterName" />
+            <PropertyRef Name="FilterValue" />
+          </Key>
+          <Property Name="FilterName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FilterValue" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Level">
           <Key>
             <PropertyRef Name="LevelID" />
@@ -100,6 +110,17 @@
           <Property Name="StudentID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AMS.dbo.Reports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Reports">
+          <Key>
+            <PropertyRef Name="ReportName" />
+            <PropertyRef Name="Report_SP" />
+          </Key>
+          <Property Name="ReportName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Report_SP" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Filter" Type="int" />
+        </EntityType>
         <EntityType Name="Section">
           <Key>
             <PropertyRef Name="SectionID" />
@@ -119,7 +140,7 @@
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BirthDate" Type="date" />
-          <Property Name="ImageData" Type="nvarchar(max)" />
+          <Property Name="ImageData" Type="image" />
           <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="Street" Type="nvarchar" MaxLength="50" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
@@ -319,7 +340,7 @@
           <Parameter Name="ReportType" Type="varchar" Mode="In" />
           <Parameter Name="Filter" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="ModelStoreContainer">
+        <EntityContainer Name="DataModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Biometric" EntityType="Self.Biometric" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Calendar" EntityType="Self.Calendar" Schema="dbo" store:Type="Tables" />
@@ -333,6 +354,19 @@
           <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Filters" EntityType="Self.Filters" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Filters].[FilterName] AS [FilterName], 
+    [Filters].[FilterValue] AS [FilterValue]
+    FROM [dbo].[Filters] AS [Filters]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Reports" EntityType="Self.Reports" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Reports].[ReportName] AS [ReportName], 
+    [Reports].[Report_SP] AS [Report_SP], 
+    [Reports].[Filter] AS [Filter]
+    FROM [dbo].[Reports] AS [Reports]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -378,10 +412,11 @@
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
@@ -405,8 +440,8 @@
           </Key>
           <Property Name="FingerID" Type="Guid" Nullable="false" />
           <Property Name="FingerPrintTemplate" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="FingerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="RelBiometrics" Relationship="Self.FK_RelBiometric_Biometric" FromRole="Biometric" ToRole="RelBiometric" />
-          <Property Name="FingerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Calendar">
           <Key>
@@ -511,7 +546,7 @@
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BirthDate" Type="DateTime" Precision="0" />
-          <Property Name="ImageData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -535,6 +570,23 @@
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Filter">
+          <Key>
+            <PropertyRef Name="FilterName" />
+            <PropertyRef Name="FilterValue" />
+          </Key>
+          <Property Name="FilterName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FilterValue" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportName" />
+            <PropertyRef Name="Report_SP" />
+          </Key>
+          <Property Name="ReportName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Report_SP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Filter" Type="Int32" />
         </EntityType>
         <Association Name="FK_Attendance_Student">
           <End Role="Student" Type="Self.Student" Multiplicity="1" />
@@ -682,6 +734,8 @@
           <EntitySet Name="Sections" EntityType="Self.Section" />
           <EntitySet Name="Students" EntityType="Self.Student" />
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Filters" EntityType="Self.Filter" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
           <AssociationSet Name="FK_Attendance_Student" Association="Self.FK_Attendance_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendances" />
@@ -726,53 +780,53 @@
             <End Role="Section" EntitySet="Sections" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
-          <FunctionImport Name="PRC_AttendanceReport_Absentees" ReturnType="Collection(Model.PRC_AttendanceReport_Absentees_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_Absentees" ReturnType="Collection(DataModel.PRC_AttendanceReport_Absentees_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="GradeLevel" Mode="In" Type="String" />
             <Parameter Name="Section" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_AttendanceReport_ByFirstName" ReturnType="Collection(Model.PRC_AttendanceReport_ByFirstName_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_ByFirstName" ReturnType="Collection(DataModel.PRC_AttendanceReport_ByFirstName_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="FirstName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_AttendanceReport_ByGrade" ReturnType="Collection(Model.PRC_AttendanceReport_ByGrade_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_ByGrade" ReturnType="Collection(DataModel.PRC_AttendanceReport_ByGrade_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="GradeLevel" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_AttendanceReport_ByGradeAndSection" ReturnType="Collection(Model.PRC_AttendanceReport_ByGradeAndSection_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_ByGradeAndSection" ReturnType="Collection(DataModel.PRC_AttendanceReport_ByGradeAndSection_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="GradeLevel" Mode="In" Type="String" />
             <Parameter Name="Section" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_AttendanceReport_ByLastName" ReturnType="Collection(Model.PRC_AttendanceReport_ByLastName_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_ByLastName" ReturnType="Collection(DataModel.PRC_AttendanceReport_ByLastName_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="LastName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_AttendanceReport_ByStudentID" ReturnType="Collection(Model.PRC_AttendanceReport_ByStudentID_Result)">
+          <FunctionImport Name="PRC_AttendanceReport_ByStudentID" ReturnType="Collection(DataModel.PRC_AttendanceReport_ByStudentID_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="StudentID" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_ConsolidatedReport_ByGradeAndSection" ReturnType="Collection(Model.PRC_ConsolidatedReport_ByGradeAndSection_Result)">
+          <FunctionImport Name="PRC_ConsolidatedReport_ByGradeAndSection" ReturnType="Collection(DataModel.PRC_ConsolidatedReport_ByGradeAndSection_Result)">
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
             <Parameter Name="GradeLevel" Mode="In" Type="String" />
             <Parameter Name="Section" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_FiltersList" ReturnType="Collection(Model.PRC_FiltersList_Result)">
+          <FunctionImport Name="PRC_FiltersList" ReturnType="Collection(DataModel.PRC_FiltersList_Result)">
             <Parameter Name="ReportType" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PRC_GradeList" ReturnType="Collection(String)" />
-          <FunctionImport Name="PRC_ReportsList" ReturnType="Collection(Model.PRC_ReportsList_Result)" />
+          <FunctionImport Name="PRC_ReportsList" ReturnType="Collection(DataModel.PRC_ReportsList_Result)" />
           <FunctionImport Name="PRC_SectionList" ReturnType="Collection(String)">
             <Parameter Name="GradeLevel" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="PRC_SPName" ReturnType="Collection(Model.PRC_SPName_Result)">
+          <FunctionImport Name="PRC_SPName" ReturnType="Collection(DataModel.PRC_SPName_Result)">
             <Parameter Name="ReportType" Mode="In" Type="String" />
             <Parameter Name="Filter" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -876,9 +930,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="AmsModel">
+        <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="AmsModel">
           <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="Model.Attendance">
+            <EntityTypeMapping TypeName="DataModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -895,16 +949,16 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Biometrics">
-            <EntityTypeMapping TypeName="Model.Biometric">
+            <EntityTypeMapping TypeName="DataModel.Biometric">
               <MappingFragment StoreEntitySet="Biometric">
-                <ScalarProperty Name="FingerName" ColumnName="FingerName" />
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
                 <ScalarProperty Name="FingerPrintTemplate" ColumnName="FingerPrintTemplate" />
+                <ScalarProperty Name="FingerName" ColumnName="FingerName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Calendars">
-            <EntityTypeMapping TypeName="Model.Calendar">
+            <EntityTypeMapping TypeName="DataModel.Calendar">
               <MappingFragment StoreEntitySet="Calendar">
                 <ScalarProperty Name="dt" ColumnName="dt" />
                 <ScalarProperty Name="isWeekday" ColumnName="isWeekday" />
@@ -923,7 +977,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Contacts">
-            <EntityTypeMapping TypeName="Model.Contact">
+            <EntityTypeMapping TypeName="DataModel.Contact">
               <MappingFragment StoreEntitySet="Contact">
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
@@ -932,7 +986,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DistributionLists">
-            <EntityTypeMapping TypeName="Model.DistributionList">
+            <EntityTypeMapping TypeName="DataModel.DistributionList">
               <MappingFragment StoreEntitySet="DistributionList">
                 <ScalarProperty Name="DistributionListID" ColumnName="DistributionListID" />
                 <ScalarProperty Name="DistributionListName" ColumnName="DistributionListName" />
@@ -940,7 +994,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Levels">
-            <EntityTypeMapping TypeName="Model.Level">
+            <EntityTypeMapping TypeName="DataModel.Level">
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
@@ -948,7 +1002,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Organizations">
-            <EntityTypeMapping TypeName="Model.Organization">
+            <EntityTypeMapping TypeName="DataModel.Organization">
               <MappingFragment StoreEntitySet="Organization">
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
                 <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
@@ -956,7 +1010,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelBiometrics">
-            <EntityTypeMapping TypeName="Model.RelBiometric">
+            <EntityTypeMapping TypeName="DataModel.RelBiometric">
               <MappingFragment StoreEntitySet="RelBiometric">
                 <ScalarProperty Name="RelBiometricID" ColumnName="RelBiometricID" />
                 <ScalarProperty Name="FingerID" ColumnName="FingerID" />
@@ -965,7 +1019,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelDistributionLists">
-            <EntityTypeMapping TypeName="Model.RelDistributionList">
+            <EntityTypeMapping TypeName="DataModel.RelDistributionList">
               <MappingFragment StoreEntitySet="RelDistributionList">
                 <ScalarProperty Name="RelDistributionListID" ColumnName="RelDistributionListID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -974,7 +1028,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RelOrganizations">
-            <EntityTypeMapping TypeName="Model.RelOrganization">
+            <EntityTypeMapping TypeName="DataModel.RelOrganization">
               <MappingFragment StoreEntitySet="RelOrganization">
                 <ScalarProperty Name="RelOrganizationID" ColumnName="RelOrganizationID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
@@ -983,7 +1037,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="Model.Section">
+            <EntityTypeMapping TypeName="DataModel.Section">
               <MappingFragment StoreEntitySet="Section">
                 <ScalarProperty Name="SectionID" ColumnName="SectionID" />
                 <ScalarProperty Name="SectionName" ColumnName="SectionName" />
@@ -994,7 +1048,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="Model.Student">
+            <EntityTypeMapping TypeName="DataModel.Student">
               <MappingFragment StoreEntitySet="Student">
                 <ScalarProperty Name="StudentGuid" ColumnName="StudentGuid" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -1013,7 +1067,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="Model.User">
+            <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -1022,9 +1076,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_Absentees" FunctionName="Model.Store.PRC_AttendanceReport_Absentees">
+          <EntitySetMapping Name="Filters">
+            <EntityTypeMapping TypeName="DataModel.Filter">
+              <MappingFragment StoreEntitySet="Filters">
+                <ScalarProperty Name="FilterName" ColumnName="FilterName" />
+                <ScalarProperty Name="FilterValue" ColumnName="FilterValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="DataModel.Report">
+              <MappingFragment StoreEntitySet="Reports">
+                <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+                <ScalarProperty Name="Report_SP" ColumnName="Report_SP" />
+                <ScalarProperty Name="Filter" ColumnName="Filter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_Absentees" FunctionName="DataModel.Store.PRC_AttendanceReport_Absentees">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_Absentees_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_Absentees_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
@@ -1032,43 +1103,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByFirstName" FunctionName="Model.Store.PRC_AttendanceReport_ByFirstName">
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByFirstName" FunctionName="DataModel.Store.PRC_AttendanceReport_ByFirstName">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByFirstName_Result">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
-                <ScalarProperty Name="Time_In" ColumnName="Time In" />
-                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
-                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
-                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
-                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
-                <ScalarProperty Name="Late" ColumnName="Late" />
-                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
-                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGrade" FunctionName="Model.Store.PRC_AttendanceReport_ByGrade">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByGrade_Result">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
-                <ScalarProperty Name="Time_In" ColumnName="Time In" />
-                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
-                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
-                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
-                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
-                <ScalarProperty Name="Late" ColumnName="Late" />
-                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
-                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGradeAndSection" FunctionName="Model.Store.PRC_AttendanceReport_ByGradeAndSection">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByGradeAndSection_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_ByFirstName_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
@@ -1083,9 +1120,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByLastName" FunctionName="Model.Store.PRC_AttendanceReport_ByLastName">
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGrade" FunctionName="DataModel.Store.PRC_AttendanceReport_ByGrade">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByLastName_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_ByGrade_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
@@ -1100,9 +1137,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByStudentID" FunctionName="Model.Store.PRC_AttendanceReport_ByStudentID">
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByGradeAndSection" FunctionName="DataModel.Store.PRC_AttendanceReport_ByGradeAndSection">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_AttendanceReport_ByStudentID_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_ByGradeAndSection_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
@@ -1117,9 +1154,43 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_ConsolidatedReport_ByGradeAndSection" FunctionName="Model.Store.PRC_ConsolidatedReport_ByGradeAndSection">
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByLastName" FunctionName="DataModel.Store.PRC_AttendanceReport_ByLastName">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_ConsolidatedReport_ByGradeAndSection_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_ByLastName_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_AttendanceReport_ByStudentID" FunctionName="DataModel.Store.PRC_AttendanceReport_ByStudentID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataModel.PRC_AttendanceReport_ByStudentID_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
+                <ScalarProperty Name="Time_In" ColumnName="Time In" />
+                <ScalarProperty Name="Time_Out" ColumnName="Time Out" />
+                <ScalarProperty Name="Standard_Hours" ColumnName="Standard Hours" />
+                <ScalarProperty Name="Hours_Rendered" ColumnName="Hours Rendered" />
+                <ScalarProperty Name="Attendance" ColumnName="Attendance" />
+                <ScalarProperty Name="Late" ColumnName="Late" />
+                <ScalarProperty Name="Overstay" ColumnName="Overstay" />
+                <ScalarProperty Name="Undertime" ColumnName="Undertime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PRC_ConsolidatedReport_ByGradeAndSection" FunctionName="DataModel.Store.PRC_ConsolidatedReport_ByGradeAndSection">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataModel.PRC_ConsolidatedReport_ByGradeAndSection_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Student_ID" ColumnName="Student ID" />
@@ -1130,28 +1201,28 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_FiltersList" FunctionName="Model.Store.PRC_FiltersList">
+          <FunctionImportMapping FunctionImportName="PRC_FiltersList" FunctionName="DataModel.Store.PRC_FiltersList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_FiltersList_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_FiltersList_Result">
                 <ScalarProperty Name="FilterName" ColumnName="FilterName" />
                 <ScalarProperty Name="FilterValue" ColumnName="FilterValue" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_GradeList" FunctionName="Model.Store.PRC_GradeList" />
-          <FunctionImportMapping FunctionImportName="PRC_ReportsList" FunctionName="Model.Store.PRC_ReportsList">
+          <FunctionImportMapping FunctionImportName="PRC_GradeList" FunctionName="DataModel.Store.PRC_GradeList" />
+          <FunctionImportMapping FunctionImportName="PRC_ReportsList" FunctionName="DataModel.Store.PRC_ReportsList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_ReportsList_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_ReportsList_Result">
                 <ScalarProperty Name="ReportName" ColumnName="ReportName" />
                 <ScalarProperty Name="Report_SP" ColumnName="Report_SP" />
                 <ScalarProperty Name="Filter" ColumnName="Filter" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="PRC_SectionList" FunctionName="Model.Store.PRC_SectionList" />
-          <FunctionImportMapping FunctionImportName="PRC_SPName" FunctionName="Model.Store.PRC_SPName">
+          <FunctionImportMapping FunctionImportName="PRC_SectionList" FunctionName="DataModel.Store.PRC_SectionList" />
+          <FunctionImportMapping FunctionImportName="PRC_SPName" FunctionName="DataModel.Store.PRC_SPName">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.PRC_SPName_Result">
+              <ComplexTypeMapping TypeName="DataModel.PRC_SPName_Result">
                 <ScalarProperty Name="ReportName" ColumnName="ReportName" />
                 <ScalarProperty Name="Report_SP" ColumnName="Report_SP" />
                 <ScalarProperty Name="Filter" ColumnName="Filter" />

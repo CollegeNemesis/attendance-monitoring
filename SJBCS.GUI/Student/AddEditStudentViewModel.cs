@@ -67,7 +67,8 @@ namespace SJBCS.GUI.Student
                 if (_selectedLevelId != null)
                 {
                     Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(_selectedLevelId));
-                    SelectedSectionId = Sections[0].SectionID;
+                    if (!EditMode && Sections.Count == 0)
+                        SelectedSectionId = Sections[0].SectionID;
                 }
             }
         }
@@ -284,15 +285,19 @@ namespace SJBCS.GUI.Student
         private void CopyStudent(Data.Student source, EditableStudent target)
         {
             target.StudentGuid = source.StudentGuid;
+            target.EditMode = EditMode;
 
             if (EditMode)
             {
+                target.OrigStudentId = source.StudentID;
                 target.StudentID = source.StudentID;
                 target.FirstName = source.FirstName;
                 target.MiddleName = source.MiddleName;
                 target.LastName = source.LastName;
                 target.LevelID = source.LevelID;
                 target.SectionID = source.SectionID;
+                SelectedLevelId = target.LevelID;
+                SelectedSectionId = target.SectionID;
                 target.BirthDate = source.BirthDate;
                 target.Gender = source.Gender;
                 target.Street = source.Street;
@@ -306,10 +311,7 @@ namespace SJBCS.GUI.Student
                 target.RelBiometrics = new ObservableCollection<RelBiometric>(source.RelBiometrics);
                 target.RelDistributionLists = source.RelDistributionLists;
                 target.RelOrganizations = new ObservableCollection<RelOrganization>(source.RelOrganizations);
-
                 Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(Student.LevelID));
-
-                SelectedImage = Student.ImageData;
             }
 
             target.Biometrics = new ObservableCollection<Biometric>();
@@ -517,7 +519,7 @@ namespace SJBCS.GUI.Student
             if (result == true)
             {
                 SelectedImage = dlg.FileName;
-                Student.ImageData = SelectedImage;
+                Student.ImageData = File.ReadAllBytes(SelectedImage);
             }
 
         }
@@ -608,6 +610,8 @@ namespace SJBCS.GUI.Student
                 _relBiometricsRepository.DeleteRelBiometric(biometric.FingerID);
                 _biometricsRepository.DeleteBiometric(biometric.FingerID);
             }
+
+            SelectedImage = null;
             Done();
         }
 

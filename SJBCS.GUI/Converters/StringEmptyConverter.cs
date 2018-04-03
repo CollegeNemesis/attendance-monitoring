@@ -12,7 +12,7 @@ namespace SJBCS.GUI.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return string.IsNullOrEmpty((string)value) ? parameter : value;
+            return value == null ? parameter : value;
         }
 
         public object ConvertBack(

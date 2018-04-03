@@ -61,107 +61,113 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmsDbContext.cs" />
-    <Compile Include="AmsModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AmsModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AmsModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AmsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AmsModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AmsModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="AmsModelExtension.cs" />
     <Compile Include="Attendance.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Biometric.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Calendar.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationSetup.cs" />
     <Compile Include="ConfigurationSetupTest.cs" />
     <Compile Include="ConnectionHelper.cs" />
     <Compile Include="ConnectionHelperTests.cs" />
     <Compile Include="Contact.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DistributionList.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Filter.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Level.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Organization.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_Absentees_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_ByFirstName_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_ByGradeAndSection_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_ByGrade_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_ByLastName_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_AttendanceReport_ByStudentID_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_ConsolidatedReport_ByGradeAndSection_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_FiltersList_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_ReportsList_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PRC_SPName_Result.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelBiometric.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RelDistributionList.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RelOrganization.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Report.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Section.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Student.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>AmsModel.tt</DependentUpon>
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="AmsModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AmsModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="AmsModel.edmx.diagram">
-      <DependentUpon>AmsModel.edmx</DependentUpon>
-    </None>
     <None Include="App.Config">
       <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="DataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DataModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataModel.edmx.diagram">
+      <DependentUpon>DataModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -170,15 +176,15 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AmsModel.Context.tt">
+    <Content Include="DataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AmsModel.edmx</DependentUpon>
-      <LastGenOutput>AmsModel.Context.cs</LastGenOutput>
+      <DependentUpon>DataModel.edmx</DependentUpon>
+      <LastGenOutput>DataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="AmsModel.tt">
+    <Content Include="DataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AmsModel.edmx</DependentUpon>
-      <LastGenOutput>AmsModel.cs</LastGenOutput>
+      <DependentUpon>DataModel.edmx</DependentUpon>
+      <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

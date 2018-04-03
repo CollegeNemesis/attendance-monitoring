@@ -22,10 +22,7 @@ namespace SJBCS.Services.Repository
         public void DeleteSection(Guid id)
         {
             var Section = _context.Sections.FirstOrDefault(r => r.SectionID == id);
-            if (Section != null)
-            {
-                _context.Sections.Remove(Section);
-            }
+            _context.Entry(Section).State = EntityState.Deleted;
             _context.SaveChanges();
         }
 
@@ -37,7 +34,13 @@ namespace SJBCS.Services.Repository
         public List<Section> GetSections(Guid id)
         {
             _context = ConnectionHelper.CreateConnection();
-            return _context.Sections.Where(r => r.LevelID == id).ToList();
+            return _context.Sections.Where(r => r.LevelID == id).ToList().OrderBy(section=> section.SectionName).ToList();
+        }
+
+        public List<Section> GetSections()
+        {
+            _context = ConnectionHelper.CreateConnection();
+            return _context.Sections.OrderBy(section => section.SectionName).ToList();
         }
 
         public Section UpdateSection(Section Section)

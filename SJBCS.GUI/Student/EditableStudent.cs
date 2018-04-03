@@ -1,20 +1,30 @@
 ﻿using AMS.Utilities;
+using ExpressiveAnnotations.Attributes;
 using SJBCS.Data;
-using SJBCS.GUI.Validation;
 using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SJBCS.GUI.Student
 {
     public class EditableStudent : ValidatableBindableBase
     {
-        public bool EditMode;
+        private bool editMode;
+        public bool EditMode
+        {
+            get { return editMode; }
+            set { SetProperty(ref editMode, value); }
+        }
+
+        private string origStudentId;
+        public string OrigStudentId
+        {
+            get { return origStudentId; }
+            set { SetProperty(ref origStudentId, value); }
+        }
+
 
         private System.Guid studentGuid;
         public System.Guid StudentGuid
@@ -22,38 +32,44 @@ namespace SJBCS.GUI.Student
             get { return studentGuid; }
             set { SetProperty(ref studentGuid, value); }
         }
+
         private string firstName;
-        [Required(ErrorMessage = "First name is required.")]
+        [Required(ErrorMessage = "This field is required.")]
         public string FirstName
         {
             get { return firstName; }
             set { SetProperty(ref firstName, value); }
         }
+
         private string middleName;
         public string MiddleName
         {
             get { return middleName; }
             set { SetProperty(ref middleName, value); }
         }
+
         private string lastName;
-        [Required(ErrorMessage = "Last name is required.")]
+        [Required(ErrorMessage = "This field is required.")]
         public string LastName
         {
             get { return lastName; }
             set { SetProperty(ref lastName, value); }
         }
+
         private Nullable<System.DateTime> birthDate;
         public Nullable<System.DateTime> BirthDate
         {
             get { return birthDate; }
             set { SetProperty(ref birthDate, value); }
         }
-        private string imageData;
-        public string ImageData
+
+        private byte[] imageData;
+        public byte[] ImageData
         {
             get { return imageData; }
             set { SetProperty(ref imageData, value); }
         }
+
         private string gender;
         public string Gender
         {
@@ -65,52 +81,65 @@ namespace SJBCS.GUI.Student
             }
             set { SetProperty(ref gender, value); }
         }
+
         private string street;
         public string Street
         {
             get { return street; }
             set { SetProperty(ref street, value); }
         }
+
         private string city;
         public string City
         {
             get { return city; }
             set { SetProperty(ref city, value); }
         }
+
         private string state;
         public string State
         {
             get { return state; }
             set { SetProperty(ref state, value); }
         }
+
         private System.Guid sectionID;
         public System.Guid SectionID
         {
             get { return sectionID; }
             set { SetProperty(ref sectionID, value); }
         }
+
         private System.Guid levelID;
         public System.Guid LevelID
         {
             get { return levelID; }
             set { SetProperty(ref levelID, value); }
         }
-        private string studentID;
 
-        //[UniqueStudentId (ErrorMessage = "Duplicate Student ID. ID already exists.")]
-        [Required(ErrorMessage = "Student ID is required.")]
+        private string studentID;        
+        [Required(ErrorMessage = "This field is required.")]
+        [AssertThat("IsDuplicateStudentId(StudentID)", ErrorMessage = "Student ID is already existing.")]
         public string StudentID
         {
             get { return studentID; }
             set
             {
-                ValidateUniqueID(value);
                 SetProperty(ref studentID, value);
             }
         }
 
-        private void ValidateUniqueID(string value)
+        public bool IsDuplicateStudentId(string studentId)
         {
+            IStudentsRepository studentsRepository = new StudentsRepository();
+
+            if (EditMode && OrigStudentId.ToUpper().Trim().Equals(studentId.ToUpper().Trim()))
+                return true;
+
+            if (studentsRepository.GetStudent(studentId) != null)
+                return false;
+
+            return true;
         }
 
         private ICollection<Attendance> attendances;

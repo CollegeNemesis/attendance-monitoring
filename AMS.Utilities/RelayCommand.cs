@@ -56,6 +56,7 @@ namespace AMS.Utilities
     {
         Action<T> _TargetExecuteMethod;
         Func<T, bool> _TargetCanExecuteMethod;
+        private Action onEdit;
 
         public RelayCommand(Action<T> executeMethod)
         {
@@ -66,6 +67,11 @@ namespace AMS.Utilities
         {
             _TargetExecuteMethod = executeMethod;
             _TargetCanExecuteMethod = canExecuteMethod;
+        }
+
+        public RelayCommand(Action onEdit)
+        {
+            this.onEdit = onEdit;
         }
 
         public void RaiseCanExecuteChanged()

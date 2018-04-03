@@ -15,7 +15,7 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ei:CallMethodAction TargetObject="{Binding}"
-                                 MethodName="LoadStudents" />
+                                 MethodName="Initialize" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.Resources>
@@ -56,7 +56,7 @@
                                 Margin="5">
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.EditStudentCommand}"
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.EditCommand}"
                                 CommandParameter="{Binding}"
                                 Margin="5 0 0 0"
                                 Foreground="#3D62B3">
@@ -71,7 +71,7 @@
                         </Button>
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"
-                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.DeleteStudentCommand}"
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.DeleteCommand}"
                                 CommandParameter="{Binding}"
                                 Margin="5 0 0 0"
                                 Foreground="#3D62B3">
@@ -91,15 +91,9 @@
     </UserControl.Resources>
     <Grid DataContext="{StaticResource studentViewSource}"
           Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <StackPanel Margin="10">
             <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Left"
-                        Margin="20">
+                        HorizontalAlignment="Left">
                 <StackPanel>
                     <TextBlock Foreground="#00B4FF"
                                FontFamily="Segoe UI"
@@ -108,18 +102,12 @@
                                FontSize="20">
                         <Run Text="Student" />
                     </TextBlock>
-                    <TextBlock Foreground="#00B4FF"
-                               FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               Margin="5 0 0 5"
-                               FontSize="20">
-                        <Run Text="" />
-                    </TextBlock>
-                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                    <Button Style="{DynamicResource MaterialDesignRaisedButton}"
                             HorizontalAlignment="Left"
-                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddStudentCommand}"
-                            Margin="5 0 0 0"
-                            Foreground="#3D62B3">
+                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
+                            Width="200"
+                            Margin="0 20 0 20"
+                            Foreground="White">
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="Plus"
@@ -131,10 +119,98 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
-        </Grid>
-        <Grid Grid.Row="2">
-            <StackPanel HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock Text="Filter by"
+                               Foreground="#B5B5B5"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Margin="0 0 0 20"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <TextBlock Text="Level"
+                                       Foreground="#B5B5B5"
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Regular"
+                                       Margin="5 0 0 5"
+                                       FontSize="10" />
+                            <ComboBox materialDesign:HintAssist.Hint="Level"
+                                      materialDesign:HintAssist.IsFloating="False"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      HorizontalAlignment="Left"
+                                      VerticalContentAlignment="Center"
+                                      Width="200"
+                                      Height="38"
+                                      VerticalAlignment="Bottom"
+                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Levels}"
+                                      DisplayMemberPath="GradeLevel"
+                                      SelectedValuePath="LevelID"
+                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedLevelId}" />
+                        </StackPanel>
+                        <StackPanel Margin="10 0 0 0">
+                            <TextBlock Text="Section"
+                                       Foreground="#B5B5B5"
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Regular"
+                                       Margin="5 0 0 5"
+                                       FontSize="10" />
+                            <ComboBox materialDesign:HintAssist.Hint="Section"
+                                      materialDesign:HintAssist.IsFloating="False"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Bottom"
+                                      VerticalContentAlignment="Center"
+                                      Width="200"
+                                      Height="38"
+                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Sections}"
+                                      DisplayMemberPath="SectionName"
+                                      SelectedValuePath="SectionID"
+                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedSectionId}" />
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <TextBlock Text="Search student by"
+                               Foreground="#B5B5B5"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Margin="0 20 0 10"/>
+                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              HorizontalAlignment="Left"
+                              Width="200"
+                              SelectedIndex="0">
+                        <ComboBoxItem>Student ID</ComboBoxItem>
+                        <ComboBoxItem>First Name</ComboBoxItem>
+                        <ComboBoxItem>Last Name</ComboBoxItem>
+                    </ComboBox>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 materialDesign:HintAssist.Hint="Input keyword"
+                                 materialDesign:HintAssist.IsFloating="True"
+                                 HorizontalAlignment="Left"
+                                 Width="200"
+                                 Margin="0 20 0 10" />
+                        <Button Style="{DynamicResource MaterialDesignRaisedButton}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
+                                Width="200"
+                                Margin="10 0 0 12"
+                                Foreground="White">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Magnify"
+                                                         VerticalAlignment="Center"
+                                                         Margin="5" />
+                                <TextBlock Text="Search Student"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
                 <DataGrid x:Name="studentDataGrid"
+                          Margin="50 0 0 0"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
                           ItemsSource="{Binding}"
@@ -143,10 +219,10 @@
                           IsSynchronizedWithCurrentItem="False"
                           RowDetailsVisibilityMode="VisibleWhenSelected"
                           RowDetailsTemplate="{StaticResource RowDetailTemplate}"
-                          Style="{DynamicResource MaterialDesignDataGrid}"
-                          CellStyle="{DynamicResource MaterialDesignDataGridCell}"
-                          ColumnHeaderStyle="{DynamicResource MaterialDesignDataGridColumnHeader}"
-                          RowStyle="{DynamicResource MaterialDesignDataGridRow}">
+                          Style="{StaticResource MaterialDesignDataGrid}"
+                          CellStyle="{StaticResource MaterialDesignDataGridCell}"
+                          ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
+                          RowStyle="{StaticResource MaterialDesignDataGridRow}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
@@ -184,6 +260,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -9,34 +9,34 @@ namespace SJBCS.GUI.Settings
 {
     public class SettingsViewModel : BindableBase
     {
-        public RelayCommand NavToUserManagementCommand { get; private set; }
-        public RelayCommand NavToDbManagementCommand { get; private set; }
-        public RelayCommand NavToSmsManagementCommand { get; private set; }
+        public RelayCommand NavToHomeCommand { get; private set; }
+        public RelayCommand NavToConfigCommand { get; private set; }
+        public RelayCommand NavToUserCommand { get; private set; }
 
-        public event Action NavToUserManagementRequested = delegate { };
-        public event Action NavToDbManagementRequested = delegate { };
-        public event Action NavToSmsManagementRequested = delegate { };
+        public event Action NavToHomeRequested = delegate { };
+        public event Action NavToConfigRequested = delegate { };
+        public event Action NavToUserRequested = delegate { };
 
         public SettingsViewModel()
         {
-            NavToUserManagementCommand = new RelayCommand(OnNavtoUserManagement);
-            NavToDbManagementCommand = new RelayCommand(OnNavToDbManagement);
-            NavToSmsManagementCommand = new RelayCommand(OnNavToSmsManagement);
+            NavToHomeCommand = new RelayCommand(OnNavToHome);
+            NavToConfigCommand = new RelayCommand(OnNavToConfig);
+            NavToUserCommand = new RelayCommand(OnNavToUser);
         }
 
-        private void OnNavToSmsManagement()
+        private void OnNavToHome()
         {
-            NavToSmsManagementRequested();
+            NavToHomeRequested();
         }
 
-        private void OnNavtoUserManagement()
+        private void OnNavToConfig()
         {
-            NavToUserManagementRequested();
+            NavToConfigRequested();
         }
 
-        private void OnNavToDbManagement()
+        private void OnNavToUser()
         {
-            NavToDbManagementRequested();
+            NavToUserRequested();
         }
     }
 }

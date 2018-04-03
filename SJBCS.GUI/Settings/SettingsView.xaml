@@ -19,7 +19,7 @@
                 <Button HorizontalAlignment="Stretch"
                         Height="Auto"
                         Width="Auto"
-                        Command="{Binding NavToAttendanceCommand}">
+                        Command="{Binding NavToHomeCommand}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Foreground"
@@ -65,7 +65,7 @@
                 <Button HorizontalAlignment="Stretch"
                         Height="Auto"
                         Width="Auto"
-                        Command="{Binding NavToStudentCommand}">
+                        Command="{Binding NavToUserCommand}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Foreground"
@@ -111,7 +111,7 @@
                 <Button HorizontalAlignment="Stretch"
                         Height="Auto"
                         Width="Auto"
-                        Command="{Binding NavToSectionCommand}">
+                        Command="{Binding NavToConfigCommand}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Foreground"

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SJBCS.Services.Repository;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,17 +27,12 @@ namespace SJBCS.GUI.Student
             InitializeComponent();
         }
 
-        //private void CompletedJobsMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        //{
-        //    StudentViewModel viewModel = (StudentViewModel)DataContext;
-        //    if (viewModel.RowDetailsVisible == DataGridRowDetailsVisibilityMode.Collapsed)
-        //    {
-        //        viewModel.RowDetailsVisible = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
-        //    }
-        //    else
-        //    {
-        //        viewModel.RowDetailsVisible = DataGridRowDetailsVisibilityMode.Collapsed;
-        //    }
-        //}
+        private void studentDataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            //var studentViewSource = FindResource("studentViewSource") as CollectionViewSource;
+            //ListCollectionView view = (ListCollectionView)studentViewSource.View;
+            //view.CustomSort = new NaturalSortComparer<string>();
+            //studentViewSource.SortDescriptions.Add(new SortDescription("Level.GradeLevel", ListSortDirection.Ascending));
+        }
     }
 }

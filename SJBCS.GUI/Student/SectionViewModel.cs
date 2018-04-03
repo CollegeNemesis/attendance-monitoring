@@ -17,13 +17,20 @@ namespace SJBCS.GUI.Student
         private ILevelsRepository _levelsRepository;
         private ISectionsRepository _sectionsRepository;
         private IStudentsRepository _studentsRepository;
-        private Section _editingSection;
 
-        private AddSectionViewModel currentViewModel;
-        public AddSectionViewModel CurrentViewModel
+        private bool _addEditMode;
+
+        public bool AddEditMode
         {
-            get { return currentViewModel; }
-            set { SetProperty(ref currentViewModel, value); }
+            get { return _addEditMode; }
+            set { SetProperty(ref _addEditMode, value); }
+        }
+
+        private AddEditSectionViewModel addEditSectionViewModel;
+        public AddEditSectionViewModel AddEditSectionViewModel
+        {
+            get { return addEditSectionViewModel; }
+            set { SetProperty(ref addEditSectionViewModel, value); }
         }
 
         private ObservableCollection<Level> _levels;
@@ -46,14 +53,17 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                SetProperty(ref _selectedLevelId, value);
-                if (_selectedLevelId != null)
+                if (value != null)
                 {
-                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(_selectedLevelId));
-                    if (Sections.Count > 0)
+                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
+                    if (Sections.Any())
                         SelectedSectionId = Sections[0].SectionID;
-
+                    else
+                        SelectedSection = new Section();
                 }
+                SetProperty(ref _selectedLevelId, value);
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -63,27 +73,9 @@ namespace SJBCS.GUI.Student
             get { return _selectedSectionId; }
             set
             {
+                if (value != null)
+                    SelectedSection = _sectionsRepository.GetSection(value);
                 SetProperty(ref _selectedSectionId, value);
-                if (_selectedLevelId != null && _selectedSectionId != null)
-                {
-                }
-            }
-        }
-
-        private bool _editMode;
-        public bool EditMode
-        {
-            get { return _editMode; }
-            set { SetProperty(ref _editMode, value); }
-        }
-
-        private EditableSection editableSection;
-        public EditableSection EditableSection
-        {
-            get { return editableSection; }
-            set
-            {
-                SetProperty(ref editableSection, value);
             }
         }
 
@@ -94,19 +86,19 @@ namespace SJBCS.GUI.Student
             {
                 return _selectedSection;
             }
+
             set
             {
                 SetProperty(ref _selectedSection, value);
-                EditCommand.RaiseCanExecuteChanged();
-                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
-        
-        public RelayCommand EditCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand DeleteCommand { get; private set; }
 
-        public AddSectionViewModel _addSectionViewModel;
+        public RelayCommand AddCommand { get; private set; }
+        public RelayCommand<Section> DeleteCommand { get; private set; }
+        public RelayCommand<Section> EditCommand { get; private set; }
+
+        public event Action<Section> AddRequested = delegate { };
+        public event Action<Section> EditRequested = delegate { };
 
         public SectionViewModel(ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IStudentsRepository studentsRepository)
         {
@@ -114,141 +106,109 @@ namespace SJBCS.GUI.Student
             _sectionsRepository = sectionsRepository;
             _studentsRepository = studentsRepository;
 
-            _addSectionViewModel = ContainerHelper.Container.Resolve<AddSectionViewModel>();
+            addEditSectionViewModel = ContainerHelper.Container.Resolve<AddEditSectionViewModel>();
 
-            currentViewModel = _addSectionViewModel;
+            EditCommand = new RelayCommand<Section>(OnEdit, CanEdit);
+            AddCommand = new RelayCommand(OnAdd);
+            DeleteCommand = new RelayCommand<Section>(OnDelete, CanDelete);
 
-            EditCommand = new RelayCommand(OnEdit, CanEdit);
-            SaveCommand = new RelayCommand(OnSave, CanSave);
-            DeleteCommand = new RelayCommand(OnDelete, CanDelete);
+            AddRequested += NavToAddSection;
+            EditRequested += NavToEditSection;
+            addEditSectionViewModel.Done += NavToSection;
             Initialize();
         }
 
-        private void SetSection(Section section)
+        private bool CanDelete(Section section)
         {
-            _editingSection = section;
-
-            if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;
-
-            EditableSection = new EditableSection();
-            EditableSection.ErrorsChanged += RaiseCanExecuteChanged;
-
-            CopySection(section, EditableSection);
-        }
-
-        private void CopySection(Section source, EditableSection target)
-        {
-            target.SectionID = source.SectionID;
-            target.LevelID = source.LevelID;
-            target.Levels = Levels;
-            target.Level = _levelsRepository.GetLevel(SelectedLevelId);
-
-            target.OrigSectionName = source.SectionName;
-            target.SectionName = source.SectionName;
-            target.StartTime = source.StartTime.ToString();
-            target.EndTime = source.EndTime.ToString();
-        }
-
-        private bool CanSave()
-        {
-            if (EditableSection == null)
-                return false;
-
-            if (EditableSection.SectionName == null || EditableSection.StartTime == null || EditableSection.EndTime == null)
-                return false;
-
-            return !EditableSection.HasErrors;
-        }
-
-        private bool CanDelete()
-        {
-            if (SelectedSection == null)
+            if (!Sections.Any())
                 return false;
             return true;
         }
 
-        private bool CanEdit()
+        private bool CanEdit(Section section)
         {
-            if (SelectedSection == null)
+            if (!Sections.Any())
                 return false;
             return true;
         }
 
-        private async void OnDelete()
+        private void NavToSection()
         {
-            List<Data.Student> Students = _studentsRepository.GetStudents();
 
-            if (Students.SingleOrDefault(i => i.SectionID == _selectedSection.SectionID) != null)
+            SelectedSection = null;
+            AddEditMode = false;
+            PopulateLevelComboBox();
+            AddEditSectionViewModel.Initialize();
+            AddEditSectionViewModel = addEditSectionViewModel;
+        }
+
+        private void NavToEditSection(Section section)
+        {
+            addEditSectionViewModel.EditMode = true;
+            addEditSectionViewModel.SetStudent(section);
+            addEditSectionViewModel.Initialize();
+            AddEditMode = true;
+            AddEditSectionViewModel = addEditSectionViewModel;
+        }
+
+        private void NavToAddSection(Section section)
+        {
+            addEditSectionViewModel.EditMode = false;
+            addEditSectionViewModel.SetStudent(section);
+            addEditSectionViewModel.Initialize();
+            AddEditMode = true;
+            AddEditSectionViewModel = addEditSectionViewModel;
+        }
+
+        private async void OnDelete(Section section)
+        {
+            try
             {
-                //Show Delete Contact Dialog
+                _sectionsRepository.DeleteSection(section.SectionID);
+                NavToSection();
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
+            catch
+            {
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Informational, "Section is currently link to students. You cannot delete it.")
+                    DataContext = new DialogBoxViewModel(MessageType.Informational, "You cannot delete an active section.")
                 };
 
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-                //check the result...
-                Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
-            }
-
-            else
-            {
-
-                _sectionsRepository.DeleteSection(_selectedSection.SectionID);
-                Initialize();
             }
         }
 
-        private void OnSave()
+        private void OnAdd()
         {
-            UpdateSection(EditableSection, _editingSection);
-            //Update Student Table
-            if (EditMode)
-            {
-                _sectionsRepository.UpdateSection(SelectedSection);
-            }
-
-            Initialize();
+            AddRequested(new Section { LevelID = SelectedLevelId, SectionID = Guid.NewGuid() });
         }
 
-        private void UpdateSection(EditableSection source, Section target)
+        private void OnEdit(Section section)
         {
-            target.SectionName = source.SectionName;
-            target.StartTime = DateTime.Parse(source.StartTime).TimeOfDay;
-            target.EndTime = DateTime.Parse(source.EndTime).TimeOfDay;
-        }
-
-        private void OnEdit()
-        {
-            EditMode = true;
-            SetSection(_selectedSection);
-        }
-
-        private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
-        {
-            SaveCommand.RaiseCanExecuteChanged();
-            EditCommand.RaiseCanExecuteChanged();
-            DeleteCommand.RaiseCanExecuteChanged();
+            EditRequested(section);
         }
 
         public void Initialize()
         {
-            RefreshList();
             PopulateLevelComboBox();
-
         }
 
         private void PopulateLevelComboBox()
         {
-            SelectedLevelId = Levels[0].LevelID;
-            EditMode = false;
-        }
-
-        private void RefreshList()
-        {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            if (Levels.Any())
+            {
+                if (SelectedLevelId == new Guid())
+                    SelectedLevelId = Levels[0].LevelID;
+                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(SelectedLevelId));
+                if (Sections.Any())
+                    SelectedSectionId = Sections[0].SectionID;
+            }
+            OnPropertyChanged("SelectedLevelId");
+            OnPropertyChanged("SelectedSectionId");
         }
     }
 }

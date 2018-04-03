@@ -13,14 +13,13 @@ using System.Threading.Tasks;
 
 namespace SJBCS.GUI.Student
 {
-    public class AddSectionViewModel : BindableBase
+    public class AddEditSectionViewModel : BindableBase
     {
         private ILevelsRepository _levelsRepository;
         private ISectionsRepository _sectionsRepository;
         private IStudentsRepository _studentsRepository;
         private Section _editingSection;
-        public RelayCommand SaveCommand { get; private set; }
-
+        
         private ObservableCollection<Level> _levels;
         public ObservableCollection<Level> Levels
         {
@@ -41,55 +40,75 @@ namespace SJBCS.GUI.Student
             get => _selectedLevelId;
             set
             {
-                AddableSection.LevelID = value;
-                AddableSection.Level = _levelsRepository.GetLevel(value);
+                EditableSection.LevelID = value;
+                EditableSection.Level = _levelsRepository.GetLevel(value);
                 SetProperty(ref _selectedLevelId, value);
             }
         }
 
-        private AddableSection addableSection;
-        public AddableSection AddableSection
+        private EditableSection editableSection;
+        public EditableSection EditableSection
         {
-            get => addableSection;
+            get => editableSection;
             set
             {
-                SetProperty(ref addableSection, value);
-                SaveCommand.RaiseCanExecuteChanged();
+                SetProperty(ref editableSection, value);
             }
         }
 
-        public AddSectionViewModel(ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IStudentsRepository studentsRepository)
+        private bool _editMode;
+        public bool EditMode
+        {
+            get { return _editMode; }
+            set { SetProperty(ref _editMode, value); }
+        }
+
+        public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand CancelCommand { get; private set; }
+
+        public event Action Done = delegate { };
+
+        public AddEditSectionViewModel(ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IStudentsRepository studentsRepository)
         {
             _levelsRepository = levelsRepository;
             _sectionsRepository = sectionsRepository;
             _studentsRepository = studentsRepository;
             SaveCommand = new RelayCommand(OnSave, CanSave);
+            CancelCommand = new RelayCommand(OnCancel);
             Initialize();
         }
 
-        private bool CanSave()
+        private void OnCancel()
         {
-            if (AddableSection == null)
-                return false;
-
-            if (string.IsNullOrEmpty(AddableSection.StartTime) || string.IsNullOrEmpty(AddableSection.EndTime))
-                return false;
-
-            if (DateTime.Parse(AddableSection.StartTime).TimeOfDay >= DateTime.Parse(AddableSection.EndTime).TimeOfDay)
-                return false;
-
-            return !AddableSection.HasErrors && !AddableSection.HasExceptions;
+            Done();
         }
 
         private void OnSave()
         {
-            UpdateSection(AddableSection, _editingSection);
-            _sectionsRepository.AddSection(_editingSection);
+            UpdateSection(EditableSection, _editingSection);
 
-            DialogHost.CloseDialogCommand.Execute(new object(), null);
+            //Update Student Table
+            if (EditMode)
+            {
+                _sectionsRepository.UpdateSection(_editingSection);
+            }
+            else
+            {
+                _sectionsRepository.AddSection(_editingSection);
+            }
+
+            Done();
         }
 
-        private void CopySection(Section source, AddableSection target)
+        private bool CanSave()
+        {
+            if (string.IsNullOrEmpty(EditableSection.SectionName))
+                return false;
+
+            return !EditableSection.HasErrors;
+        }
+
+        private void CopySection(Section source, EditableSection target)
         {
             target.SectionID = source.SectionID;
             target.LevelID = SelectedLevelId;
@@ -100,26 +119,40 @@ namespace SJBCS.GUI.Student
             target.EndTime = source.EndTime.ToString();
         }
 
-        private void SetSection(Section section)
+        public void SetStudent(Section section)
         {
             _editingSection = section;
+            if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;
 
-            if (AddableSection != null) AddableSection.ErrorsChanged -= RaiseCanExecuteChanged;
-
-            AddableSection = new AddableSection();
-            AddableSection.ErrorsChanged += RaiseCanExecuteChanged;
-
-            CopySection(section, AddableSection);
+            EditableSection = new EditableSection();
+            EditableSection.ErrorsChanged += RaiseCanExecuteChanged;
+            CopyStudent(section, EditableSection);
         }
 
-        private void UpdateSection(AddableSection source, Section target)
+        private void CopyStudent(Section source, EditableSection target)
         {
             target.SectionID = source.SectionID;
-            target.LevelID = SelectedLevelId;
+            target.SectionID = source.LevelID;
+            target.StartTime = (new TimeSpan(7, 30, 0)).ToString();
+            target.EndTime = (new TimeSpan(15, 30, 0)).ToString();
+
+            if (EditMode)
+            {
+                target.EditMode = true;
+                target.OrigSectionName = source.SectionName;
+                target.SectionName = source.SectionName;
+                target.StartTime = source.StartTime.ToString();
+                target.EndTime = source.EndTime.ToString();
+            }
+        }
+
+        private void UpdateSection(EditableSection source, Section target)
+        {
             target.SectionName = source.SectionName;
             target.StartTime = DateTime.Parse(source.StartTime).TimeOfDay;
             target.EndTime = DateTime.Parse(source.EndTime).TimeOfDay;
         }
+
 
         private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
         {
@@ -128,13 +161,6 @@ namespace SJBCS.GUI.Student
 
         public void Initialize()
         {
-            AddableSection = new AddableSection();
-            Section = new Section();
-            Section.SectionID = Guid.NewGuid();
-            Section.StartTime = new TimeSpan(7, 0, 0);
-            Section.EndTime = new TimeSpan(15, 0, 0);
-            PopulateComboBox();
-            SetSection(Section);
         }
 
         private void PopulateComboBox()

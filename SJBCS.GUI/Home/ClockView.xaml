@@ -10,13 +10,13 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock FontFamily="Segoe UI"
                        FontWeight="Regular"
-                       FontSize="30"
+                       FontSize="35"
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="{Binding DigitalClock}"/>
             <TextBlock FontFamily="Segoe UI"
                        FontWeight="Regular"
-                       FontSize="14"
+                       FontSize="15"
                        Margin="5"
                        VerticalAlignment="Center"
                        TextAlignment="Left"

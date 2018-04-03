@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SJBCS.GUI.Student
+namespace SJBCS.GUI.Settings
 {
     /// <summary>
-    /// Interaction logic for AddSectionView.xaml
+    /// Interaction logic for DbManagementView.xaml
     /// </summary>
-    public partial class AddSectionView : UserControl
+    public partial class ConfigManagementView : UserControl
     {
-        public AddSectionView()
+        public ConfigManagementView()
         {
             InitializeComponent();
         }

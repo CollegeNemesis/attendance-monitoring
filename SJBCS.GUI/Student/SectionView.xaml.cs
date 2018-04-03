@@ -26,10 +26,6 @@ namespace SJBCS.GUI.Student
             InitializeComponent();
         }
 
-        public void DialogOpeningEventHandler(object sender, DialogOpenedEventArgs eventargs)
-        {
-        }
-
         public void DialogClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             ((SectionViewModel)DataContext).Initialize();

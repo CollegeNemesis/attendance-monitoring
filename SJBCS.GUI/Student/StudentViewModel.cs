@@ -6,10 +6,12 @@ using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Unity;
 
 namespace SJBCS.GUI.Student
@@ -20,49 +22,102 @@ namespace SJBCS.GUI.Student
         private IContactsRepository _contactsRepository;
         private IRelBiometricsRepository _relBiometricsRepository;
         private IBiometricsRepository _biometricsRepository;
-        private ObservableCollection<Data.Student> _students;
+        private ILevelsRepository _levelsRepository;
+        private ISectionsRepository _sectionsRepository;
+
+        private ObservableCollection<Level> _levels;
+        public ObservableCollection<Level> Levels
+        {
+            get { return _levels; }
+            set { SetProperty(ref _levels, value); }
+        }
+
+        private Section _section;
+        public Section Section
+        {
+            get { return _section; }
+            set { SetProperty(ref _section, value); }
+        }
+
+        private Guid _selectedLevelId;
+        public Guid SelectedLevelId
+        {
+            get => _selectedLevelId;
+            set
+            {
+                SetProperty(ref _selectedLevelId, value);
+            }
+        }
 
         private DataGridRowDetailsVisibilityMode _rowDetailsVisible;
-
         public DataGridRowDetailsVisibilityMode RowDetailsVisible
         {
             get { return _rowDetailsVisible; }
             set { SetProperty(ref _rowDetailsVisible, value); }
         }
 
+        public RelayCommand AddCommand { get; private set; }
+        public RelayCommand<Data.Student> DeleteCommand { get; private set; }
+        public RelayCommand<Data.Student> EditCommand { get; private set; }
+
+        public event Action<Data.Student> AddRequested = delegate { };
+        public event Action<Data.Student> EditRequested = delegate { };
+
+        private ObservableCollection<Data.Student> _students;
         public ObservableCollection<Data.Student> Students
         {
             get { return _students; }
-            set { SetProperty(ref _students, value); }
+            set
+            {
+                SetProperty(ref _students, value);
+            }
         }
 
-        public StudentViewModel(IStudentsRepository studentsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository)
+        public StudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository)
         {
-            AddStudentCommand = new RelayCommand(OnAddStudent);
-            DeleteStudentCommand = new RelayCommand<Data.Student>(OnDeleteStudent);
-            EditStudentCommand = new RelayCommand<Data.Student>(OnEditStudent);
+            AddCommand = new RelayCommand(OnAdd);
+            DeleteCommand = new RelayCommand<Data.Student>(OnDelete);
+            EditCommand = new RelayCommand<Data.Student>(OnEdit);
+
             _studentsRepository = studentsRepository;
             _contactsRepository = contactsRepository;
             _biometricsRepository = biometricsRepository;
             _relBiometricsRepository = relBiometricsRepository;
+            _levelsRepository = levelsRepository;
+            _sectionsRepository = sectionsRepository;
+        }
+
+        public void Initialize()
+        {
+            LoadStudents();
+            LoadComboBox();
+        }
+
+        public void LoadComboBox()
+        {
+            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            SelectedLevelId = Levels[0].LevelID;
         }
 
         public void LoadStudents()
         {
             Students = null;
             Students = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
+            if (Students != null)
+                Students = new ObservableCollection<Data.Student>(Students.AsEnumerable().OrderBy(student => student.Level.GradeLevel, new NaturalSortComparer<string>()).ToList());
         }
 
-        public RelayCommand AddStudentCommand { get; private set; }
-        public RelayCommand<Data.Student> DeleteStudentCommand { get; private set; }
-        public RelayCommand<Data.Student> EditStudentCommand { get; private set; }
+        public void OnAdd()
+        {
+            AddRequested(new Data.Student { StudentGuid = Guid.NewGuid() });
+        }
 
-        public event Action<Data.Student> AddStudentRequested = delegate { };
-        public event Action<Data.Student> EditStudentRequested = delegate { };
+        public void OnEdit(Data.Student selectedStudent)
+        {
+            EditRequested(selectedStudent);
+        }
 
-
-
-        private async void OnDeleteStudent(Data.Student student)
+        private async void OnDelete(Data.Student student)
         {
             try
             {
@@ -84,16 +139,6 @@ namespace SJBCS.GUI.Student
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
             }
-        }
-
-        public void OnAddStudent()
-        {
-            AddStudentRequested(new Data.Student { StudentGuid = Guid.NewGuid() });
-        }
-
-        public void OnEditStudent(Data.Student selectedStudent)
-        {
-            EditStudentRequested(selectedStudent);
         }
     }
 }

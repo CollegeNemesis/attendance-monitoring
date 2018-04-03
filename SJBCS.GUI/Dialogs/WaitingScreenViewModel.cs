@@ -18,7 +18,7 @@ namespace SJBCS.GUI.Dialogs
             {
                 CustomResourceDictionary = DialogDictionary,
                 //NegativeButtonText = "CANCEL",
-                SuppressDefaultResources = true
+                //SuppressDefaultResources = true
             };
 
             var controller = await DialogCoordinator.Instance.ShowProgressAsync(this, "", "(WORK IN PROGRESS)", true, metroDialogSettings);

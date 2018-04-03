@@ -40,6 +40,8 @@ namespace SJBCS.Data
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Filter> Filters { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
     
         public virtual ObjectResult<PRC_AttendanceReport_Absentees_Result> PRC_AttendanceReport_Absentees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string gradeLevel, string section)
         {

@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace SJBCS.GUI.Settings
 {
-    public class DbManagementViewModel : BindableBase
+    public class ConfigManagementViewModel : BindableBase
     {
         private EditableDbConfig _editableDbConfig;
 
@@ -30,7 +30,7 @@ namespace SJBCS.GUI.Settings
         public RelayCommand UpdateDbConfigCommand { get; private set; }
         public RelayCommand TestDbCommand { get; private set; }
 
-        public DbManagementViewModel()
+        public ConfigManagementViewModel()
         {
             Config config = ConnectionHelper.Config;
             UpdateDbConfigCommand = new RelayCommand(OnUpdateDbConfig, CanUpdate);
@@ -64,7 +64,7 @@ namespace SJBCS.GUI.Settings
                     {
                         DataSource = new DataSource()
                         {
-                            Metadata = "res://*/AmsModel.csdl|res://*/AmsModel.ssdl|res://*/AmsModel.msl",
+                            Metadata = "res://*/DataModel.csdl|res://*/DataModel.ssdl|res://*/DataModel.msl",
                             Hostname = "",
                             InitialCatalog = "",
                             Username = "",
