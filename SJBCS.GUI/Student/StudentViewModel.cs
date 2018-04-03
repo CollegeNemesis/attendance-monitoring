@@ -32,20 +32,56 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref _levels, value); }
         }
 
-        private Section _section;
-        public Section Section
+        private ObservableCollection<Section> _sections;
+        public ObservableCollection<Section> Sections
         {
-            get { return _section; }
-            set { SetProperty(ref _section, value); }
+            get { return _sections; }
+            set { SetProperty(ref _sections, value); }
         }
 
         private Guid _selectedLevelId;
         public Guid SelectedLevelId
         {
-            get => _selectedLevelId;
+            get { return _selectedLevelId; }
             set
             {
+                if (value != null)
+                {
+                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
+                    if (Sections.Any())
+                        SelectedSectionId = Sections[0].SectionID;
+                    else
+                        SelectedSection = new Section();
+                }
                 SetProperty(ref _selectedLevelId, value);
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private Guid _selectedSectionId;
+        public Guid SelectedSectionId
+        {
+            get { return _selectedSectionId; }
+            set
+            {
+                if (value != null)
+                    SelectedSection = _sectionsRepository.GetSection(value);
+                SetProperty(ref _selectedSectionId, value);
+            }
+        }
+
+        private Section _selectedSection;
+        public Section SelectedSection
+        {
+            get
+            {
+                return _selectedSection;
+            }
+
+            set
+            {
+                SetProperty(ref _selectedSection, value);
             }
         }
 
@@ -96,7 +132,16 @@ namespace SJBCS.GUI.Student
         public void LoadComboBox()
         {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
-            SelectedLevelId = Levels[0].LevelID;
+            if (Levels.Any())
+            {
+                if (SelectedLevelId == new Guid())
+                    SelectedLevelId = Levels[0].LevelID;
+                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(SelectedLevelId));
+                if (Sections.Any())
+                    SelectedSectionId = Sections[0].SectionID;
+            }
+            OnPropertyChanged("SelectedLevelId");
+            OnPropertyChanged("SelectedSectionId");
         }
 
         public void LoadStudents()

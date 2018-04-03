@@ -63,13 +63,10 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
+                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
+                if(Sections.Any())
+                    SelectedSectionId = Sections.FirstOrDefault().SectionID;
                 SetProperty(ref _selectedLevelId, value);
-                if (_selectedLevelId != null)
-                {
-                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(_selectedLevelId));
-                    if (!EditMode && Sections.Count == 0)
-                        SelectedSectionId = Sections[0].SectionID;
-                }
             }
         }
 
@@ -80,11 +77,6 @@ namespace SJBCS.GUI.Student
             set
             {
                 SetProperty(ref _selectedSectionId, value);
-                if (_selectedLevelId != null && _selectedSectionId != null)
-                {
-                    Student.LevelID = SelectedLevelId;
-                    Student.SectionID = SelectedSectionId;
-                }
             }
         }
 
@@ -112,10 +104,7 @@ namespace SJBCS.GUI.Student
 
             set
             {
-                if (Student.Contacts != null)
-                    value.Contacts = Student.Contacts;
                 SetProperty(ref _editableContact, value);
-                AddContactCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -272,8 +261,8 @@ namespace SJBCS.GUI.Student
             target.FirstName = source.FirstName;
             target.MiddleName = source.MiddleName;
             target.LastName = source.LastName;
-            target.LevelID = source.LevelID;
-            target.SectionID = source.SectionID;
+            target.LevelID = SelectedLevelId;
+            target.SectionID = SelectedSectionId;
             target.BirthDate = source.BirthDate;
             target.Gender = source.Gender;
             target.Street = source.Street;
@@ -287,6 +276,11 @@ namespace SJBCS.GUI.Student
             target.StudentGuid = source.StudentGuid;
             target.EditMode = EditMode;
 
+            EditableContact.Contacts = new ObservableCollection<Contact>(source.Contacts.ToList());
+
+            SelectedLevelId = source.LevelID;
+            SelectedSectionId = source.SectionID;
+
             if (EditMode)
             {
                 target.OrigStudentId = source.StudentID;
@@ -296,8 +290,6 @@ namespace SJBCS.GUI.Student
                 target.LastName = source.LastName;
                 target.LevelID = source.LevelID;
                 target.SectionID = source.SectionID;
-                SelectedLevelId = target.LevelID;
-                SelectedSectionId = target.SectionID;
                 target.BirthDate = source.BirthDate;
                 target.Gender = source.Gender;
                 target.Street = source.Street;
@@ -311,7 +303,6 @@ namespace SJBCS.GUI.Student
                 target.RelBiometrics = new ObservableCollection<RelBiometric>(source.RelBiometrics);
                 target.RelDistributionLists = source.RelDistributionLists;
                 target.RelOrganizations = new ObservableCollection<RelOrganization>(source.RelOrganizations);
-                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(Student.LevelID));
             }
 
             target.Biometrics = new ObservableCollection<Biometric>();
@@ -437,8 +428,8 @@ namespace SJBCS.GUI.Student
             Student.Contacts.Add(contact);
             AddedContacts.Add(contact);
 
-            EditableContact = new EditableContact();
-            SaveCommand.RaiseCanExecuteChanged();
+            EditableContact.ContactNumber = null;
+            EditableContact.Contacts = Student.Contacts;
         }
 
         private async void OnDeleteGroup(Organization organization)
@@ -635,53 +626,29 @@ namespace SJBCS.GUI.Student
             DeletedGroups = new ObservableCollection<RelOrganization>();
             AddedRelBiometrics = new ObservableCollection<RelBiometric>();
             DeletedRelBiometrics = new ObservableCollection<RelBiometric>();
-
-            Organizations = new ObservableCollection<Organization>(_organizationsRepository.GetOrganizations());
-            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
         }
 
         public void PopulateLevelComboBox()
         {
-            if (Student != null && EditMode)
+            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            if (!EditMode)
+            {
+                Level level = Levels.FirstOrDefault();
+                SelectedLevelId = level.LevelID;
+                Sections = new ObservableCollection<Section>(level.Sections);
+                SelectedSectionId = Sections.FirstOrDefault().SectionID;
+            }
+            else
             {
                 SelectedLevelId = Student.LevelID;
                 SelectedSectionId = Student.SectionID;
-            }
-            else
-            {
-                SelectedLevelId = Levels[0].LevelID;
-                SelectedSectionId = Sections[0].SectionID;
-            }
-        }
-
-        public void PopulateOrganizationComboBox()
-        {
-            if (Student.RelOrganizations != null)
-            {
-                foreach (RelOrganization relOrganization in Student.RelOrganizations)
-                {
-                    Organizations.Remove(Organizations.SingleOrDefault(i => i.OrganizationID == relOrganization.OrganizationID));
-                }
-            }
-
-            if (Organizations.Count != 0)
-            {
-                SelectedGroupId = Organizations.FirstOrDefault().OrganizationID;
-            }
-            else
-            {
-                SelectedGroupId = new Guid();
-            }
+            } 
         }
 
         public void Initialize()
         {
             RefreshList();
             PopulateLevelComboBox();
-            PopulateOrganizationComboBox();
         }
-
-
-
     }
 }

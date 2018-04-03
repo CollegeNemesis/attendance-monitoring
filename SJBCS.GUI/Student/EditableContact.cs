@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using SJBCS.GUI.Validation;
 using SJBCS.Data;
+using ExpressiveAnnotations.Attributes;
 
 namespace SJBCS.GUI.Student
 {
@@ -15,33 +16,30 @@ namespace SJBCS.GUI.Student
     {
         private string _contactNumber;
         [PHPhone(ErrorMessage = "This is not a valid Philippine phone number.")]
+        [AssertThat("IsDuplicateContactNumber(ContactNumber)", ErrorMessage = "Contact number is already existing.")]
         public string ContactNumber
         {
             get { return _contactNumber; }
             set
             {
-
-                ValidateContactNumer(value);
                 SetProperty(ref _contactNumber, value);
-
             }
         }
 
-        private void ValidateContactNumer(string value)
+        public bool IsDuplicateContactNumber(string contactNumber)
         {
-            if (value.Length >= 11)
+            if (contactNumber.Length >= 11)
             {
                 if (Contacts != null)
                 {
                     foreach (Contact contact in contacts)
                     {
-                        if (value.Substring(value.Length - 9) == contact.ContactNumber.Substring(contact.ContactNumber.Length - 9))
-                        {
-                            throw new ArgumentException("Cannot add duplicate number.");
-                        }
+                        if (contactNumber.Substring(contactNumber.Length - 9) == contact.ContactNumber.Substring(contact.ContactNumber.Length - 9))
+                            return false;
                     }
                 }
             }
+            return true;
         }
 
         private ObservableCollection<Contact> contacts;

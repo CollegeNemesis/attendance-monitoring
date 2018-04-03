@@ -32,7 +32,6 @@ namespace SJBCS.GUI
         public LoginViewModel _loginViewModel;
         public MenuViewModel _menuViewModel;
         public GroupViewModel _groupViewModel;
-        public SmsManagementViewModel _smsViewModel;
         public SectionViewModel _sectionViewModel;
         public ReportViewModel _reportViewModel;
         public AttendanceViewModel _attendanceViewModel;
@@ -40,7 +39,6 @@ namespace SJBCS.GUI
         public StudentViewModel _studentViewModel;
         public UserManagementViewModel _userManagementViewModel;
         public ConfigManagementViewModel _configManagementViewModel;
-        public SmsManagementViewModel _smsManagementViewModel;
         public SettingsViewModel _settingsViewModel;
         public StartupConfigWindow StartupConfigWindow;
         public StartupConfigWindowViewModel _startupConfigWindowViewModel;
@@ -80,12 +78,10 @@ namespace SJBCS.GUI
             _groupViewModel = ContainerHelper.Container.Resolve<GroupViewModel>();
             _studentViewModel = ContainerHelper.Container.Resolve<StudentViewModel>();
             _reportViewModel = ContainerHelper.Container.Resolve<ReportViewModel>();
-            _smsViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
             _addEditStudentViewModel = ContainerHelper.Container.Resolve<AddEditStudentViewModel>();
             _settingsViewModel = ContainerHelper.Container.Resolve<SettingsViewModel>();
             _configManagementViewModel = ContainerHelper.Container.Resolve<ConfigManagementViewModel>();
             _userManagementViewModel = ContainerHelper.Container.Resolve<UserManagementViewModel>();
-            _smsManagementViewModel = ContainerHelper.Container.Resolve<SmsManagementViewModel>();
             _startupConfigWindowViewModel = ContainerHelper.Container.Resolve<StartupConfigWindowViewModel>();
 
             _currentViewModel = _loginViewModel;
@@ -97,6 +93,7 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.Done += NavToStudent;
             _addEditStudentViewModel.EditMode = false;
             _loginViewModel.LoginRequested += NavToMenu;
+            _loginViewModel.EntryRequested += NavToFreeUser;
             _menuViewModel.NavToAttendanceRequested += NavToAttendance;
             _menuViewModel.NavToSettingsRequested += NavToSettings;
             _menuViewModel.NavToStudentRequested += NavToStudent;
@@ -184,6 +181,14 @@ namespace SJBCS.GUI
             _addEditStudentViewModel.SetStudent(selectedStudent);
             _addEditStudentViewModel.Initialize();
             CurrentViewModel = _addEditStudentViewModel;
+        }
+
+        private void NavToFreeUser()
+        {
+            _studentViewModel.LoadStudents();
+            ClockViewModel = _clockViewModel1;
+            Menu = _menuViewModel;
+            CurrentViewModel = _studentViewModel;
         }
 
         private void NavToMenu(User user)

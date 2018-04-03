@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SJBCS.GUI.Settings
 {
-    public class EditableDbConfig : ValidatableBindableBase
+    public class EditableConfig : ValidatableBindableBase
     {
         private string hostname;
         [Required(ErrorMessage = "This field is required.")]

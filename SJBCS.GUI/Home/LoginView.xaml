@@ -6,19 +6,79 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converter="clr-namespace:SJBCS.GUI.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300"
-             d:DesignWidth="400">
+             d:DesignHeight="600"
+             d:DesignWidth="1000">
     <UserControl.Resources>
         <converter:PasswordBoxConverter x:Key="pwdConverter" />
     </UserControl.Resources>
 
-    <Grid>
-        <StackPanel VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    Background="White">
-            <StackPanel HorizontalAlignment="Center"
-                        Margin="100">
-                <StackPanel HorizontalAlignment="Center">
+    <Grid Background="White">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <StackPanel>
+
+                <materialDesign:Card Width="420"
+                                     Margin="0 0 20 0"
+                                     Height="270">
+                    <Grid VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Kind="Clock"
+                                                 Width="160"
+                                                 Height="160"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}"
+                                       Margin="16 16 16 8"
+                                       TextWrapping="Wrap">
+                                <Run Text="SJBCS" />
+                                <LineBreak />
+                                <Run Text="Attendance Monitoring System"
+                                     FontSize="13"/>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap"
+                                       Margin="16 0 16 8"
+                                       Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                       VerticalAlignment="Top" />
+                        </StackPanel>
+                        <Border Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                BorderThickness="0 1 0 0"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                Padding="8">
+                            <DockPanel>
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                        DockPanel.Dock="Right"
+                                        Height="Auto"
+                                        Width="Auto"
+                                        Command="{Binding EntryCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="DoorOpen"
+                                                                 Height="50"
+                                                                 Width="50"/>
+                                        <TextBlock Margin="8 0 0 0"
+                                                   VerticalAlignment="Center">Enter</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                           TextWrapping="Wrap"
+                                           Margin="16"
+                                           VerticalAlignment="Center" />
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </materialDesign:Card>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel>
                     <TextBlock Text="Username"
                                Foreground="#3D62B3"
                                FontFamily="Segoe UI"
@@ -29,7 +89,7 @@
                              VerticalAlignment="Center"
                              Style="{StaticResource MaterialDesignTextBox}"
                              Text="{Binding Username}" />
-                </StackPanel> 
+                </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="Password"
                                Foreground="#3D62B3"
@@ -46,7 +106,6 @@
                         CommandParameter="{Binding ElementName=Password, Converter={StaticResource pwdConverter}}"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        
                         Width="150"
                         ToolTip="Login"
                         HorizontalAlignment="Center"

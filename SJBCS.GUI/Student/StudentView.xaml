@@ -143,10 +143,10 @@
                                       Width="200"
                                       Height="38"
                                       VerticalAlignment="Bottom"
-                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Levels}"
+                                      ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Levels}"
                                       DisplayMemberPath="GradeLevel"
                                       SelectedValuePath="LevelID"
-                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedLevelId}" />
+                                      SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedLevelId}" />
                         </StackPanel>
                         <StackPanel Margin="10 0 0 0">
                             <TextBlock Text="Section"
@@ -163,10 +163,10 @@
                                       VerticalContentAlignment="Center"
                                       Width="200"
                                       Height="38"
-                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Sections}"
+                                      ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Sections}"
                                       DisplayMemberPath="SectionName"
                                       SelectedValuePath="SectionID"
-                                      SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedSectionId}" />
+                                      SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSectionId}" />
                         </StackPanel>
                     </StackPanel>
                     

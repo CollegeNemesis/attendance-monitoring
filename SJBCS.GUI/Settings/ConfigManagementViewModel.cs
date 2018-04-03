@@ -15,9 +15,9 @@ namespace SJBCS.GUI.Settings
 {
     public class ConfigManagementViewModel : BindableBase
     {
-        private EditableDbConfig _editableDbConfig;
+        private EditableConfig _editableDbConfig;
 
-        public EditableDbConfig EditableDbConfig
+        public EditableConfig EditableDbConfig
         {
             get { return _editableDbConfig; }
             set
@@ -37,7 +37,7 @@ namespace SJBCS.GUI.Settings
             TestDbCommand = new RelayCommand(OnTestDb, CanTest);
             if (EditableDbConfig != null) EditableDbConfig.ErrorsChanged -= RaiseCanExecuteChanged;
 
-            EditableDbConfig = new EditableDbConfig();
+            EditableDbConfig = new EditableConfig();
 
             EditableDbConfig.ErrorsChanged += RaiseCanExecuteChanged;
 

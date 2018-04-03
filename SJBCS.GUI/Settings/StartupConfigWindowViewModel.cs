@@ -17,8 +17,8 @@ namespace SJBCS.GUI.Settings
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private EditableDbConfig _editableDbConfig;
-        public EditableDbConfig EditableDbConfig
+        private EditableConfig _editableDbConfig;
+        public EditableConfig EditableDbConfig
         {
             get { return _editableDbConfig; }
             set
@@ -48,7 +48,7 @@ namespace SJBCS.GUI.Settings
             TestDbCommand = new RelayCommand(OnTestDb, CanTest);
             if (EditableDbConfig != null) EditableDbConfig.ErrorsChanged -= RaiseCanExecuteChanged;
 
-            EditableDbConfig = new EditableDbConfig();
+            EditableDbConfig = new EditableConfig();
 
             EditableDbConfig.ErrorsChanged += RaiseCanExecuteChanged;
 

@@ -13,20 +13,28 @@ namespace SJBCS.GUI.Home
     {
         IUsersRepository _repo;
         private string _username;
-
         public string Username
         {
             get { return _username; }
             set { SetProperty(ref _username, value); }
         }
 
+        public RelayCommand<IWrappedParameter<string>> LoginCommand { get; private set; }
+        public RelayCommand EntryCommand { get; private set; }
+        public event Action<User> LoginRequested = delegate { };
+        public event Action EntryRequested = delegate { };
+
         public LoginViewModel(IUsersRepository repo)
         {
             _repo = repo;
             LoginCommand = new RelayCommand<IWrappedParameter<string>>(password => { Login(Username, password); });
+            EntryCommand = new RelayCommand(OnEntry);
         }
-        public RelayCommand<IWrappedParameter<string>> LoginCommand { get; private set; }
-        public event Action<User> LoginRequested = delegate { };
+
+        private void OnEntry()
+        {
+            EntryRequested();
+        }
 
         private void Login(string username, IWrappedParameter<string> password)
         {

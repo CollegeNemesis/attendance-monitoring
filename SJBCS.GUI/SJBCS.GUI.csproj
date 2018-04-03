@@ -177,7 +177,6 @@
       <DependentUpon>WaitingScreenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\WaitingScreenViewModel.cs" />
-    <Compile Include="Settings\EditableSmsConfig.cs" />
     <Compile Include="Settings\StartupConfigWindow.xaml.cs">
       <DependentUpon>StartupConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -210,7 +209,7 @@
       <DependentUpon>ConfigManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\ConfigManagementViewModel.cs" />
-    <Compile Include="Settings\EditableDbConfig.cs" />
+    <Compile Include="Settings\EditableConfig.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -220,10 +219,6 @@
     </Compile>
     <Compile Include="Settings\UserManagementViewModel.cs" />
     <Compile Include="SMS\SMSUtility.cs" />
-    <Compile Include="Settings\SmsManagementView.xaml.cs">
-      <DependentUpon>SmsManagementView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SmsManagementViewModel.cs" />
     <Compile Include="Student\AddEditStudentView.xaml.cs">
       <DependentUpon>AddEditStudentView.xaml</DependentUpon>
     </Compile>
@@ -330,10 +325,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\UserManagementView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\SmsManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
