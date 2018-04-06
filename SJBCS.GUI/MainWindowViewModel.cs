@@ -1,23 +1,17 @@
-﻿using AMS.Utilities;
-using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SJBCS.Data;
 using SJBCS.GUI.AMS;
+using SJBCS.GUI.Dialogs;
 using SJBCS.GUI.Home;
 using SJBCS.GUI.Report;
 using SJBCS.GUI.Settings;
-using SJBCS.GUI.SMS;
 using SJBCS.GUI.Student;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.Configuration;
-using System.Data.Entity.Core;
-using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using Unity;
 
@@ -26,7 +20,7 @@ namespace SJBCS.GUI
     class MainWindowViewModel : BindableBase
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        #region Properties
         private ResourceDictionary DialogDictionary = new ResourceDictionary() { Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml") };
 
         public LoginViewModel _loginViewModel;
@@ -40,8 +34,13 @@ namespace SJBCS.GUI
         public UserManagementViewModel _userManagementViewModel;
         public ConfigManagementViewModel _configManagementViewModel;
         public SettingsViewModel _settingsViewModel;
-        public StartupConfigWindow StartupConfigWindow;
-        public StartupConfigWindowViewModel _startupConfigWindowViewModel;
+
+        private StartupConfigManagementWindow _startupConfigManagementWindow;
+        public StartupConfigManagementWindow StartupConfigManagementWindow
+        {
+            get { return _startupConfigManagementWindow; }
+            set { SetProperty(ref _startupConfigManagementWindow, value); }
+        }
 
         private object _currentViewModel;
         public object CurrentViewModel
@@ -57,7 +56,12 @@ namespace SJBCS.GUI
             set { SetProperty(ref _menu, value); }
         }
 
-        private ClockViewModel _clockViewModel1;
+        private MainClockViewModel _mainClockViewModel;
+        public MainClockViewModel MainClockViewModel
+        {
+            get { return _mainClockViewModel; }
+            set { SetProperty(ref _mainClockViewModel, value); }
+        }
 
         private ClockViewModel _clockViewModel;
         public ClockViewModel ClockViewModel
@@ -65,14 +69,14 @@ namespace SJBCS.GUI
             get { return _clockViewModel; }
             set { SetProperty(ref _clockViewModel, value); }
         }
+        #endregion
 
         public MainWindowViewModel()
         {
             LoadConfiguration();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _menuViewModel = ContainerHelper.Container.Resolve<MenuViewModel>();
-            _clockViewModel1 = ContainerHelper.Container.Resolve<ClockViewModel>();
-            _clockViewModel = _clockViewModel1;
+            _mainClockViewModel = ContainerHelper.Container.Resolve<MainClockViewModel>();
             _attendanceViewModel = ContainerHelper.Container.Resolve<AttendanceViewModel>();
             _sectionViewModel = ContainerHelper.Container.Resolve<SectionViewModel>();
             _groupViewModel = ContainerHelper.Container.Resolve<GroupViewModel>();
@@ -82,13 +86,9 @@ namespace SJBCS.GUI
             _settingsViewModel = ContainerHelper.Container.Resolve<SettingsViewModel>();
             _configManagementViewModel = ContainerHelper.Container.Resolve<ConfigManagementViewModel>();
             _userManagementViewModel = ContainerHelper.Container.Resolve<UserManagementViewModel>();
-            _startupConfigWindowViewModel = ContainerHelper.Container.Resolve<StartupConfigWindowViewModel>();
 
             _currentViewModel = _loginViewModel;
             _menu = null;
-
-            //_currentViewModel = _studentViewModel;
-            //_menu = _menuViewModel;
 
             _addEditStudentViewModel.Done += NavToStudent;
             _addEditStudentViewModel.EditMode = false;
@@ -107,15 +107,16 @@ namespace SJBCS.GUI
             _settingsViewModel.NavToUserRequested += NavToUser;
         }
 
+        #region Methods
         private void NavToUser()
         {
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _userManagementViewModel;
         }
 
         private void NavToConfig()
         {
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _configManagementViewModel;
         }
 
@@ -123,7 +124,7 @@ namespace SJBCS.GUI
         {
             _studentViewModel.LoadStudents();
             Menu = _menuViewModel;
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _studentViewModel;
         }
 
@@ -134,27 +135,27 @@ namespace SJBCS.GUI
 
         private void NavToGroup()
         {
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _groupViewModel;
         }
 
         private void NavToSection()
         {
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _sectionViewModel;
         }
 
         private void NavToStudent()
         {
             _studentViewModel.LoadStudents();
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _studentViewModel;
         }
 
         private void NavToSettings()
         {
             Menu = _settingsViewModel;
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _userManagementViewModel;
         }
 
@@ -165,13 +166,21 @@ namespace SJBCS.GUI
             CurrentViewModel = _attendanceViewModel;
         }
 
-        private void NavToAddStudent(Data.Student selectedStudent)
+        private async void NavToAddStudent(Data.Student selectedStudent)
         {
-            _attendanceViewModel.SwitchOff();
-            _addEditStudentViewModel.EditMode = false;
-            _addEditStudentViewModel.SetStudent(selectedStudent);
-            _addEditStudentViewModel.Initialize();
-            CurrentViewModel = _addEditStudentViewModel;
+            try
+            {
+                _attendanceViewModel.SwitchOff();
+                _addEditStudentViewModel.EditMode = false;
+                _addEditStudentViewModel.SetStudent(selectedStudent);
+                _addEditStudentViewModel.Initialize();
+                CurrentViewModel = _addEditStudentViewModel;
+            }
+            catch(Exception error)
+            {
+                var result = await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+                Logger.Error(error);
+            }
         }
 
         private void NavToEditStudent(Data.Student selectedStudent)
@@ -185,19 +194,19 @@ namespace SJBCS.GUI
 
         private void NavToFreeUser()
         {
-            _studentViewModel.LoadStudents();
-            ClockViewModel = _clockViewModel1;
-            Menu = _menuViewModel;
-            CurrentViewModel = _studentViewModel;
+            ClockViewModel = null;
+            Menu = null;
+            CurrentViewModel = _attendanceViewModel;
         }
 
         private void NavToMenu(User user)
         {
-            ClockViewModel = _clockViewModel1;
+            ClockViewModel = _clockViewModel;
             if (user.Type.ToLower().Equals("admin"))
             {
+                _attendanceViewModel.SwitchOn();
                 _studentViewModel.LoadStudents();
-                ClockViewModel = _clockViewModel1;
+                ClockViewModel = _clockViewModel;
                 Menu = _menuViewModel;
                 CurrentViewModel = _studentViewModel;
             }
@@ -222,36 +231,29 @@ namespace SJBCS.GUI
                 string json = File.ReadAllText(ConfigurationManager.AppSettings["configPath"]);
                 ConnectionHelper.Config = JsonConvert.DeserializeObject<Config>(json);
 
-                //Test connection
-
-                using (AmsModel dbContext = ConnectionHelper.CreateConnection())
-                {
-                    new LevelsRepository().GetLevels().ToList();
-                }
+                TestConnection();
 
                 if (string.IsNullOrEmpty(ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url))
                     throw new ArgumentNullException();
             }
             catch (FileNotFoundException error)
             {
-                CreateConfig();
-                StartupConfigWindow = new StartupConfigWindow();
-                StartupConfigWindow.ShowDialog();
-                Logger.Error("File not found: ", error);
+                CreateConfiguration();
+                StartupConfigManagementWindow = new StartupConfigManagementWindow();
+                StartupConfigManagementWindow.ShowDialog();
+                Logger.Error(error);
                 LoadConfiguration();
-                //System.Environment.Exit(0);
             }
             catch (Exception error)
             {
-                StartupConfigWindow = new StartupConfigWindow();
-                StartupConfigWindow.ShowDialog();
-                Logger.Error("ERROR: ", error);
+                StartupConfigManagementWindow = new StartupConfigManagementWindow();
+                StartupConfigManagementWindow.ShowDialog();
+                Logger.Error(error);
                 LoadConfiguration();
-                //System.Environment.Exit(0);
             }
         }
 
-        private void CreateConfig()
+        private void CreateConfiguration()
         {
             var config = new Config()
             {
@@ -279,5 +281,14 @@ namespace SJBCS.GUI
             ConnectionHelper.Config = config;
             File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
         }
+
+        private void TestConnection()
+        {
+            using (AmsModel dbContext = ConnectionHelper.CreateConnection())
+            {
+                new LevelsRepository().GetLevels().ToList();
+            }
+        }
+        #endregion
     }
 }

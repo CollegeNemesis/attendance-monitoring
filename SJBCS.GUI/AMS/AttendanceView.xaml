@@ -13,14 +13,6 @@
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
         <converters:ColorConverter x:Key="ColorConverter" />
         <converters:IconConverter x:Key="IconConverter" />
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily"
-                    Value="Segoe UI" />
-            <Setter Property="FontWeight"
-                    Value="Regular" />
-            <Setter Property="FontSize"
-                    Value="12" />
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -49,7 +41,8 @@
                     </StackPanel>
                     <ListBox Margin="0 16 0 16"
                              SelectedIndex="0"
-                             ItemsSource="{Binding AttendanceLogs}">
+                             ItemsSource="{Binding AttendanceLogs}"
+                             IsHitTestVisible="False">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -143,8 +136,13 @@
                 </materialDesign:Chip>
                 <materialDesign:Chip Margin="5 5 0 0"
                                      FontSize="16"
-                                     Content="{Binding Remarks}"
                                      Grid.Row="2">
+                    <materialDesign:Chip.Content>
+                        <TextBlock FontSize="16">
+                        <Run Text="Remarks :" />
+                        <Run Text="{Binding Remarks}" />
+                        </TextBlock>
+                    </materialDesign:Chip.Content>
                     <materialDesign:Chip.Icon>
                         <materialDesign:PackIcon Kind="{Binding Remarks,Converter={StaticResource IconConverter}}"
                                                  Height="40"
@@ -160,15 +158,15 @@
                         <materialDesign:Card Margin="10"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Top">
-                            <Grid Width="200">
+                            <Grid Width="300">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="160" />
+                                    <RowDefinition Height="260" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <materialDesign:ColorZone VerticalAlignment="Stretch"
                                                           Mode="PrimaryLight">
-                                    <Ellipse Width="128"
-                                             Height="128"
+                                    <Ellipse Width="200"
+                                             Height="200"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Center">
                                         <Ellipse.Fill>
@@ -183,7 +181,7 @@
                                     <TextBlock TextAlignment="Center"
                                                FontFamily="Segoe UI"
                                                FontWeight="Regular"
-                                               FontSize="16"
+                                               FontSize="20"
                                                MaxWidth="200"
                                                TextWrapping="Wrap"
                                                Margin="10">
@@ -191,19 +189,19 @@
                                 <Run Text="{Binding Student.LastName}" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.StudentID}"
-                                        FontSize="14" />
+                                        FontSize="16" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.Level.GradeLevel}"
-                                        FontSize="12" />
+                                        FontSize="14" />
                                 <Run Text="{Binding Student.Section.SectionName}"
-                                        FontSize="12" />
+                                        FontSize="14" />
                                     </TextBlock>
                                 </StackPanel>
                             </Grid>
                         </materialDesign:Card>
                         <ContentControl HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Content="{Binding ClockViewModel}"
+                                        Content="{Binding MainClockViewModel}"
                                         Foreground="Black" />
                     </StackPanel>
                 </Grid>

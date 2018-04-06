@@ -13,7 +13,7 @@ namespace SJBCS.GUI.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                return null;
+                return "InformationOutline";
 
             string state = value.ToString();
 
@@ -27,6 +27,12 @@ namespace SJBCS.GUI.Converters
 
                 case "Warning":
                     return "CommentAlert";
+
+                case "Validation":
+                    return "CommentQuestionOutline";
+
+                case "Success":
+                    return "CheckCircle";
 
                 case "Connected":
                     return "CheckCircle";

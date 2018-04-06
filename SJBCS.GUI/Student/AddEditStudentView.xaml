@@ -60,7 +60,8 @@
                                  Margin="0 20 0 0">
                             <TextBox.Text>
                                 <Binding Path="StudentID"
-                                         ValidatesOnNotifyDataErrors="True" />
+                                         ValidatesOnNotifyDataErrors="True"
+                                         UpdateSourceTrigger="PropertyChanged"/>
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"
@@ -115,7 +116,7 @@
                                       VerticalContentAlignment="Center"
                                       Width="150"
                                       Height="38"
-                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Sections}"
+                                      ItemsSource="{Binding ElementName=AddEditControl, Path=DataContext.Sections, Converter={StaticResource StringEmptyConverter}}"
                                       DisplayMemberPath="SectionName"
                                       SelectedValuePath="SectionID"
                                       SelectedValue="{Binding ElementName=AddEditControl, Path=DataContext.SelectedSectionId}" />
@@ -136,7 +137,8 @@
                                  Width="150">
                             <TextBox.Text>
                                 <Binding Path="FirstName"
-                                         ValidatesOnNotifyDataErrors="True" />
+                                         ValidatesOnNotifyDataErrors="True"
+                                         UpdateSourceTrigger="PropertyChanged" />
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"
@@ -162,7 +164,8 @@
                                  Width="150">
                             <TextBox.Text>
                                 <Binding Path="LastName"
-                                         ValidatesOnNotifyDataErrors="True" />
+                                         ValidatesOnNotifyDataErrors="True"
+                                         UpdateSourceTrigger="PropertyChanged" />
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock HorizontalAlignment="Left"
@@ -267,7 +270,7 @@
                                      HorizontalAlignment="Left"
                                      Width="150"
                                      Height="50"
-                                     Text="{Binding ElementName=AddEditControl, Path=DataContext.EditableContact.ContactNumber, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True}" />
+                                     Text="{Binding ElementName=AddEditControl, Path=DataContext.EditableContact.ContactNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                     Background="#3D62B3"
                                     BorderBrush="Transparent"
@@ -544,7 +547,7 @@
                                  Margin="10 0 0 0">
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="UniformToFill"
-                                            ImageSource="{Binding ElementName=AddEditControl, Path=DataContext.SelectedImage, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
+                                            ImageSource="{Binding ImageData, Converter={StaticResource StringEmptyConverter}, ConverterParameter='/SJBCS.GUI;component/Image/default-user-image.png'}" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </StackPanel>

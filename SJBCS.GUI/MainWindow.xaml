@@ -28,6 +28,9 @@
         <DataTemplate DataType="{x:Type home:ClockViewModel}">
             <home:ClockView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type home:MainClockViewModel}">
+            <home:MainClockView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type ams:AttendanceViewModel}">
             <ams:AttendanceView />
         </DataTemplate>

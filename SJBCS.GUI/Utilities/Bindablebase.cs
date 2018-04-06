@@ -2,10 +2,10 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
-namespace AMS.Utilities
+namespace SJBCS.GUI.Utilities
 {
+
     public class BindableBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };

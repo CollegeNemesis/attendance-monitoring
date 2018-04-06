@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using System;
 
 namespace SJBCS.GUI.AMS

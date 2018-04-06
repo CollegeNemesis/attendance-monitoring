@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;

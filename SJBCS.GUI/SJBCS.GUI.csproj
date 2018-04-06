@@ -172,13 +172,23 @@
     </ApplicationDefinition>
     <Compile Include="AMS\AttendanceLog.cs" />
     <Compile Include="Converters\PasswordAssistant.cs" />
-    <Compile Include="Dialogs\CloseWindowBehavior.cs" />
-    <Compile Include="Dialogs\WaitingScreenView.xaml.cs">
-      <DependentUpon>WaitingScreenView.xaml</DependentUpon>
+    <Compile Include="Dialogs\DialogHelper.cs" />
+    <Compile Include="Dialogs\LoadingScreenView.xaml.cs">
+      <DependentUpon>LoadingScreenView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\WaitingScreenViewModel.cs" />
-    <Compile Include="Settings\StartupConfigWindow.xaml.cs">
-      <DependentUpon>StartupConfigWindow.xaml</DependentUpon>
+    <Compile Include="Dialogs\LoadingScreenViewModel.cs" />
+    <Compile Include="Dialogs\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\LoadingWindowHandler.cs" />
+    <Compile Include="Dialogs\LoadingWindowViewModel.cs" />
+    <Compile Include="Home\ClockView.xaml.cs">
+      <DependentUpon>ClockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Home\ClockViewModel.cs" />
+    <Compile Include="Utilities\CloseWindowBehavior.cs" />
+    <Compile Include="Settings\StartupConfigManagementWindow.xaml.cs">
+      <DependentUpon>StartupConfigManagementWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorConverter.cs" />
     <Compile Include="Converters\CountVisibilityConverter.cs" />
@@ -192,10 +202,10 @@
       <DependentUpon>DialogBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\DialogBoxViewModel.cs" />
-    <Compile Include="Home\ClockView.xaml.cs">
-      <DependentUpon>ClockView.xaml</DependentUpon>
+    <Compile Include="Home\MainClockView.xaml.cs">
+      <DependentUpon>MainClockView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Home\ClockViewModel.cs" />
+    <Compile Include="Home\MainClockViewModel.cs" />
     <Compile Include="Home\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
@@ -204,7 +214,7 @@
       <DependentUpon>ReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Report\ReportViewModel.cs" />
-    <Compile Include="Settings\StartupConfigWindowViewModel.cs" />
+    <Compile Include="Settings\StartupConfigManagementWindowViewModel.cs" />
     <Compile Include="Settings\ConfigManagementView.xaml.cs">
       <DependentUpon>ConfigManagementView.xaml</DependentUpon>
     </Compile>
@@ -246,6 +256,11 @@
       <DependentUpon>StudentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Student\StudentViewModel.cs" />
+    <Compile Include="Utilities\Bindablebase.cs" />
+    <Compile Include="Utilities\ContainerHelper.cs" />
+    <Compile Include="Utilities\FingerScanner.cs" />
+    <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\ValidatableBindablebase.cs" />
     <Compile Include="Validation\PHPhone.cs" />
     <Compile Include="Validation\RequiredIfAttribute.cs" />
     <Compile Include="Validation\TimeValidation.cs" />
@@ -257,11 +272,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\WaitingScreenView.xaml">
+    <Page Include="Dialogs\LoadingScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\StartupConfigWindow.xaml">
+    <Page Include="Dialogs\LoadingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Home\ClockView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\StartupConfigManagementWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,11 +292,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\MessageDialogView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Home\ClockView.xaml">
+    <Page Include="Home\MainClockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -300,10 +319,6 @@
     <Compile Include="Converters\IWrappedParameters.cs" />
     <Compile Include="Converters\PasswordBoxConverter.cs" />
     <Compile Include="Converters\PasswordBoxWrapper.cs" />
-    <Compile Include="Dialogs\MessageDialogView.xaml.cs">
-      <DependentUpon>MessageDialogView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="Home\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -395,10 +410,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AMS.Utilities\AMS.Utilities.csproj">
-      <Project>{98d5ac23-14e9-433e-b6be-acc0e3b2505e}</Project>
-      <Name>AMS.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SJBCS.Data\SJBCS.Data.csproj">
       <Project>{5f55c349-84fc-46fc-aac6-c77eae0217d9}</Project>
       <Name>SJBCS.Data</Name>

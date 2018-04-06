@@ -1,7 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
-
-namespace AMS.Utilities
+﻿namespace SJBCS.GUI.Utilities
 {
     public class FingerScanner : BindableBase, DPFP.Capture.EventHandler
     {

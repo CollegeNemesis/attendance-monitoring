@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using SJBCS.Data;
@@ -19,6 +19,8 @@ namespace SJBCS.GUI.Student
 {
     public class AddEditStudentViewModel : BindableBase
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #region Properties
         private IStudentsRepository _studentsRepository;
         private ILevelsRepository _levelsRepository;
         private ISectionsRepository _sectionsRepository;
@@ -63,10 +65,12 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
-                if(Sections.Any())
+                if (value != null | value != new Guid())
+                    Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
+                if (Sections.Any())
                     SelectedSectionId = Sections.FirstOrDefault().SectionID;
                 SetProperty(ref _selectedLevelId, value);
+                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -77,6 +81,7 @@ namespace SJBCS.GUI.Student
             set
             {
                 SetProperty(ref _selectedSectionId, value);
+                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -204,6 +209,7 @@ namespace SJBCS.GUI.Student
         public RelayCommand<Biometric> DeleteBiometricCommand { get; private set; }
 
         public event Action Done = delegate { };
+        #endregion
 
         public EnrollBiometricsViewModel _enrollBiometricsViewModel;
 
@@ -236,7 +242,8 @@ namespace SJBCS.GUI.Student
 
         }
 
-        public void SetStudent(Data.Student student)
+        #region OnSave Methods
+        public async void  SetStudent(Data.Student student)
         {
             _editingStudent = student;
 
@@ -277,9 +284,8 @@ namespace SJBCS.GUI.Student
             target.EditMode = EditMode;
 
             EditableContact.Contacts = new ObservableCollection<Contact>(source.Contacts.ToList());
-
-            SelectedLevelId = source.LevelID;
-            SelectedSectionId = source.SectionID;
+            target.Biometrics = new ObservableCollection<Biometric>();
+            target.Organizations = new ObservableCollection<Organization>();
 
             if (EditMode)
             {
@@ -303,10 +309,11 @@ namespace SJBCS.GUI.Student
                 target.RelBiometrics = new ObservableCollection<RelBiometric>(source.RelBiometrics);
                 target.RelDistributionLists = source.RelDistributionLists;
                 target.RelOrganizations = new ObservableCollection<RelOrganization>(source.RelOrganizations);
-            }
 
-            target.Biometrics = new ObservableCollection<Biometric>();
-            target.Organizations = new ObservableCollection<Organization>();
+                
+                SelectedLevelId = source.LevelID;
+                SelectedSectionId = source.SectionID;
+            }
 
             if (target.RelBiometrics != null)
             {
@@ -324,26 +331,12 @@ namespace SJBCS.GUI.Student
             }
 
         }
+        #endregion
 
-        private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
-        {
-            SaveCommand.RaiseCanExecuteChanged();
-            AddContactCommand.RaiseCanExecuteChanged();
-            AddGroupCommand.RaiseCanExecuteChanged();
-        }
-
+        #region Command Methods
         private async void OnDeleteBiometric(Biometric biometric)
         {
-            var view = new DialogBoxView
-            {
-                DataContext = new DialogBoxViewModel(MessageType.Informational, "Are you sure you want to unenroll this finger?")
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to unenroll this finger?");
 
             if ((bool)result)
             {
@@ -384,7 +377,6 @@ namespace SJBCS.GUI.Student
                 }
             }
 
-
             Student.RelBiometrics.Add(relBiometric);
             Student.Biometrics.Add(Biometric);
             _biometricsRepository.AddBiometric(Biometric);
@@ -395,25 +387,17 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteContact(Contact contact)
         {
-            //Show Delete Contact Dialog
-            var view = new DialogBoxView
-            {
-                DataContext = new DialogBoxViewModel(MessageType.Warning, "Are you sure you want to remove contact?")
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
             if ((bool)result)
             {
                 Student.Contacts.Remove(contact);
                 DeletedContacts.Add(contact);
-            }
 
-            SaveCommand.RaiseCanExecuteChanged();
+                string temp = EditableContact.ContactNumber + "";
+                EditableContact.ContactNumber = temp;
+                SaveCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private void OnAddContact()
@@ -432,19 +416,180 @@ namespace SJBCS.GUI.Student
             EditableContact.Contacts = Student.Contacts;
         }
 
+        private void OnOpenFile()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".jpg";
+            dlg.Filter = "JPG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                SelectedImage = dlg.FileName;
+                Student.ImageData = File.ReadAllBytes(SelectedImage);
+            }
+
+        }
+
+        private void OnSave()
+        {
+            UpdateStudent(Student, _editingStudent);
+
+            //Update Student Table
+            if (EditMode)
+            {
+                _studentsRepository.UpdateStudent(_editingStudent);
+            }
+            else
+            {
+                _studentsRepository.AddStudent(_editingStudent);
+            }
+
+            //Update Contacts
+            foreach (Contact contact in AddedContacts)
+            {
+                _contactsRepository.AddContact(contact);
+            }
+            foreach (Contact contact in DeletedContacts)
+            {
+                _contactsRepository.DeleteContact(contact.ContactID);
+            }
+
+            //Update Biometrics
+            foreach (RelBiometric relBiometric in AddedRelBiometrics)
+            {
+                _relBiometricsRepository.AddRelBiometric(relBiometric);
+            }
+            foreach (Biometric biometric in DeletedBiometrics)
+            {
+                _relBiometricsRepository.DeleteRelBiometric(biometric.FingerID);
+                _biometricsRepository.DeleteBiometric(biometric.FingerID);
+            }
+
+            //Update Groups
+            #region Not used
+            foreach (RelOrganization group in AddedGroups)
+            {
+                _relOrganizationsRepository.AddRelOrganization(group);
+            }
+            foreach (RelOrganization group in DeletedGroups)
+            {
+                _relOrganizationsRepository.DeleteRelOrganization(group.RelOrganizationID);
+            }
+            #endregion
+
+
+            SelectedImage = null;
+            Done();
+        }
+
+        private void OnCancel()
+        {
+
+            foreach (Biometric biometric in AddedBiometrics)
+            {
+                _biometricsRepository.DeleteBiometric(biometric.FingerID);
+            }
+            Done();
+        }
+        #endregion     
+
+        #region CanExecute
+        private bool CanSave()
+        {
+            if (Student == null)
+                return false;
+
+            if (Student.Contacts == null)
+                return false;
+
+            if (Student.StudentID == null || Student.LastName == null || Student.FirstName == null || Student.Contacts.FirstOrDefault() == null || Sections.FirstOrDefault() == null)
+                return false;
+
+            return !Student.HasErrors;
+        }
+
+        private bool CanAddContact()
+        {
+            if (string.IsNullOrEmpty(EditableContact.ContactNumber))
+                return false;
+            return !EditableContact.HasErrors;
+        }
+
+        private bool CanAddBiometric()
+        {
+            if (Student.RelBiometrics == null)
+                return true;
+
+            if (Student.RelBiometrics.Count() == 2)
+                return false;
+
+            return true;
+        }
+
+        private bool CanAddGroup()
+        {
+            if (Organizations == null || SelectedGroupId == null || SelectedGroupId == new Guid())
+                return false;
+
+            else if (Organizations.Count() == 0)
+                return false;
+
+            else
+                return true;
+        }
+        #endregion
+
+        private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            SaveCommand.RaiseCanExecuteChanged();
+            AddContactCommand.RaiseCanExecuteChanged();
+            AddGroupCommand.RaiseCanExecuteChanged();
+        }
+
+        public void RefreshList()
+        {
+            AddedContacts = new ObservableCollection<Contact>();
+            DeletedContacts = new ObservableCollection<Contact>();
+            AddedBiometrics = new ObservableCollection<Biometric>();
+            DeletedBiometrics = new ObservableCollection<Biometric>();
+            AddedGroups = new ObservableCollection<RelOrganization>();
+            DeletedGroups = new ObservableCollection<RelOrganization>();
+            AddedRelBiometrics = new ObservableCollection<RelBiometric>();
+            DeletedRelBiometrics = new ObservableCollection<RelBiometric>();
+        }
+
+        public void PopulateComboBox()
+        {
+
+            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            if (Levels.Any() && !EditMode)
+                SelectedLevelId = Levels.FirstOrDefault().LevelID;
+            else if (Levels.Any() && EditMode)
+            {
+                SelectedLevelId = Student.LevelID;
+                SelectedSectionId = Student.SectionID;
+            }
+        }
+
+        public void Initialize()
+        {
+            RefreshList();
+            PopulateComboBox();
+        }
+
+        #region Not used
+
         private async void OnDeleteGroup(Organization organization)
         {
-            //Show Delete Contact Dialog
-            var view = new DialogBoxView
-            {
-                DataContext = new DialogBoxViewModel(MessageType.Warning, "Are you sure you want to remove student from this group?")
-            };
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was : " + (result.ToString()));
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
             if ((bool)result)
             {
@@ -492,163 +637,6 @@ namespace SJBCS.GUI.Student
 
             AddGroupCommand.RaiseCanExecuteChanged();
         }
-
-        private void OnOpenFile()
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".png";
-            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
-
-
-            // Display OpenFileDialog by calling ShowDialog method 
-            Nullable<bool> result = dlg.ShowDialog();
-
-
-            // Get the selected file name and display in a TextBox 
-            if (result == true)
-            {
-                SelectedImage = dlg.FileName;
-                Student.ImageData = File.ReadAllBytes(SelectedImage);
-            }
-
-        }
-
-        private bool CanSave()
-        {
-            if (Student.Contacts == null)
-            {
-                return false;
-            }
-            if (Student.StudentID == null || Student.LastName == null || Student.FirstName == null || Student.Contacts.FirstOrDefault() == null)
-                return false;
-
-            return !Student.HasErrors;
-        }
-
-        private bool CanAddContact()
-        {
-            if (string.IsNullOrEmpty(EditableContact.ContactNumber))
-                return false;
-            return !EditableContact.HasErrors;
-        }
-
-        private bool CanAddBiometric()
-        {
-            if (Student.RelBiometrics == null)
-                return true;
-
-            if (Student.RelBiometrics.Count() == 2)
-                return false;
-
-            return true;
-        }
-
-        private bool CanAddGroup()
-        {
-            if (Organizations == null || SelectedGroupId == null || SelectedGroupId == new Guid())
-                return false;
-
-            else if (Organizations.Count() == 0)
-                return false;
-
-            else
-                return true;
-        }
-
-        private void OnSave()
-        {
-            UpdateStudent(Student, _editingStudent);
-
-            //Update Student Table
-            if (EditMode)
-            {
-                _studentsRepository.UpdateStudent(_editingStudent);
-            }
-            else
-            {
-                _studentsRepository.AddStudent(_editingStudent);
-            }
-
-            //Update Contacts
-            foreach (Contact contact in AddedContacts)
-            {
-                _contactsRepository.AddContact(contact);
-            }
-            foreach (Contact contact in DeletedContacts)
-            {
-                _contactsRepository.DeleteContact(contact.ContactID);
-            }
-
-            //Update Groups
-            foreach (RelOrganization group in AddedGroups)
-            {
-                _relOrganizationsRepository.AddRelOrganization(group);
-            }
-            foreach (RelOrganization group in DeletedGroups)
-            {
-                _relOrganizationsRepository.DeleteRelOrganization(group.RelOrganizationID);
-            }
-
-            //Update Biometrics
-            foreach (RelBiometric relBiometric in AddedRelBiometrics)
-            {
-                _relBiometricsRepository.AddRelBiometric(relBiometric);
-            }
-            foreach (Biometric biometric in DeletedBiometrics)
-            {
-                _relBiometricsRepository.DeleteRelBiometric(biometric.FingerID);
-                _biometricsRepository.DeleteBiometric(biometric.FingerID);
-            }
-
-            SelectedImage = null;
-            Done();
-        }
-
-        private void OnCancel()
-        {
-
-            foreach (Biometric biometric in AddedBiometrics)
-            {
-                _biometricsRepository.DeleteBiometric(biometric.FingerID);
-            }
-            Done();
-        }
-
-        public void RefreshList()
-        {
-            AddedContacts = new ObservableCollection<Contact>();
-            DeletedContacts = new ObservableCollection<Contact>();
-            AddedBiometrics = new ObservableCollection<Biometric>();
-            DeletedBiometrics = new ObservableCollection<Biometric>();
-            AddedGroups = new ObservableCollection<RelOrganization>();
-            DeletedGroups = new ObservableCollection<RelOrganization>();
-            AddedRelBiometrics = new ObservableCollection<RelBiometric>();
-            DeletedRelBiometrics = new ObservableCollection<RelBiometric>();
-        }
-
-        public void PopulateLevelComboBox()
-        {
-            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
-            if (!EditMode)
-            {
-                Level level = Levels.FirstOrDefault();
-                SelectedLevelId = level.LevelID;
-                Sections = new ObservableCollection<Section>(level.Sections);
-                SelectedSectionId = Sections.FirstOrDefault().SectionID;
-            }
-            else
-            {
-                SelectedLevelId = Student.LevelID;
-                SelectedSectionId = Student.SectionID;
-            } 
-        }
-
-        public void Initialize()
-        {
-            RefreshList();
-            PopulateLevelComboBox();
-        }
+        #endregion
     }
 }

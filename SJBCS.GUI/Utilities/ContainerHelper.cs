@@ -2,7 +2,7 @@
 using Unity;
 using Unity.Lifetime;
 
-namespace AMS.Utilities
+namespace SJBCS.GUI.Utilities
 {
     public static class ContainerHelper
     {

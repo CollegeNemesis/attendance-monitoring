@@ -102,21 +102,6 @@
                                FontSize="20">
                         <Run Text="Student" />
                     </TextBlock>
-                    <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                            HorizontalAlignment="Left"
-                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
-                            Width="200"
-                            Margin="0 20 0 20"
-                            Foreground="White">
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="Plus"
-                                                     VerticalAlignment="Center"
-                                                     Margin="5" />
-                            <TextBlock Text="Add Student"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -142,6 +127,7 @@
                                       VerticalContentAlignment="Center"
                                       Width="200"
                                       Height="38"
+                                      FontSize="16"
                                       VerticalAlignment="Bottom"
                                       ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Levels}"
                                       DisplayMemberPath="GradeLevel"
@@ -184,19 +170,18 @@
                         <ComboBoxItem>First Name</ComboBoxItem>
                         <ComboBoxItem>Last Name</ComboBoxItem>
                     </ComboBox>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel>
                         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  materialDesign:HintAssist.Hint="Input keyword"
                                  materialDesign:HintAssist.IsFloating="True"
                                  HorizontalAlignment="Left"
-                                 Width="200"
+                                 Width="420"
                                  Margin="0 20 0 10" />
                         <Button Style="{DynamicResource MaterialDesignRaisedButton}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
                                 Width="200"
-                                Margin="10 0 0 12"
                                 Foreground="White">
                             <StackPanel Orientation="Horizontal"
                                         VerticalAlignment="Center">
@@ -209,56 +194,72 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <DataGrid x:Name="studentDataGrid"
-                          Margin="50 0 0 0"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          ItemsSource="{Binding}"
-                          SelectionMode="Single"
-                          SelectionUnit="FullRow"
-                          IsSynchronizedWithCurrentItem="False"
-                          RowDetailsVisibilityMode="VisibleWhenSelected"
-                          RowDetailsTemplate="{StaticResource RowDetailTemplate}"
-                          Style="{StaticResource MaterialDesignDataGrid}"
-                          CellStyle="{StaticResource MaterialDesignDataGridCell}"
-                          ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
-                          RowStyle="{StaticResource MaterialDesignDataGridRow}">
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <materialDesign:PackIcon x:Name="icon"
-                                                             Kind="ChevronRight"
-                                                             Foreground="#3D62B3"
-                                                             Background="Transparent" />
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
-                                                     Value="True">
-                                            <Setter TargetName="icon"
-                                                    Property="Kind"
-                                                    Value="ChevronDown" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Binding="{Binding StudentID}"
-                                            Header="Student ID"
-                                            Width="150" />
-                        <DataGridTextColumn Binding="{Binding FirstName}"
-                                            Header="First Name"
-                                            Width="150" />
-                        <DataGridTextColumn Binding="{Binding LastName}"
-                                            Header="Last Name"
-                                            Width="150" />
-                        <DataGridTextColumn Binding="{Binding Level.GradeLevel}"
-                                            Header="Level"
-                                            Width="150" />
-                        <DataGridTextColumn Binding="{Binding Section.SectionName}"
-                                            Header="Section"
-                                            Width="150" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <StackPanel Margin="20 0 0 0">
+                    <Button Style="{DynamicResource MaterialDesignRaisedButton}"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
+                            Width="200"
+                            Margin="0 0 0 20"
+                            Foreground="White">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Plus"
+                                                     VerticalAlignment="Center"
+                                                     Margin="5" />
+                            <TextBlock Text="Add Student"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <DataGrid x:Name="studentDataGrid"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding}"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow"
+                              IsSynchronizedWithCurrentItem="False"
+                              RowDetailsVisibilityMode="VisibleWhenSelected"
+                              RowDetailsTemplate="{StaticResource RowDetailTemplate}"
+                              Style="{StaticResource MaterialDesignDataGrid}"
+                              CellStyle="{StaticResource MaterialDesignDataGridCell}"
+                              ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
+                              RowStyle="{StaticResource MaterialDesignDataGridRow}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:PackIcon x:Name="icon"
+                                                                 Kind="ChevronRight"
+                                                                 Foreground="#3D62B3"
+                                                                 Background="Transparent" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+                                                         Value="True">
+                                                <Setter TargetName="icon"
+                                                        Property="Kind"
+                                                        Value="ChevronDown" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding StudentID}"
+                                                Header="Student ID"
+                                                Width="150" />
+                            <DataGridTextColumn Binding="{Binding FirstName}"
+                                                Header="First Name"
+                                                Width="150" />
+                            <DataGridTextColumn Binding="{Binding LastName}"
+                                                Header="Last Name"
+                                                Width="150" />
+                            <DataGridTextColumn Binding="{Binding Level.GradeLevel}"
+                                                Header="Level"
+                                                Width="150" />
+                            <DataGridTextColumn Binding="{Binding Section.SectionName}"
+                                                Header="Section"
+                                                Width="150" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

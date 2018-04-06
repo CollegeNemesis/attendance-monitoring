@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace SJBCS.GUI.Home
 {
-    public class ClockViewModel : BindableBase
+    public class MainClockViewModel : BindableBase
     {
         private string _digitalClock;
         public string DigitalClock
@@ -21,7 +21,7 @@ namespace SJBCS.GUI.Home
             set { SetProperty(ref _digitalCalendar, value); }
         }
 
-        public ClockViewModel()
+        public MainClockViewModel()
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -34,5 +34,6 @@ namespace SJBCS.GUI.Home
             DigitalClock = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture);
             DigitalCalendar = DateTime.Now.ToString("dddd\nMMMM dd, yyyy", CultureInfo.InvariantCulture);
         }
+
     }
 }

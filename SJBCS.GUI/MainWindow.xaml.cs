@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using System;
 using System.Threading;
 using System.Windows;
@@ -22,6 +22,14 @@ namespace SJBCS.GUI
             }
             InitializeComponent();
             DataContext = ContainerHelper.Container.Resolve<MainWindowViewModel>();
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            // Shutdown the application.
+            Application.Current.Shutdown();
+            // OR You can Also go for below logic
+            // Environment.Exit(0);
         }
     }
 }

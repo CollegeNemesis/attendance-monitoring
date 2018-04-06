@@ -9,11 +9,11 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Threading;
+
 
 namespace SJBCS.GUI.Settings
 {
-    public class ConfigManagementViewModel : BindableBase
+    public class StartupConfigManagementWindowViewModel : BindableBase
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public LoadingWindowHandler LoadingScreen;
@@ -45,7 +45,7 @@ namespace SJBCS.GUI.Settings
         public RelayCommand UpdateDbConfigCommand { get; private set; }
         public RelayCommand TestDbCommand { get; private set; }
 
-        public ConfigManagementViewModel()
+        public StartupConfigManagementWindowViewModel()
         {
             Config = ConnectionHelper.Config;
             UpdateDbConfigCommand = new RelayCommand(OnUpdateDbConfig, CanUpdate);
@@ -98,7 +98,7 @@ namespace SJBCS.GUI.Settings
                 string json = JsonConvert.SerializeObject(ConnectionHelper.Config);
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
                 await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
-                //CloseTrigger = true;
+                CloseTrigger = true;
             }
             catch (Exception error)
             {

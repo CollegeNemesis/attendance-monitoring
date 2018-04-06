@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace SJBCS.GUI.Dialogs
 {
-    public enum MessageType
+    public enum DialogType
     {
+        Success,
         Error,
         Informational,
-        Warning
+        Warning,
+        Validation
     };
     public class DialogBoxViewModel : BindableBase
     {
-        private MessageType _messageType;
+        private DialogType _messageType;
 
-        public MessageType MessageType
+        public DialogType MessageType
         {
             get { return _messageType; }
             set { SetProperty(ref _messageType, value); }
@@ -31,7 +33,7 @@ namespace SJBCS.GUI.Dialogs
             set { SetProperty(ref _message, value); }
         }
 
-        public DialogBoxViewModel(MessageType messageType, string message)
+        public DialogBoxViewModel(DialogType messageType, string message)
         {
             Message = message;
             MessageType = messageType;

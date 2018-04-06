@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
@@ -45,17 +45,11 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                if (value != null)
-                {
-                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
-                    if (Sections.Any())
-                        SelectedSectionId = Sections[0].SectionID;
-                    else
-                        SelectedSection = new Section();
-                }
+                if (value != null | value != new Guid())
+                    Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
+                if (Sections.Any())
+                    SelectedSectionId = Sections.FirstOrDefault().SectionID;
                 SetProperty(ref _selectedLevelId, value);
-                EditCommand.RaiseCanExecuteChanged();
-                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -121,6 +115,8 @@ namespace SJBCS.GUI.Student
             _relBiometricsRepository = relBiometricsRepository;
             _levelsRepository = levelsRepository;
             _sectionsRepository = sectionsRepository;
+
+            Initialize();
         }
 
         public void Initialize()
@@ -133,15 +129,7 @@ namespace SJBCS.GUI.Student
         {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
             if (Levels.Any())
-            {
-                if (SelectedLevelId == new Guid())
-                    SelectedLevelId = Levels[0].LevelID;
-                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(SelectedLevelId));
-                if (Sections.Any())
-                    SelectedSectionId = Sections[0].SectionID;
-            }
-            OnPropertyChanged("SelectedLevelId");
-            OnPropertyChanged("SelectedSectionId");
+                SelectedLevelId = Levels.FirstOrDefault().LevelID;
         }
 
         public void LoadStudents()
@@ -166,23 +154,17 @@ namespace SJBCS.GUI.Student
         {
             try
             {
-                if (student.Attendances.Count == 0)
+                if (!student.Attendances.Any())
                 {
                     _studentsRepository.DeleteStudent(student.StudentGuid);
                     LoadStudents();
                 }
                 else
-                    throw new ArgumentException("Cannot delete an active student");
+                    throw new ArgumentException("Cannot delete an active student.");
             }
             catch (Exception error)
             {
-                var view = new DialogBoxView
-                {
-                    DataContext = new DialogBoxViewModel(MessageType.Warning, "You cannot delete an active student.")
-                };
-
-                //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                await DialogHelper.ShowDialog(DialogType.Error, error.Message);
             }
         }
     }

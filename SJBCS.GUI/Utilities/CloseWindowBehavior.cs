@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace SJBCS.GUI.Dialogs
+namespace SJBCS.GUI.Utilities
 {
     public class CloseWindowBehavior : Behavior<Window>
     {

@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Converters;
@@ -47,20 +47,12 @@ namespace SJBCS.GUI.Home
                 }
                 else
                 {
-                    if (MessageDialog.isDialogOpen == false)
-                    {
-                        MessageDialog.isDialogOpen = true;
-                        MessageDialog.OpenDialog(MessageType.Error, "Invalid password.");
-                    }
+                    //show dialog
                 }
             }
             else
             {
-                if (MessageDialog.isDialogOpen == false)
-                {
-                    MessageDialog.isDialogOpen = true;
-                    MessageDialog.OpenDialog(MessageType.Error, "User doesn't exist.");
-                }
+                //show dialog
             }
         }
     }

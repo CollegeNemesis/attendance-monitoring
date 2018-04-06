@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace AMS.Utilities
+namespace SJBCS.GUI.Utilities
 {
     public class RelayCommand : ICommand
     {

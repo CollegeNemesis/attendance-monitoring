@@ -10,7 +10,7 @@
              d:DesignWidth="600"
              x:Name="DbManagementControl">
     <Grid Background="White"
-          DataContext="{Binding EditableDbConfig}">
+          DataContext="{Binding EditableConfig}">
         <StackPanel Margin="10">
             <TextBlock Foreground="#00B4FF"
                        FontFamily="Segoe UI"

@@ -2,6 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
 
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+        <Setter Property="FontSize"
+                Value="16" />
+    </Style>
     <Style x:Key="MaterialDesignTextBox"
            BasedOn="{StaticResource MaterialDesignTextBox}"
            TargetType="{x:Type TextBox}">
@@ -48,7 +56,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style x:Key="MaterialDesignPasswordBox"
            BasedOn="{StaticResource MaterialDesignPasswordBox}"
            TargetType="{x:Type PasswordBox}">
@@ -73,7 +80,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style x:Key="MaterialDesignRaisedButton"
            BasedOn="{StaticResource MaterialDesignRaisedButton}"
            TargetType="{x:Type Button}">
@@ -98,7 +104,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style x:Key="MaterialDesignFloatingHintComboBox"
            BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}"
            TargetType="{x:Type ComboBox}">
@@ -123,7 +128,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style x:Key="MaterialDesignFloatingHintDatePicker"
            BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}"
            TargetType="{x:Type DatePicker}">
@@ -144,7 +148,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style TargetType="{x:Type materialDesign:TimePicker}">
         <Setter Property="materialDesign:HintAssist.Hint"
                 Value="" />
@@ -165,7 +168,6 @@
         <Setter Property="materialDesign:HintAssist.FloatingOffset"
                 Value="0,-25" />
     </Style>
-
     <Style x:Key="MaterialDesignFlatButton"
            BasedOn="{StaticResource MaterialDesignFlatButton}"
            TargetType="{x:Type Button}">
@@ -176,12 +178,11 @@
         <Setter Property="FontWeight"
                 Value="Regular" />
     </Style>
-
     <Style  TargetType="{x:Type materialDesign:Chip}">
         <Setter Property="Background"
                 Value="White" />
     </Style>
-
+    <!--<DataGrid>-->
     <Style x:Key="MaterialDesignDataGrid"
            BasedOn="{StaticResource MaterialDesignDataGrid}"
            TargetType="{x:Type DataGrid}">
@@ -194,7 +195,6 @@
         <Setter Property="FontWeight"
                 Value="Regular" />
     </Style>
-
     <Style x:Key="MaterialDesignDataGridColumnHeader"
            BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
            TargetType="{x:Type DataGridColumnHeader}">
@@ -207,7 +207,6 @@
         <Setter Property="FontWeight"
                 Value="SemiBold" />
     </Style>
-
     <Style x:Key="MaterialDesignDataGridCell"
            BasedOn="{StaticResource MaterialDesignDataGridCell}"
            TargetType="{x:Type DataGridCell}">
@@ -254,7 +253,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
     <Style x:Key="MaterialDesignDataGridRowHeader"
            BasedOn="{StaticResource MaterialDesignDataGridRowHeader}"
            TargetType="{x:Type DataGridRowHeader}">
@@ -267,7 +265,6 @@
         <Setter Property="FontWeight"
                 Value="Regular" />
     </Style>
-
     <Style x:Key="MaterialDesignDataGridRow"
            BasedOn="{StaticResource MaterialDesignDataGridRow}"
            TargetType="{x:Type DataGridRow}">
@@ -290,4 +287,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--</DataGrid>-->
 </ResourceDictionary>

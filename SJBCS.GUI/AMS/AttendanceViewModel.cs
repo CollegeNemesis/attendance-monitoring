@@ -1,18 +1,16 @@
-﻿using AMS.Utilities;
-using DPFP;
+﻿using DPFP;
 using DPFP.Verification;
 using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
 using SJBCS.GUI.Home;
-using SJBCS.GUI.Settings;
 using SJBCS.GUI.SMS;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Timers;
 using System.Windows;
 using Unity;
@@ -85,11 +83,11 @@ namespace SJBCS.GUI.AMS
             set { SetProperty(ref _remarks, value); }
         }
 
-        public ClockViewModel _clockViewModel;
-        public ClockViewModel ClockViewModel
+        public MainClockViewModel _mainClockViewModel;
+        public MainClockViewModel MainClockViewModel
         {
-            get { return _clockViewModel; }
-            set { SetProperty(ref _clockViewModel, value); }
+            get { return _mainClockViewModel; }
+            set { SetProperty(ref _mainClockViewModel, value); }
 
         }
 
@@ -104,7 +102,7 @@ namespace SJBCS.GUI.AMS
 
             Initialize();
             _attendanceLogs = new ObservableCollection<AttendanceLog>();
-            _clockViewModel = ContainerHelper.Container.Resolve<ClockViewModel>();
+            _mainClockViewModel = ContainerHelper.Container.Resolve<MainClockViewModel>();
             ResendCommand = new RelayCommand(OnResend);
             Start();    //Begin capture
         }
@@ -261,7 +259,7 @@ namespace SJBCS.GUI.AMS
             {
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Error, "Something went wrong with the finger scanner. Please restart the application to resolve.")
+                    DataContext = new DialogBoxViewModel(DialogType.Error, "Something went wrong with the finger scanner. Please restart the application to resolve.")
                 };
 
                 //show the dialog

@@ -20,11 +20,17 @@ namespace SJBCS.GUI.Converters
                 case "Error":
                     return "Red";
 
-                case "InformationB":
+                case "Informational":
                     return "Blue";
 
                 case "Warning":
                     return "Orange";
+
+                case "Validation":
+                    return "Orange";
+
+                case "Success":
+                    return "Green";
 
                 case "Connected":
                     return "Green";

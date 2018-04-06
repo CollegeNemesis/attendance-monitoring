@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using System.ComponentModel.DataAnnotations;
 
 namespace SJBCS.GUI.Settings

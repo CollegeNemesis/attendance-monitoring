@@ -1,4 +1,4 @@
-﻿using AMS.Utilities;
+﻿using SJBCS.GUI.Utilities;
 using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
@@ -173,7 +173,7 @@ namespace SJBCS.GUI.Student
             {
                 var view = new DialogBoxView
                 {
-                    DataContext = new DialogBoxViewModel(MessageType.Informational, "You cannot delete an active section.")
+                    DataContext = new DialogBoxViewModel(DialogType.Informational, "You cannot delete an active section.")
                 };
 
                 //show the dialog

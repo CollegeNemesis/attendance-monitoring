@@ -1,14 +1,12 @@
 ﻿using DPFP;
-using System;
-using System.ComponentModel;
-using System.IO;
-using SJBCS.Data;
-using AMS.Utilities;
-using SJBCS.Services.Repository;
-using System.Collections.ObjectModel;
-using static DPFP.Verification.Verification;
 using DPFP.Verification;
-using MaterialDesignThemes.Wpf;
+using SJBCS.Data;
+using SJBCS.GUI.Utilities;
+using SJBCS.Services.Repository;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using static DPFP.Verification.Verification;
 
 namespace SJBCS.GUI.Student
 {

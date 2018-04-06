@@ -21,7 +21,7 @@ namespace SJBCS.GUI.Converters
         {
             string sVal = value.ToString();
             
-            if(sVal == "Information" || sVal == "Error" || sVal == "Warning")
+            if(sVal == "Success" || sVal == "Information" || sVal == "Error" || sVal == "Warning")
             {
                 sVal = "False";
             }
