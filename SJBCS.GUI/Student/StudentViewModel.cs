@@ -87,6 +87,7 @@ namespace SJBCS.GUI.Student
         }
 
         public RelayCommand AddCommand { get; private set; }
+        public RelayCommand ClearCommand { get; private set; }
         public RelayCommand<Data.Student> DeleteCommand { get; private set; }
         public RelayCommand<Data.Student> EditCommand { get; private set; }
 
@@ -103,10 +104,39 @@ namespace SJBCS.GUI.Student
             }
         }
 
+        private string _searchInput;
+        private ObservableCollection<Data.Student> _allStudents;
+        public string SearchInput
+        {
+            get { return _searchInput; }
+            set
+            {
+                SetProperty(ref _searchInput, value);
+                FilterStudents(_searchInput);
+            }
+        }
+
+        private string _selectedSearch;
+        public string SelectedSearch
+        {
+            get { return _selectedSearch; }
+            set { SetProperty(ref _selectedSearch, value); }
+        }
+
+        private List<string> _searchCriteria;
+        public List<string> SearchCriteria
+        {
+            get { return _searchCriteria; }
+            set { SetProperty(ref _searchCriteria, value); }
+        }
+
+
+
         public StudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository)
         {
             AddCommand = new RelayCommand(OnAdd);
             DeleteCommand = new RelayCommand<Data.Student>(OnDelete);
+            ClearCommand = new RelayCommand(OnClear);
             EditCommand = new RelayCommand<Data.Student>(OnEdit);
 
             _studentsRepository = studentsRepository;
@@ -130,12 +160,19 @@ namespace SJBCS.GUI.Student
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
             if (Levels.Any())
                 SelectedLevelId = Levels.FirstOrDefault().LevelID;
+
+            SearchCriteria = new List<string>();
+            SearchCriteria.Add("Student ID");
+            SearchCriteria.Add("First Name");
+            SearchCriteria.Add("Last Name");
+            SelectedSearch = SearchCriteria[0];
+
         }
 
         public void LoadStudents()
         {
-            Students = null;
-            Students = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
+            _allStudents = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
+            Students = _allStudents;
             if (Students != null)
                 Students = new ObservableCollection<Data.Student>(Students.AsEnumerable().OrderBy(student => student.Level.GradeLevel, new NaturalSortComparer<string>()).ToList());
         }
@@ -152,20 +189,48 @@ namespace SJBCS.GUI.Student
 
         private async void OnDelete(Data.Student student)
         {
-            try
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to delete this student?");
+
+            if (result)
             {
-                if (!student.Attendances.Any())
+                try
                 {
-                    _studentsRepository.DeleteStudent(student.StudentGuid);
-                    LoadStudents();
+                    if (!student.Attendances.Any())
+                    {
+                        _studentsRepository.DeleteStudent(student.StudentGuid);
+                        LoadStudents();
+                    }
+                    else
+                        throw new ArgumentException("Cannot delete an active student.");
                 }
-                else
-                    throw new ArgumentException("Cannot delete an active student.");
+                catch (Exception error)
+                {
+                    result = await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+                }
             }
-            catch (Exception error)
+        }
+
+        private void FilterStudents(string searchInput)
+        {
+            if (string.IsNullOrWhiteSpace(searchInput))
             {
-                await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+                Students = new ObservableCollection<Data.Student>(_allStudents);
+                return;
             }
+            else
+            {
+                if(SelectedSearch == "Student ID")
+                    Students = new ObservableCollection<Data.Student>(_allStudents.Where(student => student.StudentID.ToLower().Contains(searchInput.ToLower())));
+                else if (SelectedSearch == "First Name")
+                    Students = new ObservableCollection<Data.Student>(_allStudents.Where(student => student.FirstName.ToLower().Contains(searchInput.ToLower())));
+                else if (SelectedSearch == "Last Name")
+                    Students = new ObservableCollection<Data.Student>(_allStudents.Where(student => student.LastName.ToLower().Contains(searchInput.ToLower())));
+            }
+        }
+
+        private void OnClear()
+        {
+            SearchInput = null;
         }
     }
 }

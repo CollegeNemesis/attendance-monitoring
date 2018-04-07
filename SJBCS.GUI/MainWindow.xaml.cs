@@ -1,4 +1,5 @@
-﻿using SJBCS.GUI.Utilities;
+﻿using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Utilities;
 using System;
 using System.Threading;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace SJBCS.GUI
         {
             if (!singleton.WaitOne(TimeSpan.Zero, true))
             {
-                MessageBox.Show("Another instance of this application is running.");
+                MessageBox.Show("Another instance of this application is already running.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
             InitializeComponent();
@@ -30,6 +31,11 @@ namespace SJBCS.GUI
             Application.Current.Shutdown();
             // OR You can Also go for below logic
             // Environment.Exit(0);
+        }
+
+        private void Exit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

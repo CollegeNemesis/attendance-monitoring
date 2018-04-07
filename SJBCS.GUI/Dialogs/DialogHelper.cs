@@ -11,16 +11,24 @@ namespace SJBCS.GUI.Dialogs
     {
         public static async Task<bool> ShowDialog(DialogType dialogType, string message)
         {
-            //Create the dialog
-            var view = new DialogBoxView
+            try
             {
-                DataContext = new DialogBoxViewModel(dialogType, message)
-            };
+                //Create the dialog
+                var view = new DialogBoxView
+                {
+                    DataContext = new DialogBoxViewModel(dialogType, message)
+                };
 
-            //Show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                //Show the dialog
+                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
 
-            return (bool)result;
+                return (bool)result;
+            }
+            catch (InvalidOperationException)
+            {
+                DialogHost.CloseDialogCommand.Execute(new object(), null);
+                return false;
+            }
         }
 
         private static void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs) { }

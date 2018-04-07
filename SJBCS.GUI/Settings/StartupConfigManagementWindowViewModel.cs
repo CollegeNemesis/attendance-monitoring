@@ -70,16 +70,16 @@ namespace SJBCS.GUI.Settings
 
             try
             {
-                LoadingScreen.Start();
+                //LoadingScreen.Start();
                 TestConnection();
-                LoadingScreen.Stop();
-                await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
+                //LoadingScreen.Stop();
+                var result =  await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
             }
             catch (Exception error)
             {
-                LoadingScreen.Stop();
+                //LoadingScreen.Stop();
                 ConnectionHelper.Config = Config;
-                await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
                 Logger.Error(error);
             }
         }
@@ -97,13 +97,14 @@ namespace SJBCS.GUI.Settings
                 TestConnection();
                 string json = JsonConvert.SerializeObject(ConnectionHelper.Config);
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
-                await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
+                var result =  await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
                 CloseTrigger = true;
             }
             catch (Exception error)
             {
                 ConnectionHelper.Config = Config;
-                await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
+                Logger.Error(error);
             }
         }
         private bool CanUpdate()

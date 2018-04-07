@@ -44,8 +44,45 @@ namespace SJBCS.GUI.Student
         public ObservableCollection<Section> Sections
         {
             get { return _sections; }
-            set { SetProperty(ref _sections, value); }
+            set
+            {
+                SetProperty(ref _sections, value);
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
         }
+
+        //private Guid _selectedLevelId;
+        //public Guid SelectedLevelId
+        //{
+        //    get { return _selectedLevelId; }
+        //    set
+        //    {
+        //        if (value != null)
+        //        {
+        //            Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
+        //            if (Sections.Any())
+        //                SelectedSectionId = Sections[0].SectionID;
+        //            else
+        //                SelectedSection = new Section();
+        //        }
+        //        SetProperty(ref _selectedLevelId, value);
+        //        EditCommand.RaiseCanExecuteChanged();
+        //        DeleteCommand.RaiseCanExecuteChanged();
+        //    }
+        //}
+
+        //private Guid _selectedSectionId;
+        //public Guid SelectedSectionId
+        //{
+        //    get { return _selectedSectionId; }
+        //    set
+        //    {
+        //        if (value != null)
+        //            SelectedSection = _sectionsRepository.GetSection(value);
+        //        SetProperty(ref _selectedSectionId, value);
+        //    }
+        //}
 
         private Guid _selectedLevelId;
         public Guid SelectedLevelId
@@ -53,14 +90,10 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                if (value != null)
-                {
-                    Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
-                    if (Sections.Any())
-                        SelectedSectionId = Sections[0].SectionID;
-                    else
-                        SelectedSection = new Section();
-                }
+                if (value != null | value != new Guid())
+                    Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
+                if (Sections.Any())
+                    SelectedSectionId = Sections.FirstOrDefault().SectionID;
                 SetProperty(ref _selectedLevelId, value);
                 EditCommand.RaiseCanExecuteChanged();
                 DeleteCommand.RaiseCanExecuteChanged();
@@ -134,10 +167,9 @@ namespace SJBCS.GUI.Student
 
         private void NavToSection()
         {
-
             SelectedSection = null;
             AddEditMode = false;
-            PopulateLevelComboBox();
+            LoadComboBox();
             AddEditSectionViewModel.Initialize();
             AddEditSectionViewModel = addEditSectionViewModel;
         }
@@ -145,7 +177,7 @@ namespace SJBCS.GUI.Student
         private void NavToEditSection(Section section)
         {
             addEditSectionViewModel.EditMode = true;
-            addEditSectionViewModel.SetStudent(section);
+            addEditSectionViewModel.SetSection(section);
             addEditSectionViewModel.Initialize();
             AddEditMode = true;
             AddEditSectionViewModel = addEditSectionViewModel;
@@ -154,7 +186,7 @@ namespace SJBCS.GUI.Student
         private void NavToAddSection(Section section)
         {
             addEditSectionViewModel.EditMode = false;
-            addEditSectionViewModel.SetStudent(section);
+            addEditSectionViewModel.SetSection(section);
             addEditSectionViewModel.Initialize();
             AddEditMode = true;
             AddEditSectionViewModel = addEditSectionViewModel;
@@ -162,28 +194,27 @@ namespace SJBCS.GUI.Student
 
         private async void OnDelete(Section section)
         {
-            try
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you  sure you want to delete this section?");
+            if (result)
             {
-                _sectionsRepository.DeleteSection(section.SectionID);
-                NavToSection();
-                EditCommand.RaiseCanExecuteChanged();
-                DeleteCommand.RaiseCanExecuteChanged();
-            }
-            catch
-            {
-                var view = new DialogBoxView
+                try
                 {
-                    DataContext = new DialogBoxViewModel(DialogType.Informational, "You cannot delete an active section.")
-                };
-
-                //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+                    _sectionsRepository.DeleteSection(section.SectionID);
+                    NavToSection();
+                    EditCommand.RaiseCanExecuteChanged();
+                    DeleteCommand.RaiseCanExecuteChanged();
+                }
+                catch
+                {
+                    result = await DialogHelper.ShowDialog(DialogType.Informational, "You cannot delete an active section.");
+                }
             }
         }
 
         private void OnAdd()
         {
             AddRequested(new Section { LevelID = SelectedLevelId, SectionID = Guid.NewGuid() });
+            LoadComboBox();
         }
 
         private void OnEdit(Section section)
@@ -193,22 +224,14 @@ namespace SJBCS.GUI.Student
 
         public void Initialize()
         {
-            PopulateLevelComboBox();
+            LoadComboBox();
         }
 
-        private void PopulateLevelComboBox()
+        public void LoadComboBox()
         {
             Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
             if (Levels.Any())
-            {
-                if (SelectedLevelId == new Guid())
-                    SelectedLevelId = Levels[0].LevelID;
-                Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(SelectedLevelId));
-                if (Sections.Any())
-                    SelectedSectionId = Sections[0].SectionID;
-            }
-            OnPropertyChanged("SelectedLevelId");
-            OnPropertyChanged("SelectedSectionId");
+                SelectedLevelId = Levels.FirstOrDefault().LevelID;
         }
     }
 }

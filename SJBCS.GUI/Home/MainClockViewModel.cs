@@ -32,7 +32,7 @@ namespace SJBCS.GUI.Home
         private void Timer_Tick(object sender, EventArgs e)
         {
             DigitalClock = DateTime.Now.ToString("hh:mm:ss tt", CultureInfo.InvariantCulture);
-            DigitalCalendar = DateTime.Now.ToString("dddd\nMMMM dd, yyyy", CultureInfo.InvariantCulture);
+            DigitalCalendar = DateTime.Now.ToString("dddd MMMM dd, yyyy", CultureInfo.InvariantCulture);
         }
 
     }

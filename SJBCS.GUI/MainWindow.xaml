@@ -1,23 +1,22 @@
 ﻿<Window x:Class="SJBCS.GUI.MainWindow"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-                      xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
-                      xmlns:home="clr-namespace:SJBCS.GUI.Home"
-                      xmlns:report="clr-namespace:SJBCS.GUI.Report"
-                      xmlns:settings="clr-namespace:SJBCS.GUI.Settings"
-                      xmlns:student="clr-namespace:SJBCS.GUI.Student"
-                      mc:Ignorable="d"
-                      Title=""
-                      ResizeMode="NoResize"
-                      dialogs:DialogParticipation.Register="{Binding}"
-                      Icon="Image/student-icon.png"
-                      WindowStartupLocation="CenterScreen"
-                      WindowState="Maximized">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ams="clr-namespace:SJBCS.GUI.AMS"
+        xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
+        xmlns:home="clr-namespace:SJBCS.GUI.Home"
+        xmlns:report="clr-namespace:SJBCS.GUI.Report"
+        xmlns:settings="clr-namespace:SJBCS.GUI.Settings"
+        xmlns:student="clr-namespace:SJBCS.GUI.Student"
+        mc:Ignorable="d"
+        Title=""
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Icon="Image/student-icon.png"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <Window.Resources>
         <DataTemplate DataType="{x:Type home:LoginViewModel}">
             <home:LoginView />
@@ -58,6 +57,9 @@
         <DataTemplate DataType="{x:Type settings:UserManagementViewModel}">
             <settings:UserManagementView />
         </DataTemplate>
+        <converters:NegatableBooleanToVisibilityConverter x:Key="VisConverter" />
+        <converters:NegatableBooleanToVisibilityConverter x:Key="NegVisConverter"
+                                                          Negate="True" />
     </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid>
@@ -79,7 +81,11 @@
                                                  PlacementMode="BottomAndAlignRightEdges"
                                                  StaysOpen="False">
                             <StackPanel>
-                                <Button Content="Goodbye" />
+                                <Button Content="Logout"
+                                        Command="{Binding LogoutCommand}"
+                                        Visibility="{Binding AdminMode, Converter={StaticResource VisConverter}}"/>
+                                <Button Content="Exit Application"
+                                        Click="Exit_Button_Click"/>
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </DockPanel>

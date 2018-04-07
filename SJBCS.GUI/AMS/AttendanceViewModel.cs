@@ -251,21 +251,13 @@ namespace SJBCS.GUI.AMS
 
                     _IsFingerEnrolled = false;
                     Start();
-
                 }
-
             }
             catch (Exception error)
             {
-                var view = new DialogBoxView
-                {
-                    DataContext = new DialogBoxViewModel(DialogType.Error, "Something went wrong with the finger scanner. Please restart the application to resolve.")
-                };
-
-                //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong with the finger scanner. Please restart the application.");
                 Logger.Error(error);
+                Application.Current.Shutdown();
 
             }
         }

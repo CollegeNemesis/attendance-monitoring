@@ -10,8 +10,10 @@ using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using Unity;
 
@@ -21,7 +23,6 @@ namespace SJBCS.GUI
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #region Properties
-        private ResourceDictionary DialogDictionary = new ResourceDictionary() { Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml") };
 
         public LoginViewModel _loginViewModel;
         public MenuViewModel _menuViewModel;
@@ -35,11 +36,19 @@ namespace SJBCS.GUI
         public ConfigManagementViewModel _configManagementViewModel;
         public SettingsViewModel _settingsViewModel;
 
-        private StartupConfigManagementWindow _startupConfigManagementWindow;
+        public StartupConfigManagementWindow _startupConfigManagementWindow;
         public StartupConfigManagementWindow StartupConfigManagementWindow
         {
             get { return _startupConfigManagementWindow; }
             set { SetProperty(ref _startupConfigManagementWindow, value); }
+        }
+
+        private bool _adminMode;
+
+        public bool AdminMode
+        {
+            get { return _adminMode; }
+            set { SetProperty(ref _adminMode, value); }
         }
 
         private object _currentViewModel;
@@ -69,11 +78,14 @@ namespace SJBCS.GUI
             get { return _clockViewModel; }
             set { SetProperty(ref _clockViewModel, value); }
         }
+
+        public RelayCommand LogoutCommand { get; private set; }
         #endregion
 
         public MainWindowViewModel()
         {
             LoadConfiguration();
+
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _menuViewModel = ContainerHelper.Container.Resolve<MenuViewModel>();
             _mainClockViewModel = ContainerHelper.Container.Resolve<MainClockViewModel>();
@@ -87,24 +99,39 @@ namespace SJBCS.GUI
             _configManagementViewModel = ContainerHelper.Container.Resolve<ConfigManagementViewModel>();
             _userManagementViewModel = ContainerHelper.Container.Resolve<UserManagementViewModel>();
 
+            LogoutCommand = new RelayCommand(OnLogout);
+
+            //Setup Window Content
             _currentViewModel = _loginViewModel;
             _menu = null;
+            _adminMode = false;
 
-            _addEditStudentViewModel.Done += NavToStudent;
-            _addEditStudentViewModel.EditMode = false;
             _loginViewModel.LoginRequested += NavToMenu;
-            _loginViewModel.EntryRequested += NavToFreeUser;
+            _loginViewModel.EntryRequested += NavToFreeLogin;
+
             _menuViewModel.NavToAttendanceRequested += NavToAttendance;
             _menuViewModel.NavToSettingsRequested += NavToSettings;
             _menuViewModel.NavToStudentRequested += NavToStudent;
             _menuViewModel.NavToSectionRequested += NavToSection;
             _menuViewModel.NavToGroupRequested += NavToGroup;
             _menuViewModel.NavToReportRequested += NavToReport;
+
             _studentViewModel.AddRequested += NavToAddStudent;
             _studentViewModel.EditRequested += NavToEditStudent;
+            _addEditStudentViewModel.Done += NavToStudent;
+            _addEditStudentViewModel.EditMode = false;
+
             _settingsViewModel.NavToHomeRequested += NavToHome;
             _settingsViewModel.NavToConfigRequested += NavToConfig;
             _settingsViewModel.NavToUserRequested += NavToUser;
+        }
+
+        private void OnLogout()
+        {
+            _loginViewModel.Username = "";
+            CurrentViewModel = _loginViewModel;            
+            Menu = null;
+            AdminMode = false;
         }
 
         #region Methods
@@ -123,6 +150,7 @@ namespace SJBCS.GUI
         private void NavToHome()
         {
             _studentViewModel.LoadStudents();
+
             Menu = _menuViewModel;
             ClockViewModel = _clockViewModel;
             CurrentViewModel = _studentViewModel;
@@ -130,6 +158,7 @@ namespace SJBCS.GUI
 
         private void NavToReport()
         {
+            ClockViewModel = _clockViewModel;
             CurrentViewModel = _reportViewModel;
         }
 
@@ -145,11 +174,20 @@ namespace SJBCS.GUI
             CurrentViewModel = _sectionViewModel;
         }
 
-        private void NavToStudent()
+        private async void NavToStudent()
         {
-            _studentViewModel.LoadStudents();
             ClockViewModel = _clockViewModel;
             CurrentViewModel = _studentViewModel;
+
+            try
+            {
+                _studentViewModel.LoadStudents();
+            }
+            catch(Exception error)
+            {
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
+                Logger.Error(error);
+            }
         }
 
         private void NavToSettings()
@@ -159,69 +197,88 @@ namespace SJBCS.GUI
             CurrentViewModel = _userManagementViewModel;
         }
 
-        private void NavToAttendance()
+        private async void NavToAttendance()
         {
-            _attendanceViewModel.SwitchOn();
             ClockViewModel = null;
             CurrentViewModel = _attendanceViewModel;
+
+            try
+            {
+                _attendanceViewModel.SwitchOn();
+            }
+            catch (Exception error)
+            {
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
+                Logger.Error(error);
+            }
         }
 
         private async void NavToAddStudent(Data.Student selectedStudent)
         {
+            CurrentViewModel = _addEditStudentViewModel;
+
             try
             {
                 _attendanceViewModel.SwitchOff();
                 _addEditStudentViewModel.EditMode = false;
                 _addEditStudentViewModel.SetStudent(selectedStudent);
                 _addEditStudentViewModel.Initialize();
-                CurrentViewModel = _addEditStudentViewModel;
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                var result = await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
                 Logger.Error(error);
             }
         }
 
         private void NavToEditStudent(Data.Student selectedStudent)
-        {
-            _attendanceViewModel.SwitchOff();
-            _addEditStudentViewModel.EditMode = true;
-            _addEditStudentViewModel.SetStudent(selectedStudent);
-            _addEditStudentViewModel.Initialize();
+        {            
             CurrentViewModel = _addEditStudentViewModel;
+
+            try
+            {
+                _attendanceViewModel.SwitchOff();
+                _addEditStudentViewModel.EditMode = true;
+                _addEditStudentViewModel.SetStudent(selectedStudent);
+                _addEditStudentViewModel.Initialize();
+            }
+            catch (Exception error)
+            {
+                var result =  DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
+                Logger.Error(error);
+            }
         }
 
-        private void NavToFreeUser()
+        private async void NavToFreeLogin()
         {
             ClockViewModel = null;
             Menu = null;
             CurrentViewModel = _attendanceViewModel;
-        }
 
-        private void NavToMenu(User user)
-        {
-            ClockViewModel = _clockViewModel;
-            if (user.Type.ToLower().Equals("admin"))
+            try
             {
                 _attendanceViewModel.SwitchOn();
-                _studentViewModel.LoadStudents();
-                ClockViewModel = _clockViewModel;
+            }
+            catch (Exception error)
+            {
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
+                Logger.Error(error);
+            }
+        }
+
+        private void NavToMenu(Data.User user)
+        {
+            if (user.Type.ToLower().Equals("admin"))
+            {
                 Menu = _menuViewModel;
-                CurrentViewModel = _studentViewModel;
+                AdminMode = true;
+                NavToStudent();
             }
             else if (user.Type.ToLower().Equals("user"))
             {
-                _attendanceViewModel.SwitchOn();
-                ClockViewModel = null;
-                CurrentViewModel = _attendanceViewModel;
-                Menu = null;
+                AdminMode = false;
+                NavToFreeLogin();
             }
-            else
-            {
-                CurrentViewModel = null;
-            }
-
         }
 
         private void LoadConfiguration()
@@ -253,33 +310,41 @@ namespace SJBCS.GUI
             }
         }
 
-        private void CreateConfiguration()
+        private async void CreateConfiguration()
         {
-            var config = new Config()
+            try
             {
-                AppConfiguration = new AppConfiguration()
+                var config = new Config()
                 {
-                    Settings = new SJBCS.Data.Settings()
+                    AppConfiguration = new AppConfiguration()
                     {
-                        DataSource = new DataSource()
+                        Settings = new SJBCS.Data.Settings()
                         {
-                            Metadata = "res://*/DataModel.csdl|res://*/DataModel.ssdl|res://*/DataModel.msl",
-                            Hostname = "",
-                            InitialCatalog = "AMS",
-                            Username = "",
-                            Password = "",
-                        },
-                        SmsService = new SmsService()
-                        {
-                            Url = "http://192.168.43.1:8080/"
+                            DataSource = new DataSource()
+                            {
+                                Metadata = "res://*/DataModel.csdl|res://*/DataModel.ssdl|res://*/DataModel.msl",
+                                Hostname = "",
+                                InitialCatalog = "AMS",
+                                Username = "",
+                                Password = "",
+                            },
+                            SmsService = new SmsService()
+                            {
+                                Url = "http://192.168.43.1:8080/"
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            string json = JsonConvert.SerializeObject(config);
-            ConnectionHelper.Config = config;
-            File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
+                string json = JsonConvert.SerializeObject(config);
+                ConnectionHelper.Config = config;
+                File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
+            }
+            catch(Exception error)
+            {
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong setting up configuration files. Please check the logs.");
+                Logger.Error(error);
+            }
         }
 
         private void TestConnection()

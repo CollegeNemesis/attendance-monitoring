@@ -173,10 +173,6 @@
     <Compile Include="AMS\AttendanceLog.cs" />
     <Compile Include="Converters\PasswordAssistant.cs" />
     <Compile Include="Dialogs\DialogHelper.cs" />
-    <Compile Include="Dialogs\LoadingScreenView.xaml.cs">
-      <DependentUpon>LoadingScreenView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\LoadingScreenViewModel.cs" />
     <Compile Include="Dialogs\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -269,10 +265,6 @@
     <Compile Include="Wrapper\ISectionWrapper.cs" />
     <Compile Include="Wrapper\IStudentWrapper.cs" />
     <Page Include="AMS\AttendanceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\LoadingScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

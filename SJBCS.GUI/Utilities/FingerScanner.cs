@@ -1,8 +1,11 @@
-﻿namespace SJBCS.GUI.Utilities
+﻿using System;
+using System.Windows;
+
+namespace SJBCS.GUI.Utilities
 {
     public class FingerScanner : BindableBase, DPFP.Capture.EventHandler
     {
-
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected DPFP.Capture.Capture Capturer;
 
         public FingerScanner()
@@ -14,8 +17,11 @@
                 if (null != Capturer)
                     Capturer.EventHandler = this;                   // Subscribe for capturing events.
             }
-            catch
+            catch(Exception error)
             {
+                MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Error(error);
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
@@ -32,8 +38,11 @@
                 {
                     Capturer.StartCapture();
                 }
-                catch
+                catch (Exception error)
                 {
+                    MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Logger.Error(error);
+                    System.Windows.Application.Current.Shutdown();
                 }
             }
         }
@@ -46,8 +55,11 @@
                 {
                     Capturer.StopCapture();
                 }
-                catch
+                catch (Exception error)
                 {
+                    MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Logger.Error(error);
+                    System.Windows.Application.Current.Shutdown();
                 }
             }
         }

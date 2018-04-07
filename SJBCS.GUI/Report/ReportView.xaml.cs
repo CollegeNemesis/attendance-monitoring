@@ -13,6 +13,9 @@ using Microsoft.Office.Core;
 using System.Linq;
 using System.Collections.Generic;
 using SJBCS.Data;
+using SJBCS.GUI.Dialogs;
+using MaterialDesignThemes.Wpf;
+using System.Configuration;
 
 namespace SJBCS.GUI.Report
 {
@@ -21,9 +24,11 @@ namespace SJBCS.GUI.Report
     /// </summary>
     public partial class ReportView : UserControl
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         string strDateFrom, strDateTo, strParams;
-        const string DEFAULT_PATH = @"C:\sjbcs_temp\";
-        const string DEFAULT_FILENAME = "tempEXCEL.xlsx";
+        string DEFAULT_PATH = ConfigurationManager.AppSettings["reportPath"];
+        string DEFAULT_FILENAME = ConfigurationManager.AppSettings["tempReport"];
 
         const string appName = "EntityFramework";
         const string providerName = "System.Data.SqlClient";
@@ -34,7 +39,7 @@ namespace SJBCS.GUI.Report
         string userId = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username;
         string password = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password;
 
-        SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();        
+        SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
         public ReportView()
         {
@@ -50,14 +55,19 @@ namespace SJBCS.GUI.Report
                 sqlBuilder.Password = password;
                 sqlBuilder.ApplicationName = appName;
 
-                BindControls();                
+                BindControls();
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
+        private async void LogError(Exception error)
+        {
+            var result = await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+        }
         private void FillDataGrid()
         {
             string CmdString = GetSP_Name();
@@ -107,9 +117,10 @@ namespace SJBCS.GUI.Report
             {
                 ExportToExcel();
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -224,17 +235,18 @@ namespace SJBCS.GUI.Report
             }
         }
 
-        private void ReleaseObject(object obj)
+        private async void ReleaseObject(object obj)
         {
             try
             {
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
                 obj = null;
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
                 obj = null;
-                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Exception occurred while releasing object " + error.Message);
+                Logger.Error(error);
             }
             finally
             {
@@ -269,9 +281,10 @@ namespace SJBCS.GUI.Report
                     dgResults.Visibility = Visibility.Visible;
                 }
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -293,9 +306,10 @@ namespace SJBCS.GUI.Report
                     File.Delete(DEFAULT_PATH + DEFAULT_FILENAME);
                 }
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -338,10 +352,12 @@ namespace SJBCS.GUI.Report
 
                     excelWorkbook.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, sfd.FileName, Microsoft.Office.Interop.Excel.XlFixedFormatQuality.xlQualityStandard, true, true, 1);
                 }
-                catch (System.Exception ex)
+                catch (System.Exception error)
                 {
                     exportSuccessful = false;
-                    MessageBox.Show("Export to PDF failed. --" + ex.Message);
+                    //var result =  await DialogHelper.ShowDialog(DialogType.Error, "Export to PDF failed. --" + error.Message);
+                    LogError(error);
+                    Logger.Error(error);
                 }
                 finally
                 {
@@ -459,9 +475,10 @@ namespace SJBCS.GUI.Report
                 dgResults.Visibility = Visibility.Hidden;
                 EnableExportButtons(false);
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -478,9 +495,10 @@ namespace SJBCS.GUI.Report
                 dgResults.Visibility = Visibility.Hidden;
                 EnableExportButtons(false);
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -528,9 +546,10 @@ namespace SJBCS.GUI.Report
                 dgResults.Visibility = Visibility.Hidden;
                 EnableExportButtons(false);
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
@@ -541,18 +560,19 @@ namespace SJBCS.GUI.Report
                 dgResults.Visibility = Visibility.Hidden;
                 EnableExportButtons(false);
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.Message);
+                LogError(error);
+                Logger.Error(error);
             }
         }
 
-        private void isPopulated(ComboBox cb)
+        private async void isPopulated(ComboBox cb)
         {
             if (cb.Items.Count < 1)
             {
                 btnGenerate.IsEnabled = false;
-                MessageBox.Show("Some fields do not have values. Please contact system administrator.");
+                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Some fields do not have values. Please contact system administrator.");
             }
             else
             {

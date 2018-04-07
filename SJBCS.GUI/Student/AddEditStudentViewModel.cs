@@ -243,7 +243,7 @@ namespace SJBCS.GUI.Student
         }
 
         #region OnSave Methods
-        public async void  SetStudent(Data.Student student)
+        public void  SetStudent(Data.Student student)
         {
             _editingStudent = student;
 
@@ -336,9 +336,9 @@ namespace SJBCS.GUI.Student
         #region Command Methods
         private async void OnDeleteBiometric(Biometric biometric)
         {
-            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to unenroll this finger?");
+            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to unenroll this finger?");
 
-            if ((bool)result)
+            if (result)
             {
                 Student.Biometrics.Remove(Student.Biometrics.SingleOrDefault(i => i.FingerID == biometric.FingerID));
                 DeletedBiometrics.Add(biometric);
@@ -387,9 +387,9 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteContact(Contact contact)
         {
-            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
+            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
-            if ((bool)result)
+            if (result)
             {
                 Student.Contacts.Remove(contact);
                 DeletedContacts.Add(contact);
@@ -589,9 +589,9 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteGroup(Organization organization)
         {
-            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
+            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
-            if ((bool)result)
+            if (result)
             {
                 DeletedGroups.Add(Student.RelOrganizations.SingleOrDefault(i => i.OrganizationID == organization.OrganizationID));
                 Student.RelOrganizations.Remove(Student.RelOrganizations.SingleOrDefault(i => i.OrganizationID == organization.OrganizationID));

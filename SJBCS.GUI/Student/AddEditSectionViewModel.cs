@@ -119,7 +119,7 @@ namespace SJBCS.GUI.Student
             target.EndTime = source.EndTime.ToString();
         }
 
-        public void SetStudent(Section section)
+        public void SetSection(Section section)
         {
             _editingSection = section;
             if (EditableSection != null) EditableSection.ErrorsChanged -= RaiseCanExecuteChanged;

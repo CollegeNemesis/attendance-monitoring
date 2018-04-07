@@ -106,56 +106,6 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
-                    <TextBlock Text="Filter by"
-                               Foreground="#B5B5B5"
-                               FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               FontSize="12"
-                               Margin="0 0 0 20"/>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel>
-                            <TextBlock Text="Level"
-                                       Foreground="#B5B5B5"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       Margin="5 0 0 5"
-                                       FontSize="10" />
-                            <ComboBox materialDesign:HintAssist.Hint="Level"
-                                      materialDesign:HintAssist.IsFloating="False"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      HorizontalAlignment="Left"
-                                      VerticalContentAlignment="Center"
-                                      Width="200"
-                                      Height="38"
-                                      FontSize="16"
-                                      VerticalAlignment="Bottom"
-                                      ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Levels}"
-                                      DisplayMemberPath="GradeLevel"
-                                      SelectedValuePath="LevelID"
-                                      SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedLevelId}" />
-                        </StackPanel>
-                        <StackPanel Margin="10 0 0 0">
-                            <TextBlock Text="Section"
-                                       Foreground="#B5B5B5"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       Margin="5 0 0 5"
-                                       FontSize="10" />
-                            <ComboBox materialDesign:HintAssist.Hint="Section"
-                                      materialDesign:HintAssist.IsFloating="False"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Bottom"
-                                      VerticalContentAlignment="Center"
-                                      Width="200"
-                                      Height="38"
-                                      ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Sections}"
-                                      DisplayMemberPath="SectionName"
-                                      SelectedValuePath="SectionID"
-                                      SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSectionId}" />
-                        </StackPanel>
-                    </StackPanel>
-                    
                     <TextBlock Text="Search student by"
                                Foreground="#B5B5B5"
                                FontFamily="Segoe UI"
@@ -165,30 +115,95 @@
                     <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               HorizontalAlignment="Left"
                               Width="200"
-                              SelectedIndex="0">
-                        <ComboBoxItem>Student ID</ComboBoxItem>
-                        <ComboBoxItem>First Name</ComboBoxItem>
-                        <ComboBoxItem>Last Name</ComboBoxItem>
-                    </ComboBox>
+                              ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.SearchCriteria}"
+                              SelectedItem="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSearch, UpdateSourceTrigger=PropertyChanged}" />
                     <StackPanel>
                         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  materialDesign:HintAssist.Hint="Input keyword"
                                  materialDesign:HintAssist.IsFloating="True"
                                  HorizontalAlignment="Left"
-                                 Width="420"
+                                 Text="{Binding ElementName=StudentViewControl, Path=DataContext.SearchInput, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="200"
                                  Margin="0 20 0 10" />
                         <Button Style="{DynamicResource MaterialDesignRaisedButton}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
+                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.ClearCommand}"
                                 Width="200"
                                 Foreground="White">
                             <StackPanel Orientation="Horizontal"
                                         VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Magnify"
+                                <materialDesign:PackIcon Kind="Cancel"
                                                          VerticalAlignment="Center"
                                                          Margin="5" />
-                                <TextBlock Text="Search Student"
+                                <TextBlock Text="Clear Search"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Visibility="Hidden">
+                        <TextBlock Text="Filter by"
+                                   Foreground="#B5B5B5"
+                                   FontFamily="Segoe UI"
+                                   FontWeight="Regular"
+                                   FontSize="12"
+                                   Margin="0 0 0 20" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock Text="Level"
+                                           Foreground="#B5B5B5"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           Margin="5 0 0 5"
+                                           FontSize="10" />
+                                <ComboBox materialDesign:HintAssist.Hint="Level"
+                                          materialDesign:HintAssist.IsFloating="False"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          HorizontalAlignment="Left"
+                                          VerticalContentAlignment="Center"
+                                          Width="200"
+                                          Height="38"
+                                          FontSize="16"
+                                          VerticalAlignment="Bottom"
+                                          ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Levels}"
+                                          DisplayMemberPath="GradeLevel"
+                                          SelectedValuePath="LevelID"
+                                          SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedLevelId}" />
+                            </StackPanel>
+                            <StackPanel Margin="10 0 0 0">
+                                <TextBlock Text="Section"
+                                           Foreground="#B5B5B5"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           Margin="5 0 0 5"
+                                           FontSize="10" />
+                                <ComboBox materialDesign:HintAssist.Hint="Section"
+                                          materialDesign:HintAssist.IsFloating="False"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Bottom"
+                                          VerticalContentAlignment="Center"
+                                          Width="200"
+                                          Height="38"
+                                          ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Sections}"
+                                          DisplayMemberPath="SectionName"
+                                          SelectedValuePath="SectionID"
+                                          SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSectionId}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Style="{DynamicResource MaterialDesignRaisedButton}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Margin="0 10 0 0"
+                                Click="OnFilter"
+                                Width="200"
+                                Foreground="White">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Filter"
+                                                         VerticalAlignment="Center"
+                                                         Margin="5" />
+                                <TextBlock Text="Filter"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>

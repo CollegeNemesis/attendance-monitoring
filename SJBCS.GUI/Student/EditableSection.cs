@@ -43,7 +43,7 @@ namespace SJBCS.GUI.Student
                 TimeSpan start = DateTime.Parse(StartTime).TimeOfDay;
                 TimeSpan end = DateTime.Parse(endTime).TimeOfDay;
 
-                if (start > end)
+                if (start >= end)
                     return false;
                 return true;
             }
@@ -89,9 +89,8 @@ namespace SJBCS.GUI.Student
             get => startTime;
             set
             {
+                
                 SetProperty(ref startTime, value);
-                OnPropertyChanged("StartTime");
-                OnPropertyChanged("EndTime");
             }
         }
 
@@ -105,9 +104,9 @@ namespace SJBCS.GUI.Student
             get => endTime;
             set
             {
+                string temp = StartTime + "";
+                StartTime = temp;
                 SetProperty(ref endTime, value);
-                OnPropertyChanged("StartTime");
-                OnPropertyChanged("EndTime");
             }
         }
 

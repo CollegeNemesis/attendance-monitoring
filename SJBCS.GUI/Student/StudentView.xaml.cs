@@ -27,12 +27,16 @@ namespace SJBCS.GUI.Student
             InitializeComponent();
         }
 
-        private void studentDataGrid_Loaded(object sender, RoutedEventArgs e)
+        private void OnFilter(object sender, RoutedEventArgs e)
         {
-            //var studentViewSource = FindResource("studentViewSource") as CollectionViewSource;
-            //ListCollectionView view = (ListCollectionView)studentViewSource.View;
-            //view.CustomSort = new NaturalSortComparer<string>();
-            //studentViewSource.SortDescriptions.Add(new SortDescription("Level.GradeLevel", ListSortDirection.Ascending));
+            var studentViewSource = FindResource("studentViewSource") as CollectionViewSource;
+
+            ICollectionView view = studentViewSource.View as ICollectionView;
+            view.Filter = (item) =>
+            {
+                Data.Student student = item as Data.Student;
+                return student.Section.SectionName == "Mahogany" ? true : false;
+            };
         }
     }
 }
