@@ -73,11 +73,12 @@ namespace SJBCS.GUI.Home
         private async void Login(string username, IWrappedParameter<string> password)
         {
             Data.User user =  _repo.GetUser(_username);
-            string _password = DecryptText(password.Value);
 
             if (user != null)
             {
-                if (user.Password.Equals(password.Value))
+                string _password = DecryptText(user.Password);
+
+                if (_password.Equals(password.Value))
                 {
                     LoginRequested(user);
                 }

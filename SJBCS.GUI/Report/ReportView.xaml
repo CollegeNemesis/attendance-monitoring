@@ -212,22 +212,24 @@
                     </Grid>
                 </StackPanel>
             </StackPanel>
-            <DataGrid x:Name="dgResults"
-                      Visibility="Collapsed"
-                      ClipboardCopyMode="IncludeHeader"
-                      HorizontalContentAlignment="Stretch"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Top"
-                      Margin="50"
-                      Height="300"
-                      Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualWidth-20}"
-                      AutoGenerateColumns="True"
-                      AutoGeneratingColumn="dgResults_AutoGeneratingColumn"
-                      AlternatingRowBackground="BlanchedAlmond"
-                      Style="{StaticResource MaterialDesignDataGrid}"
-                      AreRowDetailsFrozen="True"
-                      CanUserResizeRows="False"
-                      IsReadOnly="True" />
+
+                <DataGrid x:Name="dgResults"
+                          Visibility="Collapsed"
+                          ClipboardCopyMode="IncludeHeader"
+                          HorizontalContentAlignment="Stretch"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Top"
+                          Margin="50"
+                          Height="300"
+                          Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualWidth-20}"
+                          AutoGenerateColumns="True"
+                          AutoGeneratingColumn="dgResults_AutoGeneratingColumn"
+                          AlternatingRowBackground="BlanchedAlmond"
+                          Style="{StaticResource MaterialDesignDataGrid}"
+                          AreRowDetailsFrozen="True"
+                          CanUserResizeRows="False"
+                          IsReadOnly="True" />
+
         </StackPanel>
 
     </Grid>

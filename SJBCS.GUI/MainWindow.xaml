@@ -84,7 +84,7 @@
                                 <Button Content="Logout"
                                         Command="{Binding LogoutCommand}"
                                         Visibility="{Binding AdminMode, Converter={StaticResource VisConverter}}"/>
-                                <Button Content="Exit Application"
+                                <Button Content="Exit"
                                         Click="Exit_Button_Click"/>
                             </StackPanel>
                         </materialDesign:PopupBox>
