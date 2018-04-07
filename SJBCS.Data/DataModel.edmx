@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="AttendanceID" />
@@ -78,6 +78,7 @@ warning 6002: The table/view 'AMS.dbo.Filters' does not have a primary key defin
           </Key>
           <Property Name="LevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="GradeLevel" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="LevelOrder" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Organization">
           <Key>
@@ -412,8 +413,7 @@ warning 6002: The table/view 'AMS.dbo.Reports' does not have a primary key defin
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -486,6 +486,7 @@ warning 6002: The table/view 'AMS.dbo.Reports' does not have a primary key defin
           <Property Name="GradeLevel" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Level" FromRole="Level" ToRole="Section" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Student_Level" FromRole="Level" ToRole="Student" />
+          <Property Name="LevelOrder" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Organization">
           <Key>
@@ -819,12 +820,12 @@ warning 6002: The table/view 'AMS.dbo.Reports' does not have a primary key defin
             <Parameter Name="Section" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PRC_FiltersList" ReturnType="Collection(DataModel.PRC_FiltersList_Result)">
-            <Parameter Name="ReportType" Mode="In" Type="String" />
+          <Parameter Name="ReportType" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PRC_GradeList" ReturnType="Collection(String)" />
           <FunctionImport Name="PRC_ReportsList" ReturnType="Collection(DataModel.PRC_ReportsList_Result)" />
           <FunctionImport Name="PRC_SectionList" ReturnType="Collection(String)">
-            <Parameter Name="GradeLevel" Mode="In" Type="String" />
+          <Parameter Name="GradeLevel" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PRC_SPName" ReturnType="Collection(DataModel.PRC_SPName_Result)">
             <Parameter Name="ReportType" Mode="In" Type="String" />
@@ -996,6 +997,7 @@ warning 6002: The table/view 'AMS.dbo.Reports' does not have a primary key defin
           <EntitySetMapping Name="Levels">
             <EntityTypeMapping TypeName="DataModel.Level">
               <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="LevelOrder" ColumnName="LevelOrder" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="GradeLevel" ColumnName="GradeLevel" />
               </MappingFragment>

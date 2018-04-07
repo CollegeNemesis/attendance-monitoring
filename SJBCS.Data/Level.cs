@@ -23,6 +23,7 @@ namespace SJBCS.Data
     
         public System.Guid LevelID { get; set; }
         public string GradeLevel { get; set; }
+        public int LevelOrder { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Section> Sections { get; set; }

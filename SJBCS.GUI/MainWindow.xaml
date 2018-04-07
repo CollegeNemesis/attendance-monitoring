@@ -72,6 +72,7 @@
             <Grid x:Name="Header1"
                   Grid.Row="0">
                 <materialDesign:ColorZone Mode="PrimaryDark"
+                                          Height="40"
                                           Background="#335795"
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch">
@@ -121,7 +122,6 @@
                                  FontWeight="Regular"
                                  FontSize="12" />
                         </TextBlock>
-
                     </StackPanel>
                 </materialDesign:ColorZone>
             </Grid>

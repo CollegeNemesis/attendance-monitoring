@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              x:Name="StudentViewControl"
              d:DesignHeight="800"
-             d:DesignWidth="800">
+             d:DesignWidth="1280">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ei:CallMethodAction TargetObject="{Binding}"
@@ -91,142 +91,93 @@
     </UserControl.Resources>
     <Grid DataContext="{StaticResource studentViewSource}"
           Background="White">
-        <StackPanel Margin="10">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Left">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Border x:Name="MainPanel"
+                    BorderBrush="#B5B5B5"
+                    BorderThickness=".5 0 .5 0">
                 <StackPanel>
-                    <TextBlock Foreground="#00B4FF"
-                               FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               Margin="5 0 0 5"
-                               FontSize="20">
-                        <Run Text="Student" />
-                    </TextBlock>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel>
-                    <TextBlock Text="Search student by"
-                               Foreground="#B5B5B5"
-                               FontFamily="Segoe UI"
-                               FontWeight="Regular"
-                               FontSize="12"
-                               Margin="0 20 0 10"/>
-                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              HorizontalAlignment="Left"
-                              Width="200"
-                              ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.SearchCriteria}"
-                              SelectedItem="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSearch, UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel>
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 materialDesign:HintAssist.Hint="Input keyword"
-                                 materialDesign:HintAssist.IsFloating="True"
-                                 HorizontalAlignment="Left"
-                                 Text="{Binding ElementName=StudentViewControl, Path=DataContext.SearchInput, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="200"
-                                 Margin="0 20 0 10" />
-                        <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.ClearCommand}"
-                                Width="200"
-                                Foreground="White">
-                            <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Cancel"
-                                                         VerticalAlignment="Center"
-                                                         Margin="5" />
-                                <TextBlock Text="Clear Search"
-                                           VerticalAlignment="Center" />
+                    <materialDesign:ColorZone Padding="16"
+                                              Mode="PrimaryMid">
+                        <DockPanel>
+                            <StackPanel materialDesign:RippleAssist.IsCentered="True"
+                                        Orientation="Horizontal">
+                                <materialDesign:ColorZone Margin="16,0,0,0"
+                                                          Padding="8,4,8,4"
+                                                          Panel.ZIndex="1"
+                                                          CornerRadius="2"
+                                                          Mode="Standard">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                                  HorizontalAlignment="Left"
+                                                  Width="200"
+                                                  BorderThickness="0"
+                                                  ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.SearchCriteria}"
+                                                  SelectedItem="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSearch, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </materialDesign:ColorZone>
+                                <materialDesign:ColorZone Margin="16,0,0,0"
+                                                          Padding="8,4,8,4"
+                                                          Panel.ZIndex="1"
+                                                          CornerRadius="2"
+                                                          Mode="Standard">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                                Height="Auto"
+                                                Width="Auto"
+                                                IsHitTestVisible="False">
+                                            <materialDesign:PackIcon Kind="Magnify"
+                                                                     Opacity=".56"
+                                                                     Width="30"
+                                                                     Height="30" />
+                                        </Button>
+                                        <TextBox Grid.Column="1"
+                                                 MinWidth="200"
+                                                 Margin="8,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Style="{StaticResource MaterialDesignTextBox}"
+                                                 Text="{Binding ElementName=StudentViewControl, Path=DataContext.SearchInput, UpdateSourceTrigger=PropertyChanged}"
+                                                 materialDesign:HintAssist.Hint="Input search keyword"
+                                                 BorderThickness="0" />
+                                        <Button Grid.Column="2"
+                                                Style="{DynamicResource MaterialDesignToolButton}"
+                                                Command="{Binding ElementName=StudentViewControl, Path=DataContext.ClearCommand}">
+                                            <materialDesign:PackIcon Margin="8,0,0,0"
+                                                                     Kind="Close"
+                                                                     Opacity=".56" />
+                                        </Button>
+                                    </Grid>
+                                </materialDesign:ColorZone>
+                                <Button Style="{DynamicResource MaterialDesignRaisedButton}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
+                                        Width="150"
+                                        Height="60"
+                                        Margin="20 0 0 0"
+                                        Foreground="White">
+                                    <StackPanel Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Add Student"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+
                             </StackPanel>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Visibility="Hidden">
-                        <TextBlock Text="Filter by"
-                                   Foreground="#B5B5B5"
-                                   FontFamily="Segoe UI"
-                                   FontWeight="Regular"
-                                   FontSize="12"
-                                   Margin="0 0 0 20" />
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel>
-                                <TextBlock Text="Level"
-                                           Foreground="#B5B5B5"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           Margin="5 0 0 5"
-                                           FontSize="10" />
-                                <ComboBox materialDesign:HintAssist.Hint="Level"
-                                          materialDesign:HintAssist.IsFloating="False"
-                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          HorizontalAlignment="Left"
-                                          VerticalContentAlignment="Center"
-                                          Width="200"
-                                          Height="38"
-                                          FontSize="16"
-                                          VerticalAlignment="Bottom"
-                                          ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Levels}"
-                                          DisplayMemberPath="GradeLevel"
-                                          SelectedValuePath="LevelID"
-                                          SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedLevelId}" />
-                            </StackPanel>
-                            <StackPanel Margin="10 0 0 0">
-                                <TextBlock Text="Section"
-                                           Foreground="#B5B5B5"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           Margin="5 0 0 5"
-                                           FontSize="10" />
-                                <ComboBox materialDesign:HintAssist.Hint="Section"
-                                          materialDesign:HintAssist.IsFloating="False"
-                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Bottom"
-                                          VerticalContentAlignment="Center"
-                                          Width="200"
-                                          Height="38"
-                                          ItemsSource="{Binding ElementName=StudentViewControl, Path=DataContext.Sections}"
-                                          DisplayMemberPath="SectionName"
-                                          SelectedValuePath="SectionID"
-                                          SelectedValue="{Binding ElementName=StudentViewControl, Path=DataContext.SelectedSectionId}" />
-                            </StackPanel>
-                        </StackPanel>
-                        <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Margin="0 10 0 0"
-                                Click="OnFilter"
-                                Width="200"
-                                Foreground="White">
-                            <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Filter"
-                                                         VerticalAlignment="Center"
-                                                         Margin="5" />
-                                <TextBlock Text="Filter"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Margin="20 0 0 0">
-                    <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                            HorizontalAlignment="Left"
-                            Command="{Binding ElementName=StudentViewControl, Path=DataContext.AddCommand}"
-                            Width="200"
-                            Margin="0 0 0 20"
-                            Foreground="White">
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="Plus"
-                                                     VerticalAlignment="Center"
-                                                     Margin="5" />
-                            <TextBlock Text="Add Student"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
+                        </DockPanel>
+                    </materialDesign:ColorZone>
                     <DataGrid x:Name="studentDataGrid"
                               AutoGenerateColumns="False"
+                              Width="1024"
                               IsReadOnly="True"
                               ItemsSource="{Binding}"
                               SelectionMode="Single"
@@ -252,6 +203,9 @@
                                                 <Setter TargetName="icon"
                                                         Property="Kind"
                                                         Value="ChevronDown" />
+                                                <Setter TargetName="icon"
+                                                        Property="Foreground"
+                                                        Value="Red" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -262,20 +216,20 @@
                                                 Width="150" />
                             <DataGridTextColumn Binding="{Binding FirstName}"
                                                 Header="First Name"
-                                                Width="150" />
+                                                Width="250" />
                             <DataGridTextColumn Binding="{Binding LastName}"
                                                 Header="Last Name"
-                                                Width="150" />
+                                                Width="250" />
                             <DataGridTextColumn Binding="{Binding Level.GradeLevel}"
                                                 Header="Level"
                                                 Width="150" />
                             <DataGridTextColumn Binding="{Binding Section.SectionName}"
                                                 Header="Section"
-                                                Width="150" />
+                                                Width="180" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
-            </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>
