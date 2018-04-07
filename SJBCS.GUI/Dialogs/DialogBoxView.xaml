@@ -9,14 +9,14 @@
              xmlns:local="clr-namespace:SJBCS.GUI.Dialogs"
              mc:Ignorable="d"
              d:DesignHeight="200"
-             d:DesignWidth="300">
+             d:DesignWidth="400">
     <UserControl.Resources>
         <converters:StringEmptyConverter x:Key="StringEmptyConverter" />
         <converters:ColorConverter x:Key="ColorConverter" />
         <converters:IconConverter x:Key="IconConverter" />
         <converters:NegatableStringToVisibilityConverter x:Key="VisConverter" />
     </UserControl.Resources>
-    <Grid Width="300"
+    <Grid Width="400"
           Height="200">
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
@@ -34,8 +34,7 @@
                                          Height="50" />
                 <TextBlock FontFamily="Segoe UI"
                            FontWeight="Regular"
-                           Width="200"
-                           FontSize="12"
+                           Width="300"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            TextAlignment="Center"

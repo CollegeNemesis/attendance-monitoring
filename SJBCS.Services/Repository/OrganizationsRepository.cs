@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Organization AddOrganization(Organization Organization)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.Organizations.Add(Organization);
             _context.SaveChanges();
             return Organization;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteOrganization(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var Organization = _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
             if (Organization != null)
             {
@@ -29,6 +31,7 @@ namespace SJBCS.Services.Repository
 
         public Organization GetOrganization(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
         }
 
@@ -40,6 +43,7 @@ namespace SJBCS.Services.Repository
 
         public Organization UpdateOrganization(Organization Organization)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Organizations.Local.Any(r => r.OrganizationID == Organization.OrganizationID))
             {
                 _context.Organizations.Attach(Organization);

@@ -114,14 +114,21 @@ namespace SJBCS.GUI.Student
         public string SelectedSearch
         {
             get { return _selectedSearch; }
-            set { SetProperty(ref _selectedSearch, value); }
+            set
+            {
+                SetProperty(ref _selectedSearch, value);
+                OnClear();
+            }
         }
 
         private List<string> _searchCriteria;
         public List<string> SearchCriteria
         {
             get { return _searchCriteria; }
-            set { SetProperty(ref _searchCriteria, value); }
+            set
+            {
+                SetProperty(ref _searchCriteria, value);
+            }
         }
 
 
@@ -165,10 +172,9 @@ namespace SJBCS.GUI.Student
 
         public void LoadStudents()
         {
+            //_allStudents = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents().OrderBy(student => student.Level.LevelOrder));
             _allStudents = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
             Students = _allStudents;
-            if (Students != null)
-                Students = new ObservableCollection<Data.Student>(Students.AsEnumerable().OrderBy(student => student.Level.GradeLevel, new NaturalSortComparer<string>()).ToList());
         }
 
         public void OnAdd()
@@ -222,7 +228,7 @@ namespace SJBCS.GUI.Student
             }
         }
 
-        private void OnClear()
+        public void OnClear()
         {
             SearchInput = null;
         }

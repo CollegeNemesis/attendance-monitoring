@@ -158,9 +158,9 @@
                         <materialDesign:Card Margin="10"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Top">
-                            <Grid Width="300">
+                            <Grid Width="200">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="260" />
+                                    <RowDefinition Height="200" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <materialDesign:ColorZone VerticalAlignment="Stretch"
@@ -181,7 +181,7 @@
                                     <TextBlock TextAlignment="Center"
                                                FontFamily="Segoe UI"
                                                FontWeight="Regular"
-                                               FontSize="20"
+                                               FontSize="16"
                                                MaxWidth="200"
                                                TextWrapping="Wrap"
                                                Margin="10">
@@ -189,12 +189,12 @@
                                 <Run Text="{Binding Student.LastName}" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.StudentID}"
-                                        FontSize="16" />
+                                        FontSize="14" />
                                 <LineBreak />
                                 <Run Text="{Binding Student.Level.GradeLevel}"
-                                        FontSize="14" />
+                                        FontSize="12" />
                                 <Run Text="{Binding Student.Section.SectionName}"
-                                        FontSize="14" />
+                                        FontSize="12" />
                                     </TextBlock>
                                 </StackPanel>
                             </Grid>

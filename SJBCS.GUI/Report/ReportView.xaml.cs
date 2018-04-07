@@ -312,7 +312,7 @@ namespace SJBCS.GUI.Report
             }
         }
 
-        private void btnGenerate_Click(object sender, RoutedEventArgs e)
+        private async void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -322,7 +322,7 @@ namespace SJBCS.GUI.Report
                 {
                     EnableExportButtons(false);
                     dgResults.Visibility = Visibility.Hidden;
-                    MessageBox.Show("No results found.");
+                    await DialogHelper.ShowDialog(DialogType.Informational, "No results found.");
                 }
                 else
                 {

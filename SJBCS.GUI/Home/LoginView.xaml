@@ -18,90 +18,89 @@
                     VerticalAlignment="Top"
                     Margin="0 20">
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="Log in"
-                           FontSize="40"
-                           Margin="0 0 0 50"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="500">
-                        <TextBlock Text="Guard"
-                                   FontSize="20" />
-                        <TextBlock Text="Quickly access attendance monitoring system."
+                        <TextBlock Text="Quick Login"
+                                   FontSize="40"
+                                   Margin="0 0 0 10" />
+                        <TextBlock Text="Click below account to navigate to the attendance monitoring system right away."
+                                   TextWrapping="Wrap"
+                                   Width="400"
+                                   HorizontalAlignment="Left"
+                                   FontSize="20"
                                    Margin="0 15 0 0" />
                         <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Background="Transparent"
                                 Height="Auto"
                                 Width="Auto"
-                                Margin="0 50 0 0"
+                                Margin="0 30"
                                 HorizontalAlignment="Left"
                                 VerticalContentAlignment="Center"
                                 Command="{Binding EntryCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="8 0 0 0"
-                                           VerticalAlignment="Center">Proceed to attendance monitoring</TextBlock>
-                                <materialDesign:PackIcon Kind="ArrowRight"
-                                                         HorizontalAlignment="Center"
-                                                         Margin="10"/>
+                            <StackPanel>
+                                <Image Source="/SJBCS.GUI;component/Image/guard-icon.png"
+                                       Height="150"
+                                       Width="150"
+                                       Margin="5"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
                     <StackPanel Width="500">
-                        <StackPanel>
-                            <TextBlock Text="Admin"
-                                       FontSize="20" />
-                            <TextBlock Text="Manage records, generate reports and settings."
-                                       Margin="0 15 0 0" />
-                        </StackPanel>
-                        <Border BorderBrush="#3D62B3"
-                                BorderThickness=".5"
-                                Padding="10"
-                                HorizontalAlignment="Left"
-                                Margin="0 40 0 0"
-                                Width="250">
-                            <StackPanel  HorizontalAlignment="Center">
-                                <StackPanel>
-                                    <TextBlock Text="Username"
-                                               Foreground="#3D62B3"
-                                               FontFamily="Segoe UI"
-                                               FontWeight="Regular"
-                                               FontSize="12" />
-                                    <TextBox Grid.Column="1"
+                        <TextBlock Text="Sign in"
+                                   FontSize="40"
+                                   Margin="0 0 0 10" />
+                        <TextBlock Text="Log in to the system with your account."
+                                   TextWrapping="Wrap"
+                                   Width="400"
+                                   HorizontalAlignment="Left"
+                                   FontSize="20"
+                                   Margin="0 15 0 0" />
+                        <StackPanel  Margin="0 30 0 0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Username"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="14" />
+                                <TextBox Grid.Column="1"
+                                         Width="200"
+                                         VerticalAlignment="Center"
+                                         Style="{StaticResource MaterialDesignTextBox}"
+                                         Text="{Binding Username}"
+                                         TabIndex="0" />
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Center"
+                                        Margin="0 10 0 0">
+                                <TextBlock Text="Password"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="14" />
+                                <PasswordBox x:Name="Password"
+                                             Grid.Column="1"
                                              Width="200"
                                              VerticalAlignment="Center"
-                                             Style="{StaticResource MaterialDesignTextBox}"
-                                             Text="{Binding Username}"
-                                             TabIndex="0" />
-                                </StackPanel>
-                                <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="Password"
-                                               Foreground="#3D62B3"
-                                               FontFamily="Segoe UI"
-                                               FontWeight="Regular"
-                                               FontSize="12" />
-                                    <PasswordBox x:Name="Password"
-                                                 Grid.Column="1"
-                                                 Width="200"
-                                                 VerticalAlignment="Center"
-                                                 Style="{StaticResource MaterialDesignPasswordBox}"
-                                                 TabIndex="1" />
-                                </StackPanel>
-                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Height="Auto"
-                                        Width="Auto"
-                                        Margin="0 20 0 0"
-                                        HorizontalAlignment="Left"
-                                        VerticalContentAlignment="Center"
-                                        Command="{Binding LoginCommand}"
-                                        CommandParameter="{Binding ElementName=Password, Converter={StaticResource pwdConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="8 0 0 0"
-                                                   VerticalAlignment="Center">Login</TextBlock>
-                                        <materialDesign:PackIcon Kind="ArrowRight"
-                                                                 HorizontalAlignment="Center"
-                                                                 Margin="10" />
-                                    </StackPanel>
-                                </Button>
-
+                                             Style="{StaticResource MaterialDesignPasswordBox}"
+                                             TabIndex="1" />
                             </StackPanel>
-                        </Border>
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Height="Auto"
+                                    Width="Auto"
+                                    Margin="0 20 0 0"
+                                    HorizontalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Command="{Binding LoginCommand}"
+                                    CommandParameter="{Binding ElementName=Password, Converter={StaticResource pwdConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="8 0 0 0"
+                                               VerticalAlignment="Center">Login</TextBlock>
+                                    <materialDesign:PackIcon Kind="ArrowRight"
+                                                             HorizontalAlignment="Center"
+                                                             Margin="10" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

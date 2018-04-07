@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public DistributionList AddDistributionList(DistributionList DistributionList)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.DistributionLists.Add(DistributionList);
             _context.SaveChanges();
             return DistributionList;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteDistributionList(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var DistributionList = _context.DistributionLists.FirstOrDefault(r => r.DistributionListID == id);
             if (DistributionList != null)
             {
@@ -29,16 +31,19 @@ namespace SJBCS.Services.Repository
 
         public DistributionList GetDistributionList(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.DistributionLists.FirstOrDefault(r => r.DistributionListID == id);
         }
 
         public List<DistributionList> GetDistributionLists()
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.DistributionLists.ToList();
         }
 
         public DistributionList UpdateDistributionList(DistributionList DistributionList)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.DistributionLists.Local.Any(r => r.DistributionListID == DistributionList.DistributionListID))
             {
                 _context.DistributionLists.Attach(DistributionList);

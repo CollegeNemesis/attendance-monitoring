@@ -14,7 +14,7 @@ namespace SJBCS.GUI.Dialogs
         public void Start()
         {
             //create the thread with its ThreadStart method
-            this.StatusThread = new Thread(() =>
+            this.StatusThread = new Thread(async () =>
             {
                 try
                 {
@@ -31,9 +31,10 @@ namespace SJBCS.GUI.Dialogs
                     //this call is needed so the thread remains open until the dispatcher is closed
                     System.Windows.Threading.Dispatcher.Run();
                 }
-                catch (Exception ex)
+                catch (Exception error)
                 {
-                    MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
+                    await DialogHelper.ShowDialog(DialogType.Error, error.Message);
+                    System.Windows.Application.Current.Shutdown();
                 }
             });
 

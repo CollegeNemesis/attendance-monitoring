@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Student AddStudent(Student Student)
         {
+            _context = ConnectionHelper.CreateConnection();
             _context.Students.Add(Student);
             _context.SaveChanges();
             return Student;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteStudent(Guid id)
         {
+            //_context = ConnectionHelper.CreateConnection();
             var Student = _context.Students.FirstOrDefault(r => r.StudentGuid == id);
 
             if (Student != null)
@@ -33,7 +35,6 @@ namespace SJBCS.Services.Repository
                     _context.Entry(relBiometric).State = EntityState.Deleted;
                 }
                 _context.Entry(Student).State = EntityState.Deleted;
-                //_context.Students.Remove(Student);
             }
             _context.SaveChanges();
 
@@ -41,6 +42,7 @@ namespace SJBCS.Services.Repository
 
         public Student GetStudent(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Students.FirstOrDefault(r => r.StudentGuid == id);
         }
         public Student GetStudent(string id)
@@ -52,11 +54,12 @@ namespace SJBCS.Services.Repository
         public List<Student> GetStudents()
         {
             _context = ConnectionHelper.CreateConnection();
-            return _context.Students.ToList();
+            return _context.Students.OrderBy(student=> student.Level.LevelOrder).ToList();
         }
 
         public Student UpdateStudent(Student source)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Students.Local.Any(r => r.StudentGuid == source.StudentGuid))
             {
                 _context.Students.Attach(source);

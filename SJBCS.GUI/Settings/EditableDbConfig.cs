@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SJBCS.GUI.Settings
 {
-    public class EditableConfig : ValidatableBindableBase
+    public class EditableDbConfig : ValidatableBindableBase
     {
         private string hostname;
         [Required(ErrorMessage = "This field is required.")]
@@ -35,14 +35,6 @@ namespace SJBCS.GUI.Settings
         {
             get { return password; }
             set { SetProperty(ref password, value); }
-        }
-
-        private string url;
-        [Required(ErrorMessage = "This field is required.")]
-        public string Url
-        {
-            get { return url; }
-            set { SetProperty(ref url, value); }
         }
     }
 }

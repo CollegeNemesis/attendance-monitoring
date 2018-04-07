@@ -149,6 +149,13 @@ namespace SJBCS.GUI
         private void NavToConfig()
         {
             ClockViewModel = _clockViewModel;
+
+            _configManagementViewModel.EditableDbConfig.Hostname = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Hostname;
+            _configManagementViewModel.EditableDbConfig.InitialCatalog = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.InitialCatalog;
+            _configManagementViewModel.EditableDbConfig.Username = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username;
+            _configManagementViewModel.EditableDbConfig.Password = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password;
+            _configManagementViewModel.EditableSmsConfig.Url = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
+
             CurrentViewModel = _configManagementViewModel;
         }
 
@@ -187,6 +194,7 @@ namespace SJBCS.GUI
             try
             {
                 _studentViewModel.LoadStudents();
+                _studentViewModel.OnClear();
             }
             catch(Exception error)
             {

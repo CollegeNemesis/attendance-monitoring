@@ -16,7 +16,14 @@ namespace SJBCS.GUI.Student
 
         public void DialogOpeningEventHandler(object sender, DialogOpenedEventArgs eventargs)
         {
-            ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOn();
+            try
+            {
+                ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOn();
+            }
+            catch(Exception error)
+            {
+                return;
+            }
         }
 
         public void DialogClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
@@ -25,7 +32,6 @@ namespace SJBCS.GUI.Student
                 ((AddEditStudentViewModel)DataContext).OnEnrollBiometric(((AddEditStudentViewModel)DataContext).CurrentViewModel.Biometric);
 
             ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOff();
-            Console.WriteLine("Closed.");
         }
     }
 }

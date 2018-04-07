@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Biometric AddBiometric(Biometric Biometric)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.Biometrics.Add(Biometric);
             _context.SaveChanges();
             return Biometric;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteBiometric(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var Biometric = _context.Biometrics.FirstOrDefault(r => r.FingerID == id);
             if (Biometric != null)
             {
@@ -29,16 +31,19 @@ namespace SJBCS.Services.Repository
 
         public Biometric GetBiometric(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Biometrics.FirstOrDefault(r => r.FingerID == id);
         }
 
         public List<Biometric> GetBiometrics()
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Biometrics.ToList();
         }
 
         public Biometric UpdateBiometric(Biometric Biometric)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Biometrics.Local.Any(r => r.FingerID == Biometric.FingerID))
             {
                 _context.Biometrics.Attach(Biometric);

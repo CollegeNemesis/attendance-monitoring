@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Attendance AddAttendance(Attendance Attendance)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.Attendances.Add(Attendance);
             _context.SaveChanges();
             return Attendance;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteAttendance(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var Attendance = _context.Attendances.FirstOrDefault(r => r.AttendanceID == id);
             if (Attendance != null)
             {
@@ -29,6 +31,7 @@ namespace SJBCS.Services.Repository
 
         public Attendance GetAttendanceByStudentID(Guid studentID)
         {
+            _context = ConnectionHelper.CreateConnection();
             var today = DateTime.Today;
 
             return _context.Attendances.Where(attendance => attendance.StudentID == studentID && DbFunctions.TruncateTime(attendance.TimeIn) >= today).FirstOrDefault();
@@ -36,21 +39,25 @@ namespace SJBCS.Services.Repository
 
         public Attendance GetAttendanceByID(Guid attendanceID)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Attendances.Where(attendance => attendance.AttendanceID == attendanceID).FirstOrDefault();
         }
 
         public Attendance GetAttendanceBySMSID(string smsID)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Attendances.Where(attendance => attendance.TimeInSMSID == smsID || attendance.TimeOutSMSID == smsID).FirstOrDefault();
         }
 
         public List<Attendance> GetAttendances()
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Attendances.ToList();
         }
 
         public List<Attendance> GetAttendancesWithFailedSMSRecord()
         {
+            _context = ConnectionHelper.CreateConnection();
             var today = DateTime.Today;
             return _context.Attendances.Where(attendance =>
                         ((attendance.TimeIn != null &&
@@ -64,6 +71,7 @@ namespace SJBCS.Services.Repository
 
         public Attendance UpdateAttendance(Attendance Attendance)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Attendances.Local.Any(r => r.AttendanceID == Attendance.AttendanceID))
             {
                 _context.Attendances.Attach(Attendance);

@@ -50,38 +50,6 @@ namespace SJBCS.GUI.Student
             }
         }
 
-        //private Guid _selectedLevelId;
-        //public Guid SelectedLevelId
-        //{
-        //    get { return _selectedLevelId; }
-        //    set
-        //    {
-        //        if (value != null)
-        //        {
-        //            Sections = new ObservableCollection<Section>(_sectionsRepository.GetSections(value));
-        //            if (Sections.Any())
-        //                SelectedSectionId = Sections[0].SectionID;
-        //            else
-        //                SelectedSection = new Section();
-        //        }
-        //        SetProperty(ref _selectedLevelId, value);
-        //        EditCommand.RaiseCanExecuteChanged();
-        //        DeleteCommand.RaiseCanExecuteChanged();
-        //    }
-        //}
-
-        //private Guid _selectedSectionId;
-        //public Guid SelectedSectionId
-        //{
-        //    get { return _selectedSectionId; }
-        //    set
-        //    {
-        //        if (value != null)
-        //            SelectedSection = _sectionsRepository.GetSection(value);
-        //        SetProperty(ref _selectedSectionId, value);
-        //    }
-        //}
-
         private Guid _selectedLevelId;
         public Guid SelectedLevelId
         {
@@ -92,6 +60,8 @@ namespace SJBCS.GUI.Student
                     Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
                 if (Sections.Any())
                     SelectedSectionId = Sections.FirstOrDefault().SectionID;
+                else
+                    SelectedSection = null;
                 SetProperty(ref _selectedLevelId, value);
                 EditCommand.RaiseCanExecuteChanged();
                 DeleteCommand.RaiseCanExecuteChanged();
@@ -167,7 +137,9 @@ namespace SJBCS.GUI.Student
         {
             SelectedSection = null;
             AddEditMode = false;
-            LoadComboBox();
+            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            if (Levels.Any())
+                SelectedLevelId = SelectedLevelId;
             AddEditSectionViewModel.Initialize();
             AddEditSectionViewModel = addEditSectionViewModel;
         }
@@ -183,6 +155,10 @@ namespace SJBCS.GUI.Student
 
         private void NavToAddSection(Section section)
         {
+            Levels = new ObservableCollection<Level>(_levelsRepository.GetLevels());
+            if (Levels.Any())
+                SelectedLevelId = SelectedLevelId;
+
             addEditSectionViewModel.EditMode = false;
             addEditSectionViewModel.SetSection(section);
             addEditSectionViewModel.Initialize();
@@ -202,9 +178,9 @@ namespace SJBCS.GUI.Student
                     EditCommand.RaiseCanExecuteChanged();
                     DeleteCommand.RaiseCanExecuteChanged();
                 }
-                catch
+                catch (Exception error)
                 {
-                    result = await DialogHelper.ShowDialog(DialogType.Informational, "You cannot delete an active section.");
+                    result = await DialogHelper.ShowDialog(DialogType.Error, "You cannot delete an active section.");
                 }
             }
         }
@@ -212,7 +188,6 @@ namespace SJBCS.GUI.Student
         private void OnAdd()
         {
             AddRequested(new Section { LevelID = SelectedLevelId, SectionID = Guid.NewGuid() });
-            LoadComboBox();
         }
 
         private void OnEdit(Section section)

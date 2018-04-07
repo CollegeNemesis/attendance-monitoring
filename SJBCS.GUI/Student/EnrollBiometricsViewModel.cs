@@ -194,9 +194,7 @@ namespace SJBCS.GUI.Student
                 {
 
                     SwitchOff();
-
-                    Status = "Finger has been enrolled already. Please try a another finger.";
-
+                    Status = "Fingerprint has been enrolled, try again.";
                     Start();
                 }
             }

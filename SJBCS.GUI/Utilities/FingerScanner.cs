@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SJBCS.GUI.Dialogs;
+using System;
 using System.Windows;
 
 namespace SJBCS.GUI.Utilities
@@ -19,7 +20,7 @@ namespace SJBCS.GUI.Utilities
             }
             catch(Exception error)
             {
-                MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                LogError("Fatal error with the SDK. Please restart the application.");
                 Logger.Error(error);
                 System.Windows.Application.Current.Shutdown();
             }
@@ -40,7 +41,7 @@ namespace SJBCS.GUI.Utilities
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                    LogError("Fatal error with the SDK. Please restart the application.");
                     Logger.Error(error);
                     System.Windows.Application.Current.Shutdown();
                 }
@@ -57,11 +58,16 @@ namespace SJBCS.GUI.Utilities
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Fatal error with the SDK. Please restart the application.", "Important Note", MessageBoxButton.OK, MessageBoxImage.Error);
+                    LogError("Fatal error with the SDK. Please restart the application.");
                     Logger.Error(error);
                     System.Windows.Application.Current.Shutdown();
                 }
             }
+        }
+
+        private async void LogError(string error)
+        {
+            await DialogHelper.ShowDialog(DialogType.Error, error); 
         }
 
         protected DPFP.FeatureSet ExtractFeatures(DPFP.Sample Sample, DPFP.Processing.DataPurpose Purpose)

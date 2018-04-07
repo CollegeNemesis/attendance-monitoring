@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Section AddSection(Section Section)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.Sections.Add(Section);
             _context.SaveChanges();
             return Section;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteSection(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var Section = _context.Sections.FirstOrDefault(r => r.SectionID == id);
             _context.Entry(Section).State = EntityState.Deleted;
             _context.SaveChanges();
@@ -26,6 +28,7 @@ namespace SJBCS.Services.Repository
 
         public Section GetSection(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Sections.FirstOrDefault(r => r.SectionID == id);
         }
 
@@ -43,6 +46,7 @@ namespace SJBCS.Services.Repository
 
         public Section UpdateSection(Section Section)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Sections.Local.Any(r => r.SectionID == Section.SectionID))
             {
                 _context.Sections.Attach(Section);

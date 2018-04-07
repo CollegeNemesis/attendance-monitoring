@@ -451,27 +451,12 @@
                                                          Height="20"
                                                          Kind="Plus" />
                             </Button>
-                            <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                    HorizontalAlignment="Left"
-                                    Background="#3D62B3"
-                                    BorderBrush="Transparent"
-                                    Command="{Binding ElementName=AddEditControl, Path=DataContext.EnrollBiometricCommand}"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                                    VerticalAlignment="Center"
-                                    Margin="5 10 0 0"
-                                    Padding="5"
-                                    Height="Auto"
-                                    Width="Auto">
-                                <materialDesign:PackIcon Width="20"
-                                                         Height="20"
-                                                         Kind="Plus" />
-                            </Button>-->
                         </StackPanel>
                         <ScrollViewer HorizontalScrollBarVisibility="Hidden"
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalAlignment="Left"
                                       Height="100"
-                                      Width="260"
+                                      Width="315"
                                       Margin="5 0 0 0">
                             <ItemsControl ItemsSource="{Binding Biometrics}"
                                           Margin="5 0 0 0"

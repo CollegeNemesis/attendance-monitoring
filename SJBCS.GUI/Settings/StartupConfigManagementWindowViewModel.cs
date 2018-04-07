@@ -15,7 +15,15 @@ namespace SJBCS.GUI.Settings
     public class StartupConfigManagementWindowViewModel : BindableBase
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public LoadingWindowHandler LoadingScreen;
+
+        private bool _loading;
+
+        public bool Loading
+        {
+            get { return _loading; }
+            set { SetProperty(ref _loading, value); }
+        }
+
 
         private bool closeTrigger;
         public bool CloseTrigger
@@ -27,18 +35,20 @@ namespace SJBCS.GUI.Settings
             }
         }
 
-        private EditableConfig _editableConfig;
-        public EditableConfig EditableConfig
+        private Config Config;
+
+        private EditableDbConfig _editableDbConfig;
+        public EditableDbConfig EditableDbConfig
         {
-            get { return _editableConfig; }
-            set => SetProperty(ref _editableConfig, value);
+            get { return _editableDbConfig; }
+            set => SetProperty(ref _editableDbConfig, value);
         }
 
-        private Config _config;
-        public Config Config
+        private EditableSmsConfig _editableSmsConfig;
+        public EditableSmsConfig EditableSmsConfig
         {
-            get { return _config; }
-            set { SetProperty(ref _config, value); }
+            get { return _editableSmsConfig; }
+            set => SetProperty(ref _editableSmsConfig, value);
         }
 
         public RelayCommand UpdateDbConfigCommand { get; private set; }
@@ -46,69 +56,81 @@ namespace SJBCS.GUI.Settings
 
         public StartupConfigManagementWindowViewModel()
         {
-            Config = ConnectionHelper.Config;
             UpdateDbConfigCommand = new RelayCommand(OnUpdateDbConfig, CanUpdate);
             TestDbCommand = new RelayCommand(OnTestDb, CanTest);
 
-            if (EditableConfig != null) EditableConfig.ErrorsChanged -= RaiseCanExecuteChanged;
-            EditableConfig = new EditableConfig();
-            EditableConfig.ErrorsChanged += RaiseCanExecuteChanged;
+            if (EditableDbConfig != null)
+            {
+                EditableDbConfig.ErrorsChanged -= RaiseCanExecuteChanged;
+                EditableSmsConfig.ErrorsChanged -= RaiseCanExecuteChanged;
+            }
 
-            EditableConfig.Hostname = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Hostname;
-            EditableConfig.InitialCatalog = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.InitialCatalog;
-            EditableConfig.Username = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username;
-            EditableConfig.Password = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password;
-            EditableConfig.Url = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
+            EditableDbConfig = new EditableDbConfig();
+            EditableSmsConfig = new EditableSmsConfig();
 
-            LoadingScreen = new LoadingWindowHandler();
+            EditableDbConfig.ErrorsChanged += RaiseCanExecuteChanged;
+            EditableSmsConfig.ErrorsChanged += RaiseCanExecuteChanged;
+
+            EditableDbConfig.Hostname = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Hostname;
+            EditableDbConfig.InitialCatalog = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.InitialCatalog;
+            EditableDbConfig.Username = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username;
+            EditableDbConfig.Password = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password;
+            EditableSmsConfig.Url = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
         }
 
         private async void OnTestDb()
         {
+            Config = ConnectionHelper.Config.Copy();
             SetConfiguration();
 
             try
             {
-                //LoadingScreen.Start();
-                TestConnection();
-                //LoadingScreen.Stop();
-                var result =  await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
+                Loading = true;
+                await System.Threading.Tasks.Task.Run(() => TestConnection());
+                Loading = false;
+                var result = await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
             }
             catch (Exception error)
             {
-                //LoadingScreen.Stop();
+                Loading = false;
                 ConnectionHelper.Config = Config;
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
                 Logger.Error(error);
             }
         }
+
         private bool CanTest()
         {
-            return !EditableConfig.HasErrors;
+            return !EditableDbConfig.HasErrors;
         }
 
         private async void OnUpdateDbConfig()
         {
+            Config = ConnectionHelper.Config.Copy();
             SetConfiguration();
 
             try
             {
-                TestConnection();
+                Loading = true;
+                await System.Threading.Tasks.Task.Run(() => TestConnection());
+                Loading = false;
                 string json = JsonConvert.SerializeObject(ConnectionHelper.Config);
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
-                var result =  await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
+                var result = await DialogHelper.ShowDialog(DialogType.Success, "Successfully saved settings.");
                 CloseTrigger = true;
             }
             catch (Exception error)
             {
+                Loading = false;
                 ConnectionHelper.Config = Config;
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
                 Logger.Error(error);
             }
         }
+
         private bool CanUpdate()
         {
-            return !EditableConfig.HasErrors;
+            return !EditableDbConfig.HasErrors && !EditableSmsConfig.HasErrors;
         }
 
         private void TestConnection()
@@ -121,11 +143,11 @@ namespace SJBCS.GUI.Settings
 
         private void SetConfiguration()
         {
-            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Hostname = EditableConfig.Hostname;
-            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.InitialCatalog = EditableConfig.InitialCatalog;
-            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username = EditableConfig.Username;
-            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password = EditableConfig.Password;
-            ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url = EditableConfig.Url;
+            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Hostname = EditableDbConfig.Hostname;
+            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.InitialCatalog = EditableDbConfig.InitialCatalog;
+            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username = EditableDbConfig.Username;
+            ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password = EditableDbConfig.Password;
+            ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url = EditableSmsConfig.Url;
         }
 
         private void RaiseCanExecuteChanged(object sender, DataErrorsChangedEventArgs e)

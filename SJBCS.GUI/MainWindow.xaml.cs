@@ -27,10 +27,7 @@ namespace SJBCS.GUI
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            // Shutdown the application.
             Application.Current.Shutdown();
-            // OR You can Also go for below logic
-            // Environment.Exit(0);
         }
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)

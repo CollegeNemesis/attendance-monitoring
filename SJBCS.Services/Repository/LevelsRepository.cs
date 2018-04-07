@@ -12,6 +12,7 @@ namespace SJBCS.Services.Repository
 
         public Level AddLevel(Level Level)
         {
+            //_context = ConnectionHelper.CreateConnection();
             _context.Levels.Add(Level);
             _context.SaveChanges();
             return Level;
@@ -19,6 +20,7 @@ namespace SJBCS.Services.Repository
 
         public void DeleteLevel(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             var Level = _context.Levels.FirstOrDefault(r => r.LevelID == id);
             if (Level != null)
             {
@@ -29,6 +31,7 @@ namespace SJBCS.Services.Repository
 
         public Level GetLevel(Guid id)
         {
+            _context = ConnectionHelper.CreateConnection();
             return _context.Levels.FirstOrDefault(r => r.LevelID == id);
         }
 
@@ -40,6 +43,7 @@ namespace SJBCS.Services.Repository
 
         public Level UpdateLevel(Level Level)
         {
+            //_context = ConnectionHelper.CreateConnection();
             if (!_context.Levels.Local.Any(r => r.LevelID == Level.LevelID))
             {
                 _context.Levels.Attach(Level);
