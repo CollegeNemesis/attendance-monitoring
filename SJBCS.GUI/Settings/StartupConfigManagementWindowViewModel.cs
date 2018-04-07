@@ -1,8 +1,7 @@
-﻿using SJBCS.GUI.Utilities;
-using MaterialDesignThemes.Wpf;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.ComponentModel;

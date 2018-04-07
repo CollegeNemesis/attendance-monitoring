@@ -161,7 +161,7 @@ namespace SJBCS.GUI.AMS
                                         DateTime login = _attendance.TimeIn;
                                         DateTime logout = DateTime.Now;
 
-                                        if (logout > login.Add(new TimeSpan(0, 30, 0))) //Check if TimeSpan between login and logout is greater than allowed threshold
+                                        if (logout > login.Add(new TimeSpan(1, 0, 0))) //Check if TimeSpan between login and logout is greater than allowed threshold
                                         {
                                             _attendance.IsOverstay = false;
                                             _attendance.IsEarlyOut = false;

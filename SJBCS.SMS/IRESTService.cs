@@ -1,18 +1,19 @@
 ﻿using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using System.Threading.Tasks;
 
 namespace SJBCS.SMS
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IRESTService" in both code and config file together.
-    [ServiceContract]
+    [ServiceContract(Namespace = "http://SJBCS.SMS.RESTService")]
     public interface IRESTService
     {
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "Test")]
-        string testServer();
+        string TestServer();
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -20,7 +21,7 @@ namespace SJBCS.SMS
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "AcknowledgeSMS")]
-        bool acknowledgeSMS(AcknowledgeRequestData rData);
+        bool AcknowledgeSMS(AcknowledgeRequestData rData);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -28,7 +29,7 @@ namespace SJBCS.SMS
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "SendSMS")]
-        bool sendSMS(SendRequestData AttendanceID);
+        Task<bool> SendSMS(SendRequestData AttendanceID);
     }
 
     [DataContract]

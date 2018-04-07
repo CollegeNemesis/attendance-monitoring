@@ -1,12 +1,10 @@
-﻿using SJBCS.GUI.Utilities;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using Unity;
 

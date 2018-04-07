@@ -1,8 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
-namespace SJBCS.Data
+﻿namespace SJBCS.Data
 {
     public class AmsDbContext : AmsModel
     {

@@ -1,6 +1,6 @@
-﻿using SJBCS.GUI.Utilities;
-using ExpressiveAnnotations.Attributes;
+﻿using ExpressiveAnnotations.Attributes;
 using SJBCS.Data;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;

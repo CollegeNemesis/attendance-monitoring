@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using SJBCS.Data;
 using System;
-using System.Collections.Generic;
 using System.Net;
 
 namespace SJBCS.GUI.SMS
@@ -26,7 +24,7 @@ namespace SJBCS.GUI.SMS
         {
             try
             {
-                RestClient client = new RestClient("http://localhost:54000/RESTService.svc/SendSMS");
+                RestClient client = new RestClient("http://localhost:54000/SMSService/SendSMS");
                 RestRequest request = new RestRequest(Method.POST);
                 request.AddJsonBody(new
                 {

@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SJBCS.Services", "SJBCS.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SJBCS.SMS", "SJBCS.SMS\SJBCS.SMS.csproj", "{A777631A-79C9-4854-8344-A3876E242ACD}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SJBCS.Installer", "SJBCS.Installer\SJBCS.Installer.vdproj", "{02E8E145-906E-4519-A6C9-195DCF5387F2}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Attendance Monitoring System", "Attendance Monitoring System\Attendance Monitoring System.vdproj", "{8ABC79CA-6736-497D-83D3-30BFE595BF43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,8 +35,10 @@ Global
 		{A777631A-79C9-4854-8344-A3876E242ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A777631A-79C9-4854-8344-A3876E242ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A777631A-79C9-4854-8344-A3876E242ACD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02E8E145-906E-4519-A6C9-195DCF5387F2}.Debug|Any CPU.ActiveCfg = Debug
-		{02E8E145-906E-4519-A6C9-195DCF5387F2}.Release|Any CPU.ActiveCfg = Release
+		{8ABC79CA-6736-497D-83D3-30BFE595BF43}.Debug|Any CPU.ActiveCfg = Debug
+		{8ABC79CA-6736-497D-83D3-30BFE595BF43}.Debug|Any CPU.Build.0 = Debug
+		{8ABC79CA-6736-497D-83D3-30BFE595BF43}.Release|Any CPU.ActiveCfg = Release
+		{8ABC79CA-6736-497D-83D3-30BFE595BF43}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,13 @@
-﻿using SJBCS.GUI.Utilities;
-using MaterialDesignThemes.Wpf;
-using SJBCS.Data;
+﻿using SJBCS.Data;
 using SJBCS.GUI.Converters;
-using SJBCS.GUI.Dialogs;
-using SJBCS.GUI.Home;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.Security.Cryptography;
 using SJBCS.GUI.Settings;
 using System.Text;
 using System.IO;
+using SJBCS.GUI.Dialogs;
 
 namespace SJBCS.GUI.Home
 {

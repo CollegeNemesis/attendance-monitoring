@@ -1,14 +1,8 @@
-﻿using SJBCS.GUI.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using SJBCS.GUI.Validation;
+﻿using ExpressiveAnnotations.Attributes;
 using SJBCS.Data;
-using ExpressiveAnnotations.Attributes;
+using SJBCS.GUI.Utilities;
+using SJBCS.GUI.Validation;
+using System.Collections.ObjectModel;
 
 namespace SJBCS.GUI.Student
 {

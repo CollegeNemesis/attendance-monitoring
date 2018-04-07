@@ -1,15 +1,13 @@
-﻿using SJBCS.GUI.Utilities;
-using MaterialDesignThemes.Wpf;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Threading;
 
 namespace SJBCS.GUI.Settings
 {

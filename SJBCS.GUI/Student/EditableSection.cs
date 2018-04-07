@@ -1,6 +1,6 @@
-﻿using SJBCS.GUI.Utilities;
-using ExpressiveAnnotations.Attributes;
+﻿using ExpressiveAnnotations.Attributes;
 using SJBCS.Data;
+using SJBCS.GUI.Utilities;
 using SJBCS.GUI.Validation;
 using SJBCS.GUI.Wrapper;
 using SJBCS.Services.Repository;
@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace SJBCS.GUI.Student
 {

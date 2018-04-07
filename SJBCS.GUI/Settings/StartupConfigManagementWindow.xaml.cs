@@ -1,5 +1,4 @@
 ﻿using SJBCS.GUI.Utilities;
-using System.Windows;
 using Unity;
 
 namespace SJBCS.GUI.Settings

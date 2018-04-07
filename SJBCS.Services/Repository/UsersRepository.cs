@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SJBCS.Data;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
-using SJBCS.Data;
 
 namespace SJBCS.Services.Repository
 {

@@ -1,7 +1,5 @@
-﻿using System;
+﻿using SJBCS.Data;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using SJBCS.Data;
 
 namespace SJBCS.Services.Repository
 {

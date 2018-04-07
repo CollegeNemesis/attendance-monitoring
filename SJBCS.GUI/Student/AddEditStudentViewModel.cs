@@ -1,18 +1,12 @@
-﻿using SJBCS.GUI.Utilities;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
-using SJBCS.Data;
+﻿using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
+using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Unity;
 
 namespace SJBCS.GUI.Student

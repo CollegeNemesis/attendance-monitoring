@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using SJBCS.Data;
 using System;
-using System.Configuration;
 using System.Linq;
 
 namespace SJBCS.Data
