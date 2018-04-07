@@ -165,8 +165,8 @@
                                 </Grid.RowDefinitions>
                                 <materialDesign:ColorZone VerticalAlignment="Stretch"
                                                           Mode="PrimaryLight">
-                                    <Ellipse Width="200"
-                                             Height="200"
+                                    <Ellipse Width="150"
+                                             Height="150"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Center">
                                         <Ellipse.Fill>
