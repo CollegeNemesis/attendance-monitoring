@@ -504,7 +504,7 @@
                                        TextWrapping="Wrap">
                             <Run Text="Add profile picture." />
                             <LineBreak />
-                            <Run Text="User the search button to locate ID picture."
+                            <Run Text="Use the search button to locate picture."
                                  FontSize="10" />
                             </TextBlock>
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"

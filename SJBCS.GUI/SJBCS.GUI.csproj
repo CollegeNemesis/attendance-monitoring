@@ -198,6 +198,7 @@
     </Compile>
     <Compile Include="Home\ClockViewModel.cs" />
     <Compile Include="Settings\EditableSmsConfig.cs" />
+    <Compile Include="SMS\SMSSetup.cs" />
     <Compile Include="Utilities\CloseWindowBehavior.cs" />
     <Compile Include="Settings\StartupConfigManagementWindow.xaml.cs">
       <DependentUpon>StartupConfigManagementWindow.xaml</DependentUpon>
@@ -406,7 +407,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Image\St John Logo.png" />
-    <Resource Include="Image\logo-icon.png" />
+    <EmbeddedResource Include="Image\logo-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="Image\guard-icon.png" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

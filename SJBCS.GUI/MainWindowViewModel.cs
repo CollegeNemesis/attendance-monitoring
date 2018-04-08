@@ -5,19 +5,14 @@ using SJBCS.GUI.Dialogs;
 using SJBCS.GUI.Home;
 using SJBCS.GUI.Report;
 using SJBCS.GUI.Settings;
+using SJBCS.GUI.SMS;
 using SJBCS.GUI.Student;
 using SJBCS.GUI.Utilities;
 using SJBCS.Services.Repository;
-using SJBCS.SMS;
 using System;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Web;
 using Unity;
 
 namespace SJBCS.GUI
@@ -26,7 +21,6 @@ namespace SJBCS.GUI
     {
         #region Properties
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private WebServiceHost serviceHost;
 
         public LoginViewModel _loginViewModel;
         public MenuViewModel _menuViewModel;
@@ -89,7 +83,7 @@ namespace SJBCS.GUI
         public MainWindowViewModel()
         {
             LoadConfiguration();
-            StartSMSService();
+            SMSSetup.Instance.StartSMSService();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _menuViewModel = ContainerHelper.Container.Resolve<MenuViewModel>();
             _mainClockViewModel = ContainerHelper.Container.Resolve<MainClockViewModel>();
@@ -136,7 +130,6 @@ namespace SJBCS.GUI
             CurrentViewModel = _loginViewModel;
             Menu = null;
             AdminMode = false;
-            serviceHost?.Close();
         }
 
         #region Methods
@@ -366,46 +359,6 @@ namespace SJBCS.GUI
             using (AmsModel dbContext = ConnectionHelper.CreateConnection())
             {
                 new LevelsRepository().GetLevels().ToList();
-            }
-        }
-
-        private void StartSMSService()
-        {
-            string ipAddress = GetIPAddress();
-            Uri baseAddress = new Uri(String.Format("http://{0}:54000/SMSService/", ipAddress));
-            serviceHost = new WebServiceHost(typeof(RESTService), baseAddress);
-
-            try
-            {
-                serviceHost.AddServiceEndpoint(typeof(IRESTService), new WebHttpBinding(), "");
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior
-                {
-                    HttpGetEnabled = true
-                };
-                serviceHost.Description.Behaviors.Add(smb);
-                serviceHost.Description.Namespace = "http://SJBCS.SMS";
-                serviceHost.Open();
-                Logger.Info("SMS Service started");
-            }
-            catch (CommunicationException ce)
-            {
-                Logger.Error("Error encountered when starting SMS Service", ce);
-                serviceHost.Abort();
-            }
-            catch (Exception e)
-            {
-                Logger.Error("Error encountered when starting SMS Service", e);
-                serviceHost.Abort();
-            }
-        }
-
-        private string GetIPAddress()
-        {
-            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-            {
-                socket.Connect("8.8.8.8", 80);
-                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                return endPoint.Address.ToString();
             }
         }
         #endregion

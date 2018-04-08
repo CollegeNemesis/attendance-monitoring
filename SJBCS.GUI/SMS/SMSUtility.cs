@@ -8,7 +8,6 @@ namespace SJBCS.GUI.SMS
     public class SMSUtility
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static string SMSURL = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
 
         public static void SendSMS(string text, string number, string attendaceID, bool isTimeIn, Action<string> success, Action<string> fail)
         {
@@ -22,6 +21,8 @@ namespace SJBCS.GUI.SMS
 
         private static void SendSMSAsync(string text, string number, string attendaceID, bool isTimeIn, Action<string> success, Action<string> fail)
         {
+            string SMSURL = ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url;
+
             try
             {
                 RestClient client = new RestClient("http://localhost:54000/SMSService/SendSMS");

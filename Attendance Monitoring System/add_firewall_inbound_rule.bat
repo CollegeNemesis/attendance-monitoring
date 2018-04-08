@@ -1,0 +1,1 @@
+netsh advfirewall firewall add rule name="SMSService" dir=in action=allow protocol=TCP localport=54000 profile=domain,private 

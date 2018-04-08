@@ -43,7 +43,7 @@ namespace SJBCS.SMS.Implementation
                         {
                             DatabaseImpl dbImpl = new DatabaseImpl();
                             ret = dbImpl.UpdateAttendanceSMSID(requestData.AttendanceID, requestData.IsTimeIn, smsID);
-                            Logger.Debug("SMS ID update: " + ret);
+                            Logger.Debug(String.Format("SMS ID update({0}): {1}", smsID, ret));
                         }
                         else
                         {
@@ -53,7 +53,7 @@ namespace SJBCS.SMS.Implementation
                     }
                     else
                     {
-                        Logger.Error("Failed to send SMS: " + response.ErrorMessage);
+                        Logger.Error(String.Format("Failed to send SMS({0}): {1}", requestData.URL, response.ErrorMessage));
                     }
                     taskCompletion.SetResult(ret);
                 });
@@ -71,7 +71,7 @@ namespace SJBCS.SMS.Implementation
         {
             DatabaseImpl dbImpl = new DatabaseImpl();
             bool ret = dbImpl.UpdateAttendaceSMSStatus(smsID, status);
-            Logger.Debug("SMS status update: " + ret);
+            Logger.Debug(String.Format("SMS status update({0}): {1}", smsID, ret));
             return ret;
         }
     }

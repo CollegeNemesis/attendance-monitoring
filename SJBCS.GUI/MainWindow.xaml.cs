@@ -1,4 +1,4 @@
-﻿using SJBCS.GUI.Dialogs;
+﻿using SJBCS.GUI.SMS;
 using SJBCS.GUI.Utilities;
 using System;
 using System.Threading;
@@ -32,6 +32,7 @@ namespace SJBCS.GUI
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
+            SMSSetup.Instance.StopSMSService();
             Close();
         }
     }
