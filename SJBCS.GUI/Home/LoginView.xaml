@@ -23,7 +23,7 @@
                         <TextBlock Text="Quick Login"
                                    FontSize="40"
                                    Margin="0 0 0 10" />
-                        <TextBlock Text="Click below account to navigate to the attendance monitoring system right away."
+                        <TextBlock Text="Proceed to attendance monitoring system."
                                    TextWrapping="Wrap"
                                    Width="400"
                                    HorizontalAlignment="Left"
@@ -45,17 +45,17 @@
                             </StackPanel>
                         </Button>
                     </StackPanel>
-                    <StackPanel Width="500">
+                    <StackPanel Width="Auto">
                         <TextBlock Text="Sign in"
                                    FontSize="40"
                                    Margin="0 0 0 10" />
-                        <TextBlock Text="Log in to the system with your account."
+                        <TextBlock Text=""
                                    TextWrapping="Wrap"
-                                   Width="400"
                                    HorizontalAlignment="Left"
                                    FontSize="20"
                                    Margin="0 15 0 0" />
-                        <StackPanel  Margin="0 30 0 0">
+                        <StackPanel  Margin="0 30 0 0"
+                                     HorizontalAlignment="Left">
                             <StackPanel HorizontalAlignment="Center">
                                 <TextBlock Text="Username"
                                            Foreground="#3D62B3"

@@ -6,6 +6,8 @@ namespace SJBCS.GUI.Dialogs
 {
     public class DialogHelper
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static async Task<bool> ShowDialog(DialogType dialogType, string message)
         {
             try
@@ -21,9 +23,17 @@ namespace SJBCS.GUI.Dialogs
 
                 return (bool)result;
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException error)
             {
                 DialogHost.CloseDialogCommand.Execute(new object(), null);
+                Logger.Error(error);
+                return false;
+            }
+
+            catch (Exception error)
+            {
+                DialogHost.CloseDialogCommand.Execute(new object(), null);
+                Logger.Error(error);
                 return false;
             }
         }

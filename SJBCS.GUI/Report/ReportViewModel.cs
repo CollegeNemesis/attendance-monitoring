@@ -1,6 +1,16 @@
-﻿namespace SJBCS.GUI.Report
+﻿using SJBCS.Data;
+using SJBCS.GUI.Utilities;
+
+namespace SJBCS.GUI.Report
 {
-    class ReportViewModel
+    public class ReportViewModel : BindableBase
     {
+        private User _activeUser;
+
+        public User ActiveUser
+        {
+            get { return _activeUser; }
+            set { SetProperty(ref _activeUser, value); }
+        }
     }
 }

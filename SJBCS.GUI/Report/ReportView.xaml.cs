@@ -41,12 +41,14 @@ namespace SJBCS.GUI.Report
 
         SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
+        
+
         public ReportView()
         {
             try
             {
+                //((ReportViewModel)DataContext).ActiveUser.Username
                 InitializeComponent();
-
                 sqlBuilder.DataSource = dataSource;
                 sqlBuilder.InitialCatalog = initialCatalog;
                 sqlBuilder.MultipleActiveResultSets = true;

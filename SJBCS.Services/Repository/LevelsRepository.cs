@@ -38,7 +38,7 @@ namespace SJBCS.Services.Repository
         public List<Level> GetLevels()
         {
             _context = ConnectionHelper.CreateConnection();            
-            return _context.Levels.AsEnumerable().OrderBy(level => level.GradeLevel, new NaturalSortComparer<string>()).ToList();
+            return _context.Levels.AsEnumerable().OrderBy(level => level.LevelOrder).ToList();
         }
 
         public Level UpdateLevel(Level Level)

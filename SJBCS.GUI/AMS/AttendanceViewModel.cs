@@ -278,6 +278,10 @@ namespace SJBCS.GUI.AMS
             {
                 Remarks = "No fingerprint template available in our records.";
             }
+            else
+            {
+                Remarks = "";
+            }
 
             Student.ImageData = null;
 

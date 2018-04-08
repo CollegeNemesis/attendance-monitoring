@@ -89,18 +89,14 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid DataContext="{StaticResource studentViewSource}">
+    <Grid DataContext="{StaticResource studentViewSource}"
+          Background="White">
         <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Background="White">
+                    HorizontalAlignment="Center">
             <Border x:Name="MainPanel"
                     BorderBrush="#B5B5B5"
                     BorderThickness=".5 0 .5 0">
                 <StackPanel>
-                    <TextBlock HorizontalAlignment="Center"
-                               FontSize="20"
-                               Margin="20"
-                               Text="STUDENT MASTERLIST" />
                     <materialDesign:ColorZone Padding="16"
                                               Background="#3D62B3"
                                               Mode="Standard">
@@ -207,8 +203,10 @@
                                     <DataTemplate>
                                         <materialDesign:PackIcon x:Name="icon"
                                                                  Kind="ChevronRight"
-                                                                 Foreground="#3D62B3"
-                                                                 Background="Transparent" />
+                                                                 Foreground="Black"
+                                                                 Background="Transparent"
+                                                                 Width="25"
+                                                                 Height="25"/>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
                                                          Value="True">
@@ -217,7 +215,7 @@
                                                         Value="ChevronDown" />
                                                 <Setter TargetName="icon"
                                                         Property="Foreground"
-                                                        Value="Red" />
+                                                        Value="#3D62B3" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -237,7 +235,7 @@
                                                 Width="150" />
                             <DataGridTextColumn Binding="{Binding Section.SectionName}"
                                                 Header="Section"
-                                                Width="180" />
+                                                Width="170" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
