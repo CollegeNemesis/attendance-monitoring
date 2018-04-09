@@ -122,8 +122,7 @@
                             </Button>
                             <StackPanel materialDesign:RippleAssist.IsCentered="True"
                                         Orientation="Horizontal"
-                                        HorizontalAlignment="Right">
-                                
+                                        HorizontalAlignment="Right">                                
                                 <materialDesign:ColorZone Padding="8,4,8,4"
                                                           Panel.ZIndex="1"
                                                           CornerRadius="2"

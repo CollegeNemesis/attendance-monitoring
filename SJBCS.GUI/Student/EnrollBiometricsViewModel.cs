@@ -12,6 +12,8 @@ namespace SJBCS.GUI.Student
 {
     public class EnrollBiometricsViewModel : FingerScanner
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         delegate void Function();
 
         private bool IsInitial;
@@ -26,16 +28,13 @@ namespace SJBCS.GUI.Student
         private bool IsFingerEnrolled;
 
         private bool isDone;
-
         public bool IsDone
         {
             get { return isDone; }
             set { SetProperty(ref isDone, value); }
         }
 
-
         private Biometric _biometric;
-
         public Biometric Biometric
         {
             get { return _biometric; }
@@ -43,7 +42,6 @@ namespace SJBCS.GUI.Student
         }
 
         private ObservableCollection<Biometric> _biometrics;
-
         public ObservableCollection<Biometric> Biometrics
         {
             get { return _biometrics; }
@@ -51,7 +49,6 @@ namespace SJBCS.GUI.Student
         }
 
         private int _completion;
-
         public int Completion
         {
             get { return _completion; }
@@ -59,7 +56,6 @@ namespace SJBCS.GUI.Student
         }
 
         private string _notification;
-
         public string Notification
         {
             get { return _notification; }
@@ -67,7 +63,6 @@ namespace SJBCS.GUI.Student
         }
 
         private string _instruction;
-
         public string Instruction
         {
             get { return _instruction; }
@@ -75,7 +70,6 @@ namespace SJBCS.GUI.Student
         }
 
         private string _status;
-
         public string Status
         {
             get { return _status; }
@@ -94,7 +88,7 @@ namespace SJBCS.GUI.Student
             IsInitial = true;
             IsDone = false;
 
-            Biometrics = new ObservableCollection<Biometric>(_biometricsRepository.GetBiometrics());
+            //Biometrics = new ObservableCollection<Biometric>(_biometricsRepository.GetBiometrics());
             Biometric = new Biometric();
 
             Status = "Let\'s start";
@@ -109,96 +103,109 @@ namespace SJBCS.GUI.Student
 
         protected override void Process(DPFP.Sample Sample)
         {
-            base.Process(Sample);
+            try
+            {
+                base.Process(Sample);
+                Stop();
 
+                // Process the sample and create a feature set for the enrollment purpose.
+                DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
 
-            // Process the sample and create a feature set for the enrollment purpose.
-            DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
+                // Check quality of the sample and add to enroller if it's good
+                if (features != null)
+                {
+                    //Check if finger is already enrolled
+                    IsFingerEnrolled = ValidateFinger(Sample, features);
+                    //Check user try to enroll duplicate finger at one transaction.
 
-            // Check quality of the sample and add to enroller if it's good
-            if (features != null)
+                    if (!IsFingerEnrolled)
+                    {
+                        Verificator = new DPFP.Verification.Verification();
+
+                        features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
+
+                        try
+                        {
+                            Enroller.AddFeatures(features);     // Add feature set to template.
+                            Completion += 25;
+
+                            Status = "Great. Now repeat.";
+                            Instruction = "Move your finger slightly to add all different parts of your fingerprint.";
+                            Notification = "Lift finger, then touch the sensor again. Completion - " + Completion + "%.";
+                        }
+                        finally
+                        {
+                            //UpdateStatus();
+
+                            // Check if template has been created.
+                            switch (Enroller.TemplateStatus)
+                            {
+                                case DPFP.Processing.Enrollment.Status.Ready:   // report success and stop capturing
+                                    OnTemplate(Enroller.Template);
+                                    Stop();
+                                    Status = "Fingerprint enrolled.";
+                                    Instruction = "Fingerprint enrollment completed succesfully. You may close this window.";
+                                    IsDone = true;
+                                    break;
+
+                                case DPFP.Processing.Enrollment.Status.Failed:  // report failure and restart capturing
+                                    Enroller.Clear();
+                                    Stop();
+                                    OnTemplate(null);
+
+                                    Status = "Fingerprint not enrolled.";
+                                    Instruction = "Fingerprint enrollment not completed succesfully. Please try again.";
+
+                                    Notification = "Put your finger on the sensor again and lift after you see next instruction.";
+                                    Instruction = "";
+                                    Completion = 0;
+
+                                    Start();
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SwitchOff();
+                        Status = "Fingerprint has been enrolled, try again.";
+                        Start();
+                    }
+                }
+            }
+
+            catch(Exception error)
+            {
+                Logger.Error(error);
+                Status = "Failed to process fingerprint, try again.";
+            }
+
+            Start();
+        }
+
+        private bool ValidateFinger(Sample Sample, DPFP.FeatureSet FeatureSet)
+        {
+            foreach (Biometric biometric in Biometrics)
             {
                 MemoryStream fingerprintData = null;
                 Result result = null;
 
-                //Check if finger is already enrolled
-                foreach (Biometric biometric in Biometrics)
-                {
-                    features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
+                FeatureSet = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
 
-                    fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
-                    Template = new Template(fingerprintData);
-                    result = new Result();
+                fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
+                Template = new Template(fingerprintData);
+                result = new Result();
 
-                    Verificator = new DPFP.Verification.Verification();
-                    Verificator.Verify(features, Template, ref result);
+                Verificator = new DPFP.Verification.Verification();
+                Verificator.Verify(FeatureSet, Template, ref result);
 
-                    if (result.Verified)
-                    {
-                        Verificator = new DPFP.Verification.Verification();
-                        IsFingerEnrolled = true;
-                        break;
-                    }
-                }
-
-                //Check user try to enroll duplicate finger at one transaction.
-
-                if (!IsFingerEnrolled)
+                if (result.Verified)
                 {
                     Verificator = new DPFP.Verification.Verification();
-
-                    features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Enrollment);
-
-                    try
-                    {
-                        Enroller.AddFeatures(features);     // Add feature set to template.
-                        Completion += 25;
-
-                        Status = "Great. Now repeat.";
-                        Instruction = "Move your finger slightly to add all different parts of your fingerprint.";
-                        Notification = "Lift finger, then touch the sensor again. Completion - " + Completion + "%.";
-                    }
-                    finally
-                    {
-                        //UpdateStatus();
-
-                        // Check if template has been created.
-                        switch (Enroller.TemplateStatus)
-                        {
-                            case DPFP.Processing.Enrollment.Status.Ready:   // report success and stop capturing
-                                OnTemplate(Enroller.Template);
-                                Stop();
-                                Status = "Fingerprint enrolled.";
-                                Instruction = "Fingerprint enrollment completed succesfully. You may close this window.";
-                                IsDone = true;
-                                break;
-
-                            case DPFP.Processing.Enrollment.Status.Failed:  // report failure and restart capturing
-                                Enroller.Clear();
-                                Stop();
-                                OnTemplate(null);
-
-                                Status = "Fingerprint not enrolled.";
-                                Instruction = "Fingerprint enrollment not completed succesfully. Please try again.";
-
-                                Notification = "Put your finger on the sensor again and lift after you see next instruction.";
-                                Instruction = "";
-                                Completion = 0;
-
-                                Start();
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-
-                    SwitchOff();
-                    Status = "Fingerprint has been enrolled, try again.";
-                    Start();
+                    return true;
                 }
             }
-
+            return false;
         }
 
         private void OnTemplate(DPFP.Template template)

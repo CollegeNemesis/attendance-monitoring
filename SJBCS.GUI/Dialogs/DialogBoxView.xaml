@@ -15,6 +15,8 @@
         <converters:ColorConverter x:Key="ColorConverter" />
         <converters:IconConverter x:Key="IconConverter" />
         <converters:NegatableStringToVisibilityConverter x:Key="VisConverter" />
+        <converters:NegatableStringToVisibilityConverter x:Key="NegVisConverter"
+                                                          Negate="True" />
     </UserControl.Resources>
     <Grid Width="400"
           Height="200">
@@ -51,7 +53,8 @@
                         Foreground="#3D62B3"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
                     <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Center"
+                                Visibility="{Binding MessageType, Converter={StaticResource NegVisConverter}}">
                         <TextBlock Text="OK"
                                    VerticalAlignment="Center" />
                     </StackPanel>
@@ -59,21 +62,39 @@
                         <system:Boolean>True</system:Boolean>
                     </Button.CommandParameter>
                 </Button>
-                <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                        HorizontalAlignment="Left"
-                        IsCancel="True"
-                        Foreground="#3D62B3"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                        Visibility="{Binding MessageType, Converter={StaticResource VisConverter}}">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="CANCEL"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <Button.CommandParameter>
-                        <system:Boolean>False</system:Boolean>
-                    </Button.CommandParameter>
-                </Button>
+                <StackPanel Orientation="Horizontal"
+                            Visibility="{Binding MessageType, Converter={StaticResource VisConverter}}">
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                            HorizontalAlignment="Left"
+                            IsCancel="False"
+                            Foreground="#3D62B3"
+                            Margin="0 0 10 0"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="YES"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button.CommandParameter>
+                            <system:Boolean>True</system:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                            HorizontalAlignment="Left"
+                            IsCancel="True"
+                            Margin="10 0 0 0"
+                            Foreground="#3D62B3"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="NO"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button.CommandParameter>
+                            <system:Boolean>False</system:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

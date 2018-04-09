@@ -19,6 +19,7 @@ namespace SJBCS.GUI.Student
             try
             {
                 ((AddEditStudentViewModel)DataContext).CurrentViewModel.SwitchOn();
+                ((AddEditStudentViewModel)DataContext).CurrentViewModel.Biometrics = ((AddEditStudentViewModel)DataContext).Student.Biometrics;
             }
             catch(Exception error)
             {

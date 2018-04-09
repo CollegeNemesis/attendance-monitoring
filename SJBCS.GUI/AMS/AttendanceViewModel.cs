@@ -55,6 +55,14 @@ namespace SJBCS.GUI.AMS
             }
         }
 
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { SetProperty(ref _isLoading, value); }
+        }
+
         private string _scannerStatus;
         public string ScannerStatus
         {
@@ -133,119 +141,10 @@ namespace SJBCS.GUI.AMS
                 // Check quality of the sample and start verification if it's good
                 if (features != null)
                 {
-                    MemoryStream fingerprintData = null;
-                    Result result = null;
-
-                    foreach (Biometric biometric in _Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates                    
-                    {
-                        fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
-                        _Template = new Template(fingerprintData);
-                        result = new Result();
-                        _Verificator.Verify(features, _Template, ref result);
-
-                        if (result.Verified)
-                        {
-                            _Verificator = new DPFP.Verification.Verification();
-                            _relBiometric = _relBiometricsRepository.GetRelBiometric(biometric.FingerID);
-
-                            if (_relBiometric != null)  //Check if finger is enrolled.
-                            {
-                                _student = _studentsRepository.GetStudent(_relBiometric.StudentID);
-                                Student = _student;
-                                _attendance = _attendancesRepository.GetAttendanceByStudentID(_student.StudentGuid);
-
-                                if (_attendance != null)    //Check if student has already logged in for the day.
-                                {
-                                    if (_attendance.TimeOut == null)    //Check if student already logged out for the day
-                                    {
-                                        DateTime login = _attendance.TimeIn;
-                                        DateTime logout = DateTime.Now;
-                                        logout = new DateTime(logout.Year, logout.Month, logout.Day, logout.Hour, logout.Minute, 0);
-
-                                        if (logout > login.Add(new TimeSpan(1, 0, 0))) //Check if TimeSpan between login and logout is greater than allowed threshold
-                                        {
-                                            _attendance.IsOverstay = false;
-                                            _attendance.IsEarlyOut = false;
-
-                                            //Update student logout
-                                            _attendance.TimeOut = logout;
-
-                                            //Check if student is overstay or undertime;
-                                            TimeSpan timeOut = logout.TimeOfDay;
-                                            timeOut = new TimeSpan(timeOut.Hours, timeOut.Minutes, 0);
-                                            TimeSpan endTime = _student.Section.EndTime;
-
-                                            if (timeOut > endTime.Add(new TimeSpan(1, 0, 0)))
-                                            {
-                                                _attendance.IsOverstay = true;
-                                            }
-
-                                            if (timeOut < endTime)
-                                            {
-                                                _attendance.IsEarlyOut = true;
-                                            }
-
-                                            _attendancesRepository.UpdateAttendance(_attendance); //Updated attendance record
-                                            Application.Current.Dispatcher.Invoke(delegate
-                                            {
-                                                _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
-
-                                            });
-
-                                            ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime)_attendance.TimeOut, _student);
-                                            Remarks = "Student logged out.";
-                                        }
-                                        else
-                                        {
-                                            Remarks = "Student is not allowed to logout 1 hour after logging in.";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Remarks = "Student is not allowed to logout twice a day.";
-                                    }
-
-                                }
-                                else
-                                {
-                                    DateTime login = DateTime.Now;
-                                    login = new DateTime(login.Year, login.Month, login.Day, login.Hour, login.Minute, 0);
-                                    //Create new attendance record for the student.
-                                    _attendance = new Attendance
-                                    {
-                                        AttendanceID = Guid.NewGuid(),
-                                        StudentID = _student.StudentGuid,
-                                        TimeIn = login
-                                    };
-
-                                    TimeSpan timeIn = _attendance.TimeIn.TimeOfDay;
-                                    TimeSpan startTime = _student.Section.StartTime;
-
-                                    if (timeIn > startTime)
-                                        _attendance.IsLate = true;
-                                    else
-                                        _attendance.IsLate = false;
-
-                                    _attendancesRepository.AddAttendance(_attendance); //Add Record
-                                    Application.Current.Dispatcher.Invoke(delegate
-                                    {
-                                        _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
-                                    });
-
-                                    ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn, _student);
-                                    Remarks = "Student logged in.";
-                                }
-
-                                _IsFingerEnrolled = true;
-                                break;
-                            }
-                            else
-                            {
-                                Remarks = "Fingerprint in system but not linked to any student.";
-                                break;
-                            }
-                        }
-                    }
+                    IsLoading = true;
+                    _IsFingerEnrolled = ValidateFinger(features);
+                    IsLoading = false;
+                    
                     if (!_IsFingerEnrolled)
                     {
                         Remarks = "Fingerprint not recognized.";
@@ -265,6 +164,124 @@ namespace SJBCS.GUI.AMS
             }
 
             Start();
+        }
+
+        private bool ValidateFinger(FeatureSet FeatureSet)
+        {
+            MemoryStream fingerprintData = null;
+            Result result = null;
+
+            foreach (Biometric biometric in _Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates                    
+            {
+                fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
+                _Template = new Template(fingerprintData);
+                result = new Result();
+                _Verificator.Verify(FeatureSet, _Template, ref result);
+
+                if (result.Verified)
+                {
+                    _Verificator = new DPFP.Verification.Verification();
+                    _relBiometric = _relBiometricsRepository.GetRelBiometric(biometric.FingerID);
+
+                    if (_relBiometric != null)  //Check if finger is enrolled.
+                    {
+                        _student = _studentsRepository.GetStudent(_relBiometric.StudentID);
+                        Student = _student;
+                        _attendance = _attendancesRepository.GetAttendanceByStudentID(_student.StudentGuid);
+
+                        if (_attendance != null)    //Check if student has already logged in for the day.
+                        {
+                            if (_attendance.TimeOut == null)    //Check if student already logged out for the day
+                            {
+                                DateTime login = _attendance.TimeIn;
+                                DateTime logout = DateTime.Now;
+                                logout = new DateTime(logout.Year, logout.Month, logout.Day, logout.Hour, logout.Minute, 0);
+
+                                if (logout > login.Add(new TimeSpan(1, 0, 0))) //Check if TimeSpan between login and logout is greater than allowed threshold
+                                {
+                                    _attendance.IsOverstay = false;
+                                    _attendance.IsEarlyOut = false;
+
+                                    //Update student logout
+                                    _attendance.TimeOut = logout;
+
+                                    //Check if student is overstay or undertime;
+                                    TimeSpan timeOut = logout.TimeOfDay;
+                                    timeOut = new TimeSpan(timeOut.Hours, timeOut.Minutes, 0);
+                                    TimeSpan endTime = _student.Section.EndTime;
+
+                                    if (timeOut > endTime.Add(new TimeSpan(1, 0, 0)))
+                                    {
+                                        _attendance.IsOverstay = true;
+                                    }
+
+                                    if (timeOut < endTime)
+                                    {
+                                        _attendance.IsEarlyOut = true;
+                                    }
+
+                                    _attendancesRepository.UpdateAttendance(_attendance); //Updated attendance record
+                                    Application.Current.Dispatcher.Invoke(delegate
+                                    {
+                                        _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged out.", _attendance.TimeOut)); //Add action to attendance log
+
+                                    });
+
+                                    ProcessSMSIntegration(_attendance.AttendanceID.ToString(), false, (DateTime)_attendance.TimeOut, _student);
+                                    Remarks = "Student logged out.";
+                                }
+                                else
+                                {
+                                    Remarks = "Student is not allowed to logout 1 hour after logging in.";
+                                }
+                            }
+                            else
+                            {
+                                Remarks = "Student is not allowed to logout twice a day.";
+                            }
+
+                        }
+                        else
+                        {
+                            DateTime login = DateTime.Now;
+                            login = new DateTime(login.Year, login.Month, login.Day, login.Hour, login.Minute, 0);
+                            //Create new attendance record for the student.
+                            _attendance = new Attendance
+                            {
+                                AttendanceID = Guid.NewGuid(),
+                                StudentID = _student.StudentGuid,
+                                TimeIn = login
+                            };
+
+                            TimeSpan timeIn = _attendance.TimeIn.TimeOfDay;
+                            TimeSpan startTime = _student.Section.StartTime;
+
+                            if (timeIn > startTime)
+                                _attendance.IsLate = true;
+                            else
+                                _attendance.IsLate = false;
+
+                            _attendancesRepository.AddAttendance(_attendance); //Add Record
+                            Application.Current.Dispatcher.Invoke(delegate
+                            {
+                                _attendanceLogs.Insert(0, new AttendanceLog(_student.ImageData, _student.FirstName, _student.LastName, "logged in.", _attendance.TimeIn));
+                            });
+
+                            ProcessSMSIntegration(_attendance.AttendanceID.ToString(), true, _attendance.TimeIn, _student);
+                            Remarks = "Student logged in.";
+                        }
+
+                        return true;
+                    }
+                    else
+                    {
+                        Remarks = "Fingerprint in system but not linked to any student.";
+                        break;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void Initialize(bool isToReloadBiometrics)

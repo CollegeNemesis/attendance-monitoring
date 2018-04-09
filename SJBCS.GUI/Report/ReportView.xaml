@@ -7,232 +7,244 @@
              xmlns:local="clr-namespace:SJBCS.GUI.Report"
              mc:Ignorable="d"
              d:DesignHeight="500"
-             d:DesignWidth="700">
+             d:DesignWidth="1200">
     <Grid Background="White">
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel>
-                    <StackPanel>
-                        <StackPanel Margin="10">
-                            <TextBlock Text="Reports"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12" />
-                            <ComboBox x:Name="cboReports"
-                                      HorizontalAlignment="Left"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      VerticalAlignment="Top"
-                                      Width="200"
-                                      SelectedIndex="0"
-                                      ToolTip="Select report type"
-                                      SelectionChanged="cboReports_SelectionChanged" />
-                        </StackPanel>
-                        <StackPanel Margin="10">
-                            <TextBlock Text="Filter by"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12" />
-                            <ComboBox x:Name="cboFilter"
-                                      HorizontalAlignment="Left"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      VerticalAlignment="Top"
-                                      Width="200"
-                                      SelectedIndex="-1"
-                                      SelectionChanged="cboFilter_SelectionChanged"
-                                      ToolTip="Select filter for report" />
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="10">
-                        <StackPanel>
-                            <TextBlock Text="Date From"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12"
-                                       Margin="0 0 0 10"/>
-                            <DatePicker x:Name="dtFrom"
-                                        HorizontalAlignment="Left"
-                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                        VerticalAlignment="Top"
-                                        Width="200"
-                                        Margin="0 0 10 0"
-                                        SelectedDateChanged="DatePickerFrom_SelectedDateChanged"
-                                        DisplayDateEnd="2050-12-31"
-                                        DisplayDateStart="2018-01-01"
-                                        ToolTip="Select start date for report"
-                                        IsTodayHighlighted="True">
-                                <DatePicker.Resources>
-                                    <Style TargetType="DatePickerTextBox">
-                                        <Setter Property="IsReadOnly"
-                                                Value="True" />
-                                    </Style>
-                                </DatePicker.Resources>
-                            </DatePicker>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Date To"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12"
-                                       Margin="0 0 0 10"/>
-                            <DatePicker x:Name="dtTo"
-                                        HorizontalAlignment="Left"
-                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                        VerticalAlignment="Top"
-                                        Width="200"
-                                        SelectedDateChanged="DatePickerTo_SelectedDateChanged"
-                                        DisplayDateEnd="2050-12-31"
-                                        DisplayDateStart="2018-01-01"
-                                        ToolTip="Select end date for report">
-                                <DatePicker.Resources>
-                                    <Style TargetType="DatePickerTextBox">
-                                        <Setter Property="IsReadOnly"
-                                                Value="True" />
-                                    </Style>
-                                </DatePicker.Resources>
-                            </DatePicker>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0 10 0 0">
-                        <Button x:Name="btnGenerate"
-                                Content="Generate"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Margin="10"
-                                Width="75"
-                                Click="btnGenerate_Click" />
-                        <Button x:Name="btnExport"
-                                Content="Excel"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Margin="10"
-                                Width="75"
-                                Click="btnExport_Click" />
-                        <Button x:Name="btnExportPDF"
-                                Content="PDF"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Margin="10"
-                                Width="75"
-                                Click="btnExportPDF_Click" />                       
-                        
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Margin="50 0 0 0">
-                    <Grid HorizontalAlignment="Left">
-                        <StackPanel>
-                            <StackPanel x:Name="pnlGrade"
-                                        Visibility="Hidden"
-                                        Margin="10">
-                                <TextBlock Text="Grade"
+            <Border BorderBrush="#B5B5B5"
+                    BorderThickness=".5"
+                    Width="1000">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Reports"
                                            Foreground="#3D62B3"
                                            FontFamily="Segoe UI"
                                            FontWeight="Regular"
                                            FontSize="12" />
-                                <ComboBox x:Name="cboGrade"
-                                          Width="200"
+                                <ComboBox x:Name="cboReports"
+                                          HorizontalAlignment="Left"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                           VerticalAlignment="Top"
+                                          Width="200"
                                           SelectedIndex="0"
-                                          SelectionChanged="cboGrade_SelectionChanged"
-                                          ToolTip="Select Grade" />
+                                          ToolTip="Select report type"
+                                          SelectionChanged="cboReports_SelectionChanged" />
                             </StackPanel>
-                            <StackPanel x:Name="pnlGradeSection"
-                                        Orientation="Vertical"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Visibility="Hidden"
-                                        Margin="10">
-                                <TextBlock Text="Section"
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Filter by"
                                            Foreground="#3D62B3"
                                            FontFamily="Segoe UI"
                                            FontWeight="Regular"
                                            FontSize="12" />
-                                <ComboBox x:Name="cboSection"
-                                          Width="200"
+                                <ComboBox x:Name="cboFilter"
+                                          HorizontalAlignment="Left"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                           VerticalAlignment="Top"
-                                          SelectedIndex="0"
-                                          ToolTip="Select Section"
-                                          SelectionChanged="cboSection_SelectionChanged" />
+                                          Width="200"
+                                          SelectedIndex="-1"
+                                          SelectionChanged="cboFilter_SelectionChanged"
+                                          ToolTip="Select filter for report" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel x:Name="pnlFirstName"
-                                    HorizontalAlignment="Left"
-                                    Visibility="Hidden"
-                                    Margin="10">
-                            <TextBlock Text="First Name"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12" />
-                            <TextBox x:Name="txtFirstName"
-                                     TextWrapping="Wrap"
-                                     Style="{StaticResource MaterialDesignTextBox}"
-                                     Width="200"
-                                     ToolTip="Enter student's first name" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Date From"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="12"
+                                           Margin="0 0 0 10" />
+                                <DatePicker x:Name="dtFrom"
+                                            HorizontalAlignment="Left"
+                                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                            VerticalAlignment="Top"
+                                            Width="200"
+                                            Height="38"
+                                            SelectedDateChanged="DatePickerFrom_SelectedDateChanged"
+                                            DisplayDateEnd="2050-12-31"
+                                            DisplayDateStart="2018-01-01"
+                                            ToolTip="Select start date for report"
+                                            IsTodayHighlighted="True">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly"
+                                                    Value="True" />
+                                        </Style>
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                            </StackPanel>
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Date To"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="12"
+                                           Margin="0 0 0 10" />
+                                <DatePicker x:Name="dtTo"
+                                            HorizontalAlignment="Left"
+                                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                            VerticalAlignment="Top"
+                                            Width="200"
+                                            Height="38"
+                                            SelectedDateChanged="DatePickerTo_SelectedDateChanged"
+                                            DisplayDateEnd="2050-12-31"
+                                            DisplayDateStart="2018-01-01"
+                                            ToolTip="Select end date for report">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly"
+                                                    Value="True" />
+                                        </Style>
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel x:Name="pnlLastName"
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="btnGenerate"
+                                    Content="Generate"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
                                     HorizontalAlignment="Left"
-                                    Visibility="Hidden"
-                                    Margin="10">
-                            <TextBlock Text="Last Name"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12" />
-                            <TextBox x:Name="txtLastName"
-                                     Style="{StaticResource MaterialDesignTextBox}"
-                                     TextWrapping="Wrap"
-                                     Width="200"
-                                     ToolTip="Enter student's last name" />
-                        </StackPanel>
-                        <StackPanel x:Name="pnlStudentID"
+                                    VerticalAlignment="Top"
+                                    Margin="10"
+                                    Width="75"
+                                    Click="btnGenerate_Click" />
+                            <Button x:Name="btnExport"
+                                    Content="Excel"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
                                     HorizontalAlignment="Left"
-                                    Visibility="Hidden"
-                                    Margin="10">
-                            <TextBlock Text="Student ID"
-                                       Foreground="#3D62B3"
-                                       FontFamily="Segoe UI"
-                                       FontWeight="Regular"
-                                       FontSize="12" />
-                            <TextBox x:Name="txtStudentID"
-                                     Style="{StaticResource MaterialDesignTextBox}"
-                                     TextWrapping="Wrap"
-                                     Width="200"
-                                     ToolTip="Enter student's student ID" />
-                        </StackPanel>
-                    </Grid>
-                    <Image Name="imgLogo" Height="90"
-                           Width="90" Visibility="Collapsed"
-                           Source="/SJBCS.GUI;component/Image/logo-icon.png"/>
-                </StackPanel>
-            </StackPanel>
+                                    VerticalAlignment="Top"
+                                    Margin="10"
+                                    Width="75"
+                                    Click="btnExport_Click" />
+                            <Button x:Name="btnExportPDF"
+                                    Content="PDF"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="10"
+                                    Width="75"
+                                    Click="btnExportPDF_Click" />
 
-                <DataGrid x:Name="dgResults"
-                          Visibility="Collapsed"
-                          ClipboardCopyMode="IncludeHeader"
-                          HorizontalContentAlignment="Stretch"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Top"
-                          Margin="50"
-                          Height="300"
-                          Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualWidth-20}"
-                          AutoGenerateColumns="True"
-                          AutoGeneratingColumn="dgResults_AutoGeneratingColumn"
-                          AlternatingRowBackground="BlanchedAlmond"
-                          Style="{StaticResource MaterialDesignDataGrid}"
-                          AreRowDetailsFrozen="True"
-                          CanUserResizeRows="False"
-                          IsReadOnly="True" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="50 0 0 0">
+                        <Grid HorizontalAlignment="Left">
+                            <StackPanel>
+                                <StackPanel x:Name="pnlGrade"
+                                            Visibility="Hidden"
+                                            Margin="10">
+                                    <TextBlock Text="Grade"
+                                               Foreground="#3D62B3"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="12" />
+                                    <ComboBox x:Name="cboGrade"
+                                              Width="200"
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              VerticalAlignment="Top"
+                                              SelectedIndex="0"
+                                              SelectionChanged="cboGrade_SelectionChanged"
+                                              ToolTip="Select Grade" />
+                                </StackPanel>
+                                <StackPanel x:Name="pnlGradeSection"
+                                            Orientation="Vertical"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Visibility="Hidden"
+                                            Margin="10">
+                                    <TextBlock Text="Section"
+                                               Foreground="#3D62B3"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="12" />
+                                    <ComboBox x:Name="cboSection"
+                                              Width="200"
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              VerticalAlignment="Top"
+                                              SelectedIndex="0"
+                                              ToolTip="Select Section"
+                                              SelectionChanged="cboSection_SelectionChanged" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="pnlFirstName"
+                                        HorizontalAlignment="Left"
+                                        Visibility="Hidden"
+                                        Margin="10">
+                                <TextBlock Text="First Name"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="12" />
+                                <TextBox x:Name="txtFirstName"
+                                         TextWrapping="Wrap"
+                                         Style="{StaticResource MaterialDesignTextBox}"
+                                         Width="200"
+                                         ToolTip="Enter student's first name" />
+                            </StackPanel>
+                            <StackPanel x:Name="pnlLastName"
+                                        HorizontalAlignment="Left"
+                                        Visibility="Hidden"
+                                        Margin="10">
+                                <TextBlock Text="Last Name"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="12" />
+                                <TextBox x:Name="txtLastName"
+                                         Style="{StaticResource MaterialDesignTextBox}"
+                                         TextWrapping="Wrap"
+                                         Width="200"
+                                         ToolTip="Enter student's last name" />
+                            </StackPanel>
+                            <StackPanel x:Name="pnlStudentID"
+                                        HorizontalAlignment="Left"
+                                        Visibility="Hidden"
+                                        Margin="10">
+                                <TextBlock Text="Student ID"
+                                           Foreground="#3D62B3"
+                                           FontFamily="Segoe UI"
+                                           FontWeight="Regular"
+                                           FontSize="12" />
+                                <TextBox x:Name="txtStudentID"
+                                         Style="{StaticResource MaterialDesignTextBox}"
+                                         TextWrapping="Wrap"
+                                         Width="200"
+                                         ToolTip="Enter student's student ID" />
+                            </StackPanel>
+                        </Grid>
+                        <Image Name="imgLogo"
+                               Height="90"
+                               Width="90"
+                               Visibility="Collapsed"
+                               Source="/SJBCS.GUI;component/Image/logo-icon.png" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          MaxWidth="1000">
+                <Grid HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <DataGrid x:Name="dgResults"
+                              Visibility="Visible"
+                              BorderBrush="#B5B5B5"
+                              BorderThickness=".5 0 .5 0"
+                              ClipboardCopyMode="IncludeHeader"
+                              HorizontalContentAlignment="Center"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Top"
+                              Width="1000"
+                              Height="400"
+                              AutoGenerateColumns="True"
+                              AutoGeneratingColumn="dgResults_AutoGeneratingColumn"
+                              Style="{StaticResource MaterialDesignDataGrid}"
+                              AreRowDetailsFrozen="True"
+                              CanUserResizeRows="False"
+                              IsReadOnly="True" />
+                </Grid>
+            </ScrollViewer>
+                
 
         </StackPanel>
 

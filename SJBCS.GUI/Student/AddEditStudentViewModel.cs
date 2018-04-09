@@ -52,7 +52,6 @@ namespace SJBCS.GUI.Student
             set { SetProperty(ref _selectedOrganization, value); }
         }
 
-
         private Guid _selectedLevelId;
         public Guid SelectedLevelId
         {
@@ -370,8 +369,12 @@ namespace SJBCS.GUI.Student
             else
             {
                 Biometric temp = Student.Biometrics.FirstOrDefault();
+                if (temp == null)
+                {
+                    Biometric.FingerName = "Finger 1";
+                }
 
-                if (temp.FingerName == "Finger 1")
+                else if (temp.FingerName == "Finger 1")
                 {
                     Biometric.FingerName = "Finger 2";
                 }

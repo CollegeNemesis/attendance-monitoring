@@ -321,9 +321,9 @@ namespace SJBCS.GUI
         private void LoadTesting()
         {
             IBiometricsRepository repo = new BiometricsRepository();
-            Biometric bio = repo.GetBiometric(Guid.Parse("E9D17CCE-5639-4002-B380-06A83768FBF2"));
+            Biometric bio = repo.GetBiometric(Guid.Parse("9A9258E6-89DB-4AB3-B468-A4C7FF0D740B"));
 
-            for (int c = 0; c < 5000; c++)
+            for (int c = 0; c < 2000; c++)
             {
                 Biometric newBio = new Biometric();
                 newBio.FingerID = Guid.NewGuid();
