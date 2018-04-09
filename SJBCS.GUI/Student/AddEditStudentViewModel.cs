@@ -59,12 +59,22 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                if (value != null || value != new Guid())
+                if (value != null && value != new Guid())
+                {
                     Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
-                if (Sections.Any())
-                    SelectedSectionId = Sections.FirstOrDefault().SectionID;
+                    if (Sections.Any())
+                        SelectedSectionId = Sections.FirstOrDefault().SectionID;
+                }
+
                 SetProperty(ref _selectedLevelId, value);
                 SaveCommand.RaiseCanExecuteChanged();
+
+                //if (value != null && value != new Guid())
+                //    Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
+                //if (Sections.Any())
+                //    SelectedSectionId = Sections.FirstOrDefault().SectionID;
+                //SetProperty(ref _selectedLevelId, value);
+                //SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -237,7 +247,7 @@ namespace SJBCS.GUI.Student
         }
 
         #region OnSave Methods
-        public void  SetStudent(Data.Student student)
+        public void SetStudent(Data.Student student)
         {
             _editingStudent = student;
 
@@ -304,7 +314,7 @@ namespace SJBCS.GUI.Student
                 target.RelDistributionLists = source.RelDistributionLists;
                 target.RelOrganizations = new ObservableCollection<RelOrganization>(source.RelOrganizations);
 
-                
+
                 SelectedLevelId = source.LevelID;
                 SelectedSectionId = source.SectionID;
             }
@@ -330,7 +340,7 @@ namespace SJBCS.GUI.Student
         #region Command Methods
         private async void OnDeleteBiometric(Biometric biometric)
         {
-            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to unenroll this finger?");
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to unenroll this finger?");
 
             if (result)
             {
@@ -381,7 +391,7 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteContact(Contact contact)
         {
-            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
             if (result)
             {
@@ -504,7 +514,10 @@ namespace SJBCS.GUI.Student
             if (Student.Contacts == null)
                 return false;
 
-            if (Student.StudentID == null || Student.LastName == null || Student.FirstName == null || Student.Contacts.FirstOrDefault() == null || Sections.FirstOrDefault() == null)
+            if (Sections == null)
+                return false;
+
+            if (Student.StudentID == null || Student.LastName == null || Student.FirstName == null || !Student.Contacts.Any() || !Sections.Any())
                 return false;
 
             return !Student.HasErrors;
@@ -583,7 +596,7 @@ namespace SJBCS.GUI.Student
 
         private async void OnDeleteGroup(Organization organization)
         {
-            var result =  await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
+            var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to remove contact?");
 
             if (result)
             {

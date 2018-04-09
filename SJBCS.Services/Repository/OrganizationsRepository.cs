@@ -8,48 +8,61 @@ namespace SJBCS.Services.Repository
 {
     public class OrganizationsRepository : IOrganizationsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public Organization AddOrganization(Organization Organization)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.Organizations.Add(Organization);
-            _context.SaveChanges();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.Organizations.Add(Organization);
+                _context.SaveChanges();
+            }
             return Organization;
         }
 
         public void DeleteOrganization(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var Organization = _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
-            if (Organization != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Organizations.Remove(Organization);
+                var Organization = _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
+                _context.Entry(Organization).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public Organization GetOrganization(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
+            Organization Organization;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                Organization = _context.Organizations.FirstOrDefault(r => r.OrganizationID == id);
+            }
+            return Organization;
         }
 
         public List<Organization> GetOrganizations()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Organizations.ToList();
+            List<Organization> Organizations;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                Organizations = _context.Organizations.ToList();
+            }
+            return Organizations;
         }
 
         public Organization UpdateOrganization(Organization Organization)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.Organizations.Local.Any(r => r.OrganizationID == Organization.OrganizationID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Organizations.Attach(Organization);
+                if (!_context.Organizations.Local.Any(r => r.OrganizationID == Organization.OrganizationID))
+                {
+                    _context.Organizations.Attach(Organization);
+                }
+                _context.Entry(Organization).State = EntityState.Modified;
+                _context.SaveChanges();
             }
-            _context.Entry(Organization).State = EntityState.Modified;
-            _context.SaveChanges();
             return Organization;
         }
     }

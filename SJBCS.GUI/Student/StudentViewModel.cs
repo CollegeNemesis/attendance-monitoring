@@ -131,8 +131,6 @@ namespace SJBCS.GUI.Student
             }
         }
 
-
-
         public StudentViewModel(IStudentsRepository studentsRepository, ILevelsRepository levelsRepository, ISectionsRepository sectionsRepository, IContactsRepository contactsRepository, IRelBiometricsRepository relBiometricsRepository, IBiometricsRepository biometricsRepository)
         {
             AddCommand = new RelayCommand(OnAdd);
@@ -172,7 +170,6 @@ namespace SJBCS.GUI.Student
 
         public void LoadStudents()
         {
-            //_allStudents = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents().OrderBy(student => student.Level.LevelOrder));
             _allStudents = new ObservableCollection<Data.Student>(_studentsRepository.GetStudents());
             Students = _allStudents;
         }

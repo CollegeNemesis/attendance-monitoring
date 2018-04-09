@@ -8,49 +8,69 @@ namespace SJBCS.Services.Repository
 {
     public class LevelsRepository : ILevelsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public Level AddLevel(Level Level)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.Levels.Add(Level);
-            _context.SaveChanges();
-            return Level;
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.Levels.Add(Level);
+                _context.SaveChanges();
+
+                return Level;
+            }
         }
 
         public void DeleteLevel(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var Level = _context.Levels.FirstOrDefault(r => r.LevelID == id);
-            if (Level != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Levels.Remove(Level);
+                var Level = _context.Levels.FirstOrDefault(r => r.LevelID == id);
+                _context.Entry(Level).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public Level GetLevel(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Levels.FirstOrDefault(r => r.LevelID == id);
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Level = _context.Levels
+                    .Include(level => level.Students)
+                    .Include(level => level.Sections)
+                    .FirstOrDefault(level => level.LevelID == id);
+
+                return Level;
+            }
         }
 
         public List<Level> GetLevels()
         {
-            _context = ConnectionHelper.CreateConnection();            
-            return _context.Levels.AsEnumerable().OrderBy(level => level.LevelOrder).ToList();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Levels = _context.Levels
+                    .Include(level => level.Students)
+                    .Include(level => level.Sections)
+                    .AsEnumerable().OrderBy(level => level.LevelOrder)
+                    .ToList();
+
+                return Levels;
+            }
         }
 
         public Level UpdateLevel(Level Level)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.Levels.Local.Any(r => r.LevelID == Level.LevelID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Levels.Attach(Level);
+                if (!_context.Levels.Local.Any(r => r.LevelID == Level.LevelID))
+                {
+                    _context.Levels.Attach(Level);
+                }
+                _context.Entry(Level).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Level;
             }
-            _context.Entry(Level).State = EntityState.Modified;
-            _context.SaveChanges();
-            return Level;
         }
     }
 }

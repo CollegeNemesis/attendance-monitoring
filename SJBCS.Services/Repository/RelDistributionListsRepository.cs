@@ -12,44 +12,57 @@ namespace SJBCS.Services.Repository
 
         public RelDistributionList AddRelDistributionList(RelDistributionList RelDistributionList)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.RelDistributionLists.Add(RelDistributionList);
-            _context.SaveChanges();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.RelDistributionLists.Add(RelDistributionList);
+                _context.SaveChanges();
+            }
             return RelDistributionList;
         }
 
         public void DeleteRelDistributionList(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var RelDistributionList = _context.RelDistributionLists.FirstOrDefault(r => r.RelDistributionListID == id);
-            if (RelDistributionList != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelDistributionLists.Remove(RelDistributionList);
+                var RelDistributionList = _context.RelDistributionLists.FirstOrDefault(r => r.RelDistributionListID == id);
+                _context.Entry(RelDistributionList).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public RelDistributionList GetRelDistributionList(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelDistributionLists.FirstOrDefault(r => r.RelDistributionListID == id);
+            RelDistributionList RelDistributionList;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                RelDistributionList = _context.RelDistributionLists.FirstOrDefault(r => r.RelDistributionListID == id);
+            }
+            return RelDistributionList;
         }
 
         public List<RelDistributionList> GetRelDistributionLists()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelDistributionLists.ToList();
+            List<RelDistributionList> RelDistributionLists;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                RelDistributionLists = _context.RelDistributionLists.ToList();
+            }
+            return RelDistributionLists;
         }
 
         public RelDistributionList UpdateRelDistributionList(RelDistributionList RelDistributionList)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.RelDistributionLists.Local.Any(r => r.RelDistributionListID == RelDistributionList.RelDistributionListID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelDistributionLists.Attach(RelDistributionList);
+                if (!_context.RelDistributionLists.Local.Any(r => r.RelDistributionListID == RelDistributionList.RelDistributionListID))
+                {
+                    _context.RelDistributionLists.Attach(RelDistributionList);
+                }
+                _context.Entry(RelDistributionList).State = EntityState.Modified;
+                _context.SaveChanges();
             }
-            _context.Entry(RelDistributionList).State = EntityState.Modified;
-            _context.SaveChanges();
             return RelDistributionList;
         }
     }

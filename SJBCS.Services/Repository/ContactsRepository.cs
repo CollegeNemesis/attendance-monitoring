@@ -8,49 +8,66 @@ namespace SJBCS.Services.Repository
 {
     public class ContactsRepository : IContactsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public Contact AddContact(Contact Contact)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.Contacts.Add(Contact);
-            _context.SaveChanges();
-            return Contact;
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.Contacts.Add(Contact);
+                _context.SaveChanges();
+
+                return Contact;
+            }
         }
 
         public void DeleteContact(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var Contact = _context.Contacts.FirstOrDefault(r => r.ContactID == id);
-            if (Contact != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Contacts.Remove(Contact);
+                var Contact = _context.Contacts.FirstOrDefault(r => r.ContactID == id);
+                _context.Entry(Contact).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public Contact GetContact(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Contacts.FirstOrDefault(r => r.ContactID == id);
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Contact = _context.Contacts
+                    .Include(contact => contact.Student)
+                    .FirstOrDefault(r => r.ContactID == id);
+
+                return Contact;
+            }
         }
 
         public List<Contact> GetContacts()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Contacts.ToList();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Contacts = _context.Contacts
+                    .Include(contact => contact.Student)
+                    .ToList();
+
+                return Contacts;
+            }
         }
 
         public Contact UpdateContact(Contact Contact)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.Contacts.Local.Any(r => r.ContactID == Contact.ContactID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Contacts.Attach(Contact);
+                if (!_context.Contacts.Local.Any(r => r.ContactID == Contact.ContactID))
+                {
+                    _context.Contacts.Attach(Contact);
+                }
+                _context.Entry(Contact).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Contact;
             }
-            _context.Entry(Contact).State = EntityState.Modified;
-            _context.SaveChanges();
-            return Contact;
         }
     }
 }
