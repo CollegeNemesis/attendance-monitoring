@@ -18,7 +18,7 @@ namespace SJBCS.GUI.Converters
                 case "Error":
                     return "MessageAlert";
 
-                case "Information":
+                case "Informational":
                     return "Information";
 
                 case "Warning":

@@ -3,40 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SJBCS.GUI.Settings"
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="800">
     <Grid Background="White">
-        <StackPanel Orientation="Horizontal">
-            <StackPanel x:Name="Buttons">
-                <Button x:Name="btnAdd"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Add"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="75"
-                        Margin="10"
-                        Click="btnAdd_Click" />
-                <Button x:Name="btnUpdate"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Update"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="75"
-                        Margin="10"
-                        Click="btnUpdate_Click" />
-                <Button x:Name="btnDelete"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Delete"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="75"
-                        Margin="10"
-                        Click="btnDelete_Click" />
-
+        <StackPanel Orientation="Horizontal"
+                    Margin="20">
+            <StackPanel>
+                <StackPanel x:Name="Buttons"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button x:Name="btnAdd"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="Add"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="75"
+                            Margin="10"
+                            Click="btnAdd_Click" />
+                    <Button x:Name="btnUpdate"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="Update"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="75"
+                            Margin="10"
+                            Click="btnUpdate_Click" />
+                    <Button x:Name="btnDelete"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="Delete"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="75"
+                            Margin="10"
+                            Click="btnDelete_Click" />
+                </StackPanel>
+                <StackPanel x:Name="Datagrid"
+                            MaxWidth="500">
+                    <DataGrid x:Name="dgResults"
+                              Visibility="Visible"
+                              ClipboardCopyMode="IncludeHeader"
+                              HorizontalContentAlignment="Stretch"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Top"
+                              BorderBrush="#B5B5B5"
+                              BorderThickness=".5"
+                              Width ="300"
+                              Style="{StaticResource MaterialDesignDataGrid}"
+                              AutoGenerateColumns="True"
+                              AreRowDetailsFrozen="True"
+                              CanUserResizeRows="False"
+                              IsReadOnly="True"
+                              MouseLeftButtonUp="DataGrid_MouseLeftButtonUp"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="False"
+                              CanUserSortColumns="False"
+                              SelectedIndex="0" />
+                </StackPanel>
             </StackPanel>
-            <StackPanel x:Name="ComboBoxes">
+            <StackPanel x:Name="ComboBoxes"
+                        Margin="20 0 20 0">
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock x:Name="lblUserType"
                                Text="User Type"
@@ -76,7 +104,8 @@
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Top"
                                      Width="200"
-                                     IsReadOnly="True" Visibility="Hidden"/>
+                                     IsReadOnly="True"
+                                     Visibility="Hidden" />
                             <PasswordBox x:Name="txtPassword"
                                          PasswordChanged="txtPassword_PasswordChanged"
                                          MaxLength="100"
@@ -87,6 +116,7 @@
                         </Grid>
                         <materialDesign:PackIcon Name="ImgShowHide"
                                                  Kind="Eye"
+                                                 Margin="5 0 5 0"
                                                  Visibility="Hidden"
                                                  VerticalAlignment="Center"
                                                  MouseLeave="ImgShowHide_MouseLeave"
@@ -114,30 +144,9 @@
 
                     </StackPanel>
                 </StackPanel>
+                <StackPanel>
+                </StackPanel>
 
-
-            </StackPanel>
-            <StackPanel x:Name="Datagrid"
-                        Width="400">
-                <DataGrid x:Name="dgResults"
-                          Visibility="Visible"
-                          ClipboardCopyMode="IncludeHeader"
-                          HorizontalContentAlignment="Stretch"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Top"
-                          Height="Auto"
-                          Style="{StaticResource MaterialDesignDataGrid}"
-                          Width="{Binding ActualWidth-20, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                          AutoGenerateColumns="True"
-                          AlternatingRowBackground="AliceBlue"
-                          AreRowDetailsFrozen="True"
-                          CanUserResizeRows="False"
-                          IsReadOnly="True"
-                          MouseLeftButtonUp="DataGrid_MouseLeftButtonUp"
-                          CanUserReorderColumns="False"
-                          CanUserResizeColumns="False"
-                          CanUserSortColumns="False"
-                          SelectedIndex="0" />
             </StackPanel>
         </StackPanel>
     </Grid>
