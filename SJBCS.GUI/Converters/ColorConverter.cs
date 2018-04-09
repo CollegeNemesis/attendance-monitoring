@@ -39,6 +39,18 @@ namespace SJBCS.GUI.Converters
                 case "logged out.":
                     return "Red";
 
+                case "Fingerprint not recognized.":
+                    return "Red";
+
+                case "Student is not allowed to logout 1 hour after logging in.":
+                    return "Orange";
+
+                case "Student is not allowed to logout twice a day.":
+                    return "Orange";
+
+                case "Fingerprint in system but not linked to any student.":
+                    return "Red";
+
                 default:
                     return "Blue";
             }

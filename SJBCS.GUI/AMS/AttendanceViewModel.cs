@@ -136,7 +136,7 @@ namespace SJBCS.GUI.AMS
                     MemoryStream fingerprintData = null;
                     Result result = null;
 
-                    foreach (Biometric biometric in _Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates
+                    foreach (Biometric biometric in _Biometrics) // Loop on the FPT List from DB to Compare the feature set with the DB templates                    
                     {
                         fingerprintData = new MemoryStream(biometric.FingerPrintTemplate);
                         _Template = new Template(fingerprintData);
@@ -246,7 +246,6 @@ namespace SJBCS.GUI.AMS
                             }
                         }
                     }
-
                     if (!_IsFingerEnrolled)
                     {
                         Remarks = "Fingerprint not recognized.";

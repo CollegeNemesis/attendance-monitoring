@@ -49,7 +49,7 @@ namespace SJBCS.Services.Repository
                 var Student = _context.Students
                     .Include(student => student.Attendances)
                     .Include(student => student.Contacts)
-                    .Include(student => student.RelBiometrics)
+                    .Include(student => student.RelBiometrics.Select(relBiometric => relBiometric.Biometric))
                     .Include(student => student.Level)
                     .Include(student => student.Section)
                     .Include(student => student.RelDistributionLists)
@@ -66,7 +66,7 @@ namespace SJBCS.Services.Repository
                 var Student = _context.Students
                     .Include(student => student.Attendances)
                     .Include(student => student.Contacts)
-                    .Include(student => student.RelBiometrics)
+                    .Include(student => student.RelBiometrics.Select(relBiometric => relBiometric.Biometric))
                     .Include(student => student.Level)
                     .Include(student => student.Section)
                     .Include(student => student.RelDistributionLists)
@@ -84,7 +84,7 @@ namespace SJBCS.Services.Repository
                 var Students = _context.Students
                     .Include(student => student.Attendances)
                     .Include(student => student.Contacts)
-                    .Include(student => student.RelBiometrics)
+                    .Include(student => student.RelBiometrics.Select(relBiometric => relBiometric.Biometric))
                     .Include(student => student.Level)
                     .Include(student => student.Section)
                     .Include(student => student.RelDistributionLists)

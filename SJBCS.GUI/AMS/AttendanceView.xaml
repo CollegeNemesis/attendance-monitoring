@@ -149,7 +149,7 @@
                                                  Width="40"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
-                                                 Foreground="Blue"
+                                                 Foreground="{Binding Remarks,Converter={StaticResource ColorConverter}}"
                                                  Background="White" />
                     </materialDesign:Chip.Icon>
                 </materialDesign:Chip>

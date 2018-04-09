@@ -660,6 +660,7 @@ namespace SJBCS.GUI.Report
             }
             else
             {
+                cb.IsEnabled = true;
                 btnGenerate.IsEnabled = true;
             }
         }

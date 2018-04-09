@@ -295,7 +295,7 @@ namespace SJBCS.GUI
             {
                 string json = File.ReadAllText(ConfigurationManager.AppSettings["configPath"]);
                 ConnectionHelper.Config = JsonConvert.DeserializeObject<Config>(json);
-
+                //LoadTesting();
                 TestConnection();
 
                 if (string.IsNullOrEmpty(ConnectionHelper.Config.AppConfiguration.Settings.SmsService.Url))
@@ -315,6 +315,22 @@ namespace SJBCS.GUI
                 StartupConfigManagementWindow.ShowDialog();
                 Logger.Error(error);
                 LoadConfiguration();
+            }
+        }
+
+        private void LoadTesting()
+        {
+            IBiometricsRepository repo = new BiometricsRepository();
+            Biometric bio = repo.GetBiometric(Guid.Parse("E9D17CCE-5639-4002-B380-06A83768FBF2"));
+
+            for (int c = 0; c < 5000; c++)
+            {
+                Biometric newBio = new Biometric();
+                newBio.FingerID = Guid.NewGuid();
+                newBio.FingerName = "F";
+                newBio.FingerPrintTemplate = bio.FingerPrintTemplate;
+
+                repo.AddBiometric(newBio);
             }
         }
 
