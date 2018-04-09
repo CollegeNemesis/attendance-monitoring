@@ -210,7 +210,7 @@ namespace SJBCS.GUI.AMS
                                     timeOut = new TimeSpan(timeOut.Hours, timeOut.Minutes, 0);
                                     TimeSpan endTime = _student.Section.EndTime;
 
-                                    if (timeOut > endTime.Add(new TimeSpan(1, 0, 0)))
+                                    if (timeOut >= endTime.Add(new TimeSpan(1, 0, 0)))
                                     {
                                         _attendance.IsOverstay = true;
                                     }
