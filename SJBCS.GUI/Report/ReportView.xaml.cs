@@ -42,8 +42,6 @@ namespace SJBCS.GUI.Report
 
         SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
-        
-
         public ReportView()
         {
             try
@@ -75,6 +73,7 @@ namespace SJBCS.GUI.Report
         {
             var result = await DialogHelper.ShowDialog(DialogType.Error, error.Message);
         }
+
         private void FillDataGrid()
         {
             string CmdString = GetSP_Name();
@@ -150,14 +149,18 @@ namespace SJBCS.GUI.Report
             if (isPDF)
             {
                 sfd.FileName = DEFAULT_PATH + DEFAULT_FILENAME;
+                Mouse.OverrideCursor = Cursors.Wait;
                 GenerateExcel(isPDF, sfd);
+                Mouse.OverrideCursor = Cursors.Arrow;
             }
             else
             {
-                sfd.FileName = cboReports.SelectedValue.ToString().Trim() +"_"+ GetFilterUsed() +  DateTime.Today.ToString("dd-MMM-yyyy") + ".xlsx";
+                sfd.FileName = cboReports.SelectedValue.ToString().Trim() + "_" + GetFilterUsed() + DateTime.Today.ToString("dd-MMM-yyyy") + ".xlsx";
                 if (sfd.ShowDialog() == true)
                 {
+                    Mouse.OverrideCursor = Cursors.Wait;
                     GenerateExcel(isPDF, sfd);
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
 
@@ -206,7 +209,7 @@ namespace SJBCS.GUI.Report
             CR.get_Range("C1", "K1").Columns.EntireColumn.AutoFit();
             CR.get_Range("B1").Columns.ColumnWidth = 35;
 
-            if(cboReports.SelectedValue.ToString().Trim() == "Attendance Report")
+            if (cboReports.SelectedValue.ToString().Trim() == "Attendance Report")
             {
                 CR.get_Range("D1", "K1").Columns.EntireColumn.AutoFit();
                 CR.get_Range("C1").Columns.ColumnWidth = 20;
@@ -221,7 +224,7 @@ namespace SJBCS.GUI.Report
             xlWorkSheet.Cells[4, 3 + addCol - 1].Cells.Style.WrapText = false;
             xlWorkSheet.Cells[4, 3 + addCol - 1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
 
-            xlWorkSheet.Cells[5, 3 + addCol - 1] = "'                   " + GetFilterUsed().Replace("_","");
+            xlWorkSheet.Cells[5, 3 + addCol - 1] = "'                   " + GetFilterUsed().Replace("_", "");
             xlWorkSheet.Cells[5, 3 + addCol - 1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
 
             int ctr = 1;
@@ -247,7 +250,7 @@ namespace SJBCS.GUI.Report
             {
                 rg.EntireColumn.NumberFormat = "@";
             }
-            
+
             xlWorkBook.SaveAs(sfd.FileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
             xlexcel.DisplayAlerts = true;
             xlWorkBook.Close(true, misValue, misValue);
@@ -287,7 +290,7 @@ namespace SJBCS.GUI.Report
             }
             else if (strFilter == "By Grade and Section")
             {
-                filterUsed = cboGrade.SelectedValue.ToString().Trim() + " - " + cboSection.SelectedValue.ToString().Trim()+"_";
+                filterUsed = cboGrade.SelectedValue.ToString().Trim() + " - " + cboSection.SelectedValue.ToString().Trim() + "_";
             }
 
 
@@ -304,7 +307,7 @@ namespace SJBCS.GUI.Report
             catch (Exception error)
             {
                 obj = null;
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Exception occurred while releasing object " + error.Message);
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Exception occurred while releasing object " + error.Message);
                 Logger.Error(error);
             }
             finally
@@ -328,6 +331,9 @@ namespace SJBCS.GUI.Report
             {
                 InputValidation();
                 FillDataGrid();
+
+                dgResults.Visibility = Visibility.Visible;
+
                 if (dgResults.Items.Count <= 0)
                 {
                     EnableExportButtons(false);
@@ -389,7 +395,7 @@ namespace SJBCS.GUI.Report
 
                 Microsoft.Office.Interop.Excel.Application excelApplication;
                 Microsoft.Office.Interop.Excel.Workbook excelWorkbook;
-
+                
                 excelApplication = new Microsoft.Office.Interop.Excel.Application();
                 excelApplication.ScreenUpdating = false;
                 excelApplication.DisplayAlerts = false;
@@ -407,7 +413,7 @@ namespace SJBCS.GUI.Report
                 try
                 {
                     Microsoft.Office.Interop.Excel.XlPageOrientation orientation = Microsoft.Office.Interop.Excel.XlPageOrientation.xlLandscape;
-                    if(cboReports.SelectedValue.ToString() == "Absentees Report" || cboReports.SelectedValue.ToString() == "No Time Out Report" || cboReports.SelectedValue.ToString() == "Consolidated Report")
+                    if (cboReports.SelectedValue.ToString() == "Absentees Report" || cboReports.SelectedValue.ToString() == "No Time Out Report" || cboReports.SelectedValue.ToString() == "Consolidated Report")
                     {
                         orientation = Microsoft.Office.Interop.Excel.XlPageOrientation.xlPortrait;
                     }
@@ -417,6 +423,7 @@ namespace SJBCS.GUI.Report
 
                     excelWorkbook.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, sfd.FileName, Microsoft.Office.Interop.Excel.XlFixedFormatQuality.xlQualityStandard, true, true, 1);
                 }
+
                 catch (System.Exception error)
                 {
                     exportSuccessful = false;
@@ -445,12 +452,20 @@ namespace SJBCS.GUI.Report
 
         private void DatePickerFrom_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            var now = DateTime.Now;
             strDateFrom = GetDateRange(sender);
+            dgResults.Visibility = Visibility.Hidden;
+            btnExport.IsEnabled = false;
+            btnExportPDF.IsEnabled = false;
+            dtTo.SelectedDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
         }
 
         private void DatePickerTo_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             strDateTo = GetDateRange(sender);
+            dgResults.Visibility = Visibility.Hidden;
+            btnExport.IsEnabled = false;
+            btnExportPDF.IsEnabled = false;
         }
 
         private string GetDateRange(object sender)
@@ -641,7 +656,7 @@ namespace SJBCS.GUI.Report
             {
                 btnGenerate.IsEnabled = false;
                 cb.IsEnabled = false;
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Some fields do not have values. Please contact system administrator.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Some fields do not have values. Please contact system administrator.");
             }
             else
             {
@@ -697,7 +712,6 @@ namespace SJBCS.GUI.Report
             }
 
         }
-
 
         protected virtual bool IsFileLocked(FileInfo file)
         {

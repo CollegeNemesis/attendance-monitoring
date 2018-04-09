@@ -11,7 +11,7 @@
         BorderThickness=".5"
         Height="150"
         Width="400">
-    <Grid>
+    <Grid Background="White">
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <TextBlock>Please wait. Your request is being processed.</TextBlock>

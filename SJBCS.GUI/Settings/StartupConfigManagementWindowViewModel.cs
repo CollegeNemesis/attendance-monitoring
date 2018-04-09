@@ -16,15 +16,6 @@ namespace SJBCS.GUI.Settings
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private bool _loading;
-
-        public bool Loading
-        {
-            get { return _loading; }
-            set { SetProperty(ref _loading, value); }
-        }
-
-
         private bool closeTrigger;
         public bool CloseTrigger
         {
@@ -85,14 +76,14 @@ namespace SJBCS.GUI.Settings
 
             try
             {
-                Loading = true;
+                LoadingWindowHelper.Open();
                 await System.Threading.Tasks.Task.Run(() => TestConnection());
-                Loading = false;
+                LoadingWindowHelper.Close();
                 var result = await DialogHelper.ShowDialog(DialogType.Success, "Connection established.");
             }
             catch (Exception error)
             {
-                Loading = false;
+                LoadingWindowHelper.Close();
                 ConnectionHelper.Config = Config;
                 var result = await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
                 Logger.Error(error);
@@ -111,9 +102,9 @@ namespace SJBCS.GUI.Settings
 
             try
             {
-                Loading = true;
+                LoadingWindowHelper.Open();
                 await System.Threading.Tasks.Task.Run(() => TestConnection());
-                Loading = false;
+                LoadingWindowHelper.Close();
                 string json = JsonConvert.SerializeObject(ConnectionHelper.Config);
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
                 var result = await DialogHelper.ShowDialog(DialogType.Success, "Successfully saved settings.");
@@ -121,7 +112,7 @@ namespace SJBCS.GUI.Settings
             }
             catch (Exception error)
             {
-                Loading = false;
+                LoadingWindowHelper.Close();
                 ConnectionHelper.Config = Config;
                 var result = await DialogHelper.ShowDialog(DialogType.Error, "Connection cannot be established.");
                 Logger.Error(error);

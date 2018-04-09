@@ -191,7 +191,7 @@
     <Compile Include="Dialogs\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\LoadingWindowHandler.cs" />
+    <Compile Include="Dialogs\LoadingWindowHelper.cs" />
     <Compile Include="Dialogs\LoadingWindowViewModel.cs" />
     <Compile Include="Home\ClockView.xaml.cs">
       <DependentUpon>ClockView.xaml</DependentUpon>
