@@ -279,6 +279,7 @@ namespace SJBCS.GUI
                 Menu = _menuViewModel;
                 AdminMode = true;
                 _reportViewModel.ActiveUser = user;
+                _userManagementViewModel.ActiveUser = user;
                 NavToStudent();
             }
             else if (user.Type.ToLower().Equals("user"))

@@ -178,7 +178,7 @@ namespace SJBCS.GUI.Student
                     EditCommand.RaiseCanExecuteChanged();
                     DeleteCommand.RaiseCanExecuteChanged();
                 }
-                catch (Exception error)
+                catch (Exception)
                 {
                     result = await DialogHelper.ShowDialog(DialogType.Error, "You cannot delete an active section.");
                 }

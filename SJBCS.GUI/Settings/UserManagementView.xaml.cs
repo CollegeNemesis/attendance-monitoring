@@ -1,5 +1,6 @@
 using SJBCS.Data;
 using SJBCS.GUI.Dialogs;
+using SJBCS.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +25,7 @@ namespace SJBCS.GUI.Settings
     public partial class UserManagementView : UserControl
     {
         private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-//string Connection_string = @"Server=W7PHSSPNCFX3N72\SQLEXPRESS;Database=AMS;Trusted_Connection=True;";
+        //string Connection_string = @"Server=W7PHSSPNCFX3N72\SQLEXPRESS;Database=AMS;Trusted_Connection=True;";
         string lastSelectedUser = string.Empty;
         DataGridRow dgRow;
         DataGridCell dgCell;
@@ -38,6 +39,8 @@ namespace SJBCS.GUI.Settings
         string userId = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Username;
         string password = ConnectionHelper.Config.AppConfiguration.Settings.DataSource.Password;
 
+        Data.User activeUser = new Data.User();
+
         SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
         public UserManagementView()
@@ -45,7 +48,6 @@ namespace SJBCS.GUI.Settings
             try
             {
                 InitializeComponent();
-                LoadUsers();
 
                 sqlBuilder.DataSource = dataSource;
                 sqlBuilder.InitialCatalog = initialCatalog;
@@ -54,6 +56,8 @@ namespace SJBCS.GUI.Settings
                 sqlBuilder.UserID = userId;
                 sqlBuilder.Password = password;
                 sqlBuilder.ApplicationName = appName;
+
+                LoadUsers();
 
                 BindUserType();
 
@@ -159,7 +163,13 @@ namespace SJBCS.GUI.Settings
                     dgCell = cell;
 
                     btnUpdate.IsEnabled = true;
-                    btnDelete.IsEnabled = true;
+
+
+                    lastSelectedUser = ExtractBoundValue(dgRow, dgCell).ToString();
+
+
+                    activeUser = ((UserManagementViewModel)DataContext).ActiveUser;
+                    btnDelete.IsEnabled = (activeUser.Username == lastSelectedUser) ? false : true;
 
                 }
             }
@@ -193,7 +203,6 @@ namespace SJBCS.GUI.Settings
             txtPassword2.Text = txtPassword.Password;
             cboUserType.SelectedValue = allRecords[0].UserType;
 
-            lastSelectedUser = userName.ToString();
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -205,6 +214,7 @@ namespace SJBCS.GUI.Settings
                 UserDetailsVisibility(Visibility.Visible);
                 btnUpdate.IsEnabled = false;
                 btnDelete.IsEnabled = false;
+                SetEyeVisibility();
 
                 btnSaveEdit.Visibility = Visibility.Hidden;
             }
@@ -231,6 +241,7 @@ namespace SJBCS.GUI.Settings
                 PopulateFields(ExtractBoundValue(dgRow, dgCell));
                 EnableUserDetails(true);
                 UserDetailsVisibility(Visibility.Visible);
+                //SetEyeVisibility();
                 btnSaveAdd.Visibility = Visibility.Hidden;
 
             }
@@ -315,7 +326,7 @@ namespace SJBCS.GUI.Settings
 
             if (!Regex.IsMatch(txtPassword.Password.Trim(), @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,100})$"))
             {
-                throw new Exception("Password must contain letters and numbers.");
+                throw new Exception("Password must only contain letters and numbers.");
             }
         }
 
@@ -349,27 +360,29 @@ namespace SJBCS.GUI.Settings
             cboUserType.Visibility = vs;
             txtUsername.Visibility = vs;
             txtPassword.Visibility = vs;
-            txtPassword2.Visibility = vs;
             btnSaveAdd.Visibility = vs;
             btnSaveEdit.Visibility = vs;
+            ImgShowHide.Visibility = vs;
+            //SetEyeVisibility();
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to add new user?");
+                //var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to add new user?");
 
-                if ((bool)result)
-                {
-                    ValidateInput();
-                    CheckIfUserExists();
+                //if ((bool)result)
+                //{
+                ValidateInput();
+                CheckIfUserExists();
 
-                    InsertUser();
-                    LoadUsers();
-                    UserDetailsVisibility(Visibility.Hidden);
-                    await DialogHelper.ShowDialog(DialogType.Validation, "User added.");
-                }
+                InsertUser();
+                LoadUsers();
+                UserDetailsVisibility(Visibility.Hidden);
+                //SetEyeVisibility();
+                await DialogHelper.ShowDialog(DialogType.Validation, "User added.");
+                //}
             }
             catch (Exception error)
             {
@@ -417,22 +430,22 @@ namespace SJBCS.GUI.Settings
         {
             try
             {
-                var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to add update user?");
+                //var result = await DialogHelper.ShowDialog(DialogType.Validation, "Are you sure you want to add update user?");
 
-                if ((bool)result)
-                {
-                    ValidateInput();
-                    CheckIfUserExists();
+                //if ((bool)result)
+                //{
+                ValidateInput();
+                CheckIfUserExists();
 
-                    DeleteUser();
-                    InsertUser();
-                    LoadUsers();
-                    lastSelectedUser = string.Empty;
-                    btnUpdate.IsEnabled = false;
-                    btnDelete.IsEnabled = false;
-                    UserDetailsVisibility(Visibility.Hidden);
-                    await DialogHelper.ShowDialog(DialogType.Validation, "User details updated.");
-                }
+                DeleteUser();
+                InsertUser();
+                LoadUsers();
+                lastSelectedUser = string.Empty;
+                btnUpdate.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                UserDetailsVisibility(Visibility.Hidden);
+                await DialogHelper.ShowDialog(DialogType.Validation, "User details updated.");
+                //}
             }
             catch (Exception error)
             {
@@ -471,7 +484,7 @@ namespace SJBCS.GUI.Settings
                 LogError(error.Message);
                 Logger.Error(error);
                 return error.Message;
-                
+
             }
         }
 
@@ -515,7 +528,6 @@ namespace SJBCS.GUI.Settings
 
         private void ShowPassword()
         {
-            //ImgShowHide.Source = new BitmapImage(new Uri(imgLoc + "Hide.jpg"));
             txtPassword2.Visibility = Visibility.Visible;
             txtPassword.Visibility = Visibility.Hidden;
             txtPassword2.Text = txtPassword.Password;
@@ -523,13 +535,12 @@ namespace SJBCS.GUI.Settings
 
         private void HidePassword()
         {
-            //ImgShowHide.Source = new BitmapImage(new Uri(imgLoc + "Show.jpg"));
             txtPassword2.Visibility = Visibility.Hidden;
             txtPassword.Visibility = Visibility.Visible;
             txtPassword.Focus();
         }
 
-        private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        private void SetEyeVisibility()
         {
             if (txtPassword.Password.Length > 0)
             {
@@ -539,6 +550,11 @@ namespace SJBCS.GUI.Settings
             {
                 ImgShowHide.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            SetEyeVisibility();
         }
     }
 

@@ -1,6 +1,15 @@
-﻿namespace SJBCS.GUI.Settings
+﻿using SJBCS.GUI.Utilities;
+
+namespace SJBCS.GUI.Settings
 {
-    class UserManagementViewModel
+    public class UserManagementViewModel : BindableBase
     {
+        private Data.User _activeUser;
+
+        public Data.User ActiveUser
+        {
+            get { return _activeUser; }
+            set { SetProperty(ref _activeUser, value); }
+        }
     }
 }

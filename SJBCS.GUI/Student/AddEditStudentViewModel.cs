@@ -59,7 +59,7 @@ namespace SJBCS.GUI.Student
             get { return _selectedLevelId; }
             set
             {
-                if (value != null | value != new Guid())
+                if (value != null || value != new Guid())
                     Sections = new ObservableCollection<Section>(_levelsRepository.GetLevel(value).Sections.OrderBy(section => section.SectionName));
                 if (Sections.Any())
                     SelectedSectionId = Sections.FirstOrDefault().SectionID;

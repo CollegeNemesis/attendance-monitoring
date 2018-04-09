@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using SJBCS.GUI.Dialogs;
 using System.Configuration;
+using System.Reflection;
 
 namespace SJBCS.GUI.Report
 {
@@ -47,7 +48,6 @@ namespace SJBCS.GUI.Report
         {
             try
             {
-                //((ReportViewModel)DataContext).ActiveUser.Username
                 InitializeComponent();
                 sqlBuilder.DataSource = dataSource;
                 sqlBuilder.InitialCatalog = initialCatalog;
@@ -154,7 +154,7 @@ namespace SJBCS.GUI.Report
             }
             else
             {
-                sfd.FileName = cboReports.SelectedValue.ToString() + "_" + cboFilter.SelectedValue.ToString() + "_" + DateTime.Today.ToString("dd-MMM-yyyy") + ".xlsx";
+                sfd.FileName = cboReports.SelectedValue.ToString().Trim() +"_"+ GetFilterUsed() +  DateTime.Today.ToString("dd-MMM-yyyy") + ".xlsx";
                 if (sfd.ShowDialog() == true)
                 {
                     GenerateExcel(isPDF, sfd);
@@ -179,77 +179,77 @@ namespace SJBCS.GUI.Report
             int addCol = 0;
             int logoCellLeft = 0;
 
-            if (cboReports.SelectedValue.ToString() == "Absentees Report")
+            if (cboReports.SelectedValue.ToString() == "Absentees Report" || cboReports.SelectedValue.ToString() == "No Time Out Report")
             {
-                addCol = 2; 
+                addCol = 2;
                 colStart += addCol;
-                logoCellLeft = 80;
+                logoCellLeft = 100;
             }
-            else if(cboReports.SelectedValue.ToString() == "Consolidated Report")
+            else if (cboReports.SelectedValue.ToString() == "Attendance Report")
             {
-                addCol = 1;
-                colStart += addCol;
-                logoCellLeft = 50;
+                logoCellLeft = 12;
             }
 
             Microsoft.Office.Interop.Excel.Range CR = (Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[8, colStart];
 
-            xlWorkSheet.Shapes.AddPicture(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + @LOGO_PATH, MsoTriState.msoFalse, MsoTriState.msoCTrue, logoCellLeft, 0, 90, 90);
+            //xlWorkSheet.Shapes.AddPicture(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + @LOGO_PATH, MsoTriState.msoFalse, MsoTriState.msoCTrue, logoCellLeft, 0, 90, 90);
+
+            xlWorkSheet.Shapes.AddPicture(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @LOGO_PATH, MsoTriState.msoFalse, MsoTriState.msoCTrue, logoCellLeft, 0, 90, 90);
 
             xlWorkSheet.get_Range("A1", "A1").Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
             xlWorkSheet.get_Range("A1", "A1").Style.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignTop;
-
-            //xlWorkSheet.get_Range("C3", "F3").Merge();
-            //xlWorkSheet.get_Range("C4", "F4").Merge();
-            //xlWorkSheet.get_Range("C5", "F5").Merge();
 
             CR.Select();
 
             xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
             CR.Rows.AutoFit();
-            //CR.get_Range("A1").Columns.ColumnWidth = 15;
             CR.get_Range("A1").Columns.EntireColumn.AutoFit();
             CR.get_Range("C1", "K1").Columns.EntireColumn.AutoFit();
-            CR.get_Range("B1").Columns.ColumnWidth = 30;
-            CR.get_Range("B1").Cells.Style.WrapText = true;
-            xlWorkSheet.Cells[3, 3 + addCol-1] = "'         "+cboReports.SelectedValue.ToString();
-            xlWorkSheet.Cells[3, 3 + addCol-1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
-            
-            xlWorkSheet.Cells[4, 3 + addCol-1] = "'         " + dtFrom.SelectedDate.Value.ToString("dd MMM yyyy") + " to " + dtTo.SelectedDate.Value.ToString("dd MMM yyyy");
-            xlWorkSheet.Cells[4, 3 + addCol-1].Cells.Style.WrapText = false;
-            xlWorkSheet.Cells[4, 3 + addCol-1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+            CR.get_Range("B1").Columns.ColumnWidth = 35;
 
-            xlWorkSheet.Cells[5, 3 + addCol-1] = "'         " + GetFilterUsed();
-            xlWorkSheet.Cells[5, 3 + addCol-1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+            if(cboReports.SelectedValue.ToString().Trim() == "Attendance Report")
+            {
+                CR.get_Range("D1", "K1").Columns.EntireColumn.AutoFit();
+                CR.get_Range("C1").Columns.ColumnWidth = 20;
+            }
+
+
+            CR.get_Range("B1").Cells.Style.WrapText = true;
+            xlWorkSheet.Cells[3, 3 + addCol - 1] = "'                   " + cboReports.SelectedValue.ToString();
+            xlWorkSheet.Cells[3, 3 + addCol - 1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+            xlWorkSheet.Cells[4, 3 + addCol - 1] = "'                   " + dtFrom.SelectedDate.Value.ToString("dd MMMMM yyyy") + " to " + dtTo.SelectedDate.Value.ToString("dd MMMM yyyy");
+            xlWorkSheet.Cells[4, 3 + addCol - 1].Cells.Style.WrapText = false;
+            xlWorkSheet.Cells[4, 3 + addCol - 1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+            xlWorkSheet.Cells[5, 3 + addCol - 1] = "'                   " + GetFilterUsed().Replace("_","");
+            xlWorkSheet.Cells[5, 3 + addCol - 1].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
 
             int ctr = 1;
-            while (ctr <= dgResults.Columns.Count+addCol)
+            while (ctr <= dgResults.Columns.Count)
             {
-                ((Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[8, colStart]).Interior.Color = ColorTranslator.ToOle(Color.AliceBlue);
+                ((Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[8, ctr + addCol]).Interior.Color = ColorTranslator.ToOle(Color.AliceBlue);
                 ctr++;
             }
 
-            for (int ctrC = 1; ctrC <= dgResults.Columns.Count + addCol; ctrC++)
+            for (int ctrC = 1; ctrC <= dgResults.Columns.Count; ctrC++)
             {
-                for (int ctrR = 8; ctrR <= dgResults.Items.Count + 8 + addCol; ctrR++)
+                for (int ctrR = 8; ctrR <= dgResults.Items.Count + 8; ctrR++)
                 {
-                    ((Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[ctrR, colStart]).BorderAround(LineStyle.Thin, Microsoft.Office.Interop.Excel.XlBorderWeight.xlHairline, Microsoft.Office.Interop.Excel.XlColorIndex.xlColorIndexAutomatic, ColorTranslator.ToOle(Color.AliceBlue));
+                    ((Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[ctrR, ctrC + addCol]).BorderAround(LineStyle.Thin, Microsoft.Office.Interop.Excel.XlBorderWeight.xlHairline, Microsoft.Office.Interop.Excel.XlColorIndex.xlColorIndexAutomatic, ColorTranslator.ToOle(Color.AliceBlue));
                 }
 
             }
 
             Microsoft.Office.Interop.Excel.Range rg = (Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[1, colStart];
-            rg.EntireColumn.NumberFormat = "MM/DD/YYYY";
+            rg.EntireColumn.NumberFormat = "yyyy/MM/dd";
 
-            if(cboReports.SelectedValue.ToString() == "Consolidated Report")
+            if (cboReports.SelectedValue.ToString() == "Consolidated Report")
             {
                 rg.EntireColumn.NumberFormat = "@";
             }
-
-            //rg = (Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[1, 2];
-            //rg.EntireColumn.Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
-
+            
             xlWorkBook.SaveAs(sfd.FileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook, misValue, misValue, misValue, misValue, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
             xlexcel.DisplayAlerts = true;
             xlWorkBook.Close(true, misValue, misValue);
@@ -264,7 +264,17 @@ namespace SJBCS.GUI.Report
             Clipboard.Clear();
             if (File.Exists(sfd.FileName) && !isPDF)
             {
+                CheckIfFileIsOpen(sfd);
                 System.Diagnostics.Process.Start(sfd.FileName);
+            }
+        }
+
+        private async void CheckIfFileIsOpen(SaveFileDialog sfd)
+        {
+            FileInfo file = new FileInfo(sfd.FileName);
+            if (IsFileLocked(file))
+            {
+                await DialogHelper.ShowDialog(DialogType.Informational, "File with the same name is in use by another process.");
             }
         }
 
@@ -275,11 +285,11 @@ namespace SJBCS.GUI.Report
 
             if (strFilter == "By Grade")
             {
-                filterUsed = cboGrade.SelectedValue.ToString();
+                filterUsed = cboGrade.SelectedValue.ToString().Trim() + "_";
             }
             else if (strFilter == "By Grade and Section")
             {
-                filterUsed = cboGrade.SelectedValue.ToString() + " - " + cboSection.SelectedValue.ToString();
+                filterUsed = cboGrade.SelectedValue.ToString().Trim() + " - " + cboSection.SelectedValue.ToString().Trim()+"_";
             }
 
 
@@ -350,7 +360,7 @@ namespace SJBCS.GUI.Report
             try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.FileName = cboReports.SelectedValue.ToString() + "_" + cboFilter.SelectedValue.ToString() + "_" + DateTime.Today.ToString("dd-MMM-yyyy") + ".pdf";
+                sfd.FileName = cboReports.SelectedValue.ToString().Trim() + "_" + GetFilterUsed() + DateTime.Today.ToString("dd-MMM-yyyy") + ".pdf";
                 ExportWorkbookToPdf(DEFAULT_PATH + DEFAULT_FILENAME, sfd);
                 if (File.Exists(DEFAULT_PATH + DEFAULT_FILENAME))
                 {
@@ -399,7 +409,7 @@ namespace SJBCS.GUI.Report
                 try
                 {
                     Microsoft.Office.Interop.Excel.XlPageOrientation orientation = Microsoft.Office.Interop.Excel.XlPageOrientation.xlLandscape;
-                    if(cboReports.SelectedValue.ToString() == "Absentees Report" || cboReports.SelectedValue.ToString() == "Consolidated Report")
+                    if(cboReports.SelectedValue.ToString() == "Absentees Report" || cboReports.SelectedValue.ToString() == "No Time Out Report" || cboReports.SelectedValue.ToString() == "Consolidated Report")
                     {
                         orientation = Microsoft.Office.Interop.Excel.XlPageOrientation.xlPortrait;
                     }
@@ -427,6 +437,7 @@ namespace SJBCS.GUI.Report
 
                 if (System.IO.File.Exists(sfd.FileName))
                 {
+                    CheckIfFileIsOpen(sfd);
                     System.Diagnostics.Process.Start(sfd.FileName);
                 }
 
@@ -687,6 +698,28 @@ namespace SJBCS.GUI.Report
                 throw new Exception("Please select Section.");
             }
 
+        }
+
+
+        protected virtual bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            return false;
         }
     }
 }

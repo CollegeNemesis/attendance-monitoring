@@ -67,7 +67,7 @@
                                          VerticalAlignment="Center"
                                          Style="{StaticResource MaterialDesignTextBox}"
                                          Text="{Binding Username}"
-                                         TabIndex="0" />
+                                         TabIndex="0"/>
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center"
                                         Margin="0 10 0 0">
@@ -77,13 +77,14 @@
                                            FontWeight="Regular"
                                            FontSize="14" />
                                 <PasswordBox x:Name="Password"
-                                             Grid.Column="1"
+                                             Grid.Column="0"
                                              Width="200"
                                              VerticalAlignment="Center"
                                              Style="{StaticResource MaterialDesignPasswordBox}"
                                              TabIndex="1" />
                             </StackPanel>
                             <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                    TabIndex="2"
                                     Height="Auto"
                                     Width="Auto"
                                     Margin="0 20 0 0"

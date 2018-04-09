@@ -10,6 +10,8 @@ namespace SJBCS.GUI.Home
         public LoginView()
         {
             InitializeComponent();
+            
         }
+
     }
 }

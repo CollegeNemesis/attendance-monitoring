@@ -76,7 +76,7 @@
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Top"
                                      Width="200"
-                                     IsReadOnly="True" />
+                                     IsReadOnly="True" Visibility="Hidden"/>
                             <PasswordBox x:Name="txtPassword"
                                          PasswordChanged="txtPassword_PasswordChanged"
                                          MaxLength="100"
