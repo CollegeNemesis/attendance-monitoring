@@ -28,15 +28,12 @@ namespace SJBCS.GUI.Converters
                     return "CommentQuestionOutline";
 
                 case "Success":
-                    return "CheckCircle";
-
                 case "Connected":
                     return "CheckCircle";
 
                 case "Disconnected":
-                    return "CloseCircle";
-
                 case "Fingerprint not recognized.":
+                case "Failed to process fingerprint, try again.":
                     return "CloseCircle";
 
                 case "logged in.":

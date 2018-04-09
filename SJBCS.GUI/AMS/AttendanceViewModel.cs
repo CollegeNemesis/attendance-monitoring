@@ -100,7 +100,7 @@ namespace SJBCS.GUI.AMS
             _relBiometricsRepository = relBiometricsRepository;
             _attendancesRepository = attendancesRepository;
 
-            Initialize();
+            Initialize(true);
             _attendanceLogs = new ObservableCollection<AttendanceLog>();
             _mainClockViewModel = ContainerHelper.Container.Resolve<MainClockViewModel>();
             ResendCommand = new RelayCommand(OnResend);
@@ -246,23 +246,24 @@ namespace SJBCS.GUI.AMS
                     {
                         Remarks = "Fingerprint not recognized.";
                         Student = null;
-                        Initialize();
+                        Initialize(false);
                     }
 
                     _IsFingerEnrolled = false;
-                    Start();
                 }
             }
             catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong with the finger scanner. Please restart the application.");
                 Logger.Error(error);
-                Application.Current.Shutdown();
-
+                Remarks = "Failed to process fingerprint, try again.";
+                //var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong with the finger scanner. Please restart the application.");
+                //Application.Current.Shutdown();
             }
+
+            Start();
         }
 
-        private void Initialize()
+        private void Initialize(bool isToReloadBiometrics)
         {
             _student = new Data.Student();
             _biometric = new Biometric();
@@ -272,15 +273,10 @@ namespace SJBCS.GUI.AMS
             _IsFingerEnrolled = false;
             _Verificator = new DPFP.Verification.Verification(); // Create a fingerprint template verificator
 
-            _Biometrics = _biometricsRepository.GetBiometrics(); //Load all FingerPrintTemplate (fpt);
-
-            if (_Biometrics.Count == 0)
+            if (isToReloadBiometrics)
             {
-                Remarks = "No fingerprint template available in our records.";
-            }
-            else
-            {
-                Remarks = "";
+                _Biometrics = _biometricsRepository.GetBiometrics(); //Load all FingerPrintTemplate (fpt);
+                Remarks = (_Biometrics.Count == 0) ? "No fingerprint template available in our records." : "";
             }
 
             Student.ImageData = null;
@@ -300,7 +296,7 @@ namespace SJBCS.GUI.AMS
 
         public void SwitchOn()
         {
-            Initialize();
+            Initialize(true);
             Start();
         }
 
@@ -313,7 +309,7 @@ namespace SJBCS.GUI.AMS
 
                 SMSUtility.SendSMS(text, contact.ContactNumber, attendanceID, isTimeIn, null, error =>
                 {
-                    SMSStatus = "Failed to send SMS, please check the logs.";
+                    SMSStatus = "Failed to send SMS.";
                     SMSStatusVisibility = Visibility.Visible;
                 });
             }
@@ -353,7 +349,7 @@ namespace SJBCS.GUI.AMS
             }
             else
             {
-                SMSStatus = "Failed to send SMS, please check the logs.";
+                SMSStatus = "Failed to send SMS.";
                 SMSStatusVisibility = Visibility.Visible;
             }
         }

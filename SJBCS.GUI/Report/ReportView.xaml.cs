@@ -192,8 +192,6 @@ namespace SJBCS.GUI.Report
 
             Microsoft.Office.Interop.Excel.Range CR = (Microsoft.Office.Interop.Excel.Range)xlWorkSheet.Cells[8, colStart];
 
-            //xlWorkSheet.Shapes.AddPicture(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + @LOGO_PATH, MsoTriState.msoFalse, MsoTriState.msoCTrue, logoCellLeft, 0, 90, 90);
-
             xlWorkSheet.Shapes.AddPicture(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @LOGO_PATH, MsoTriState.msoFalse, MsoTriState.msoCTrue, logoCellLeft, 0, 90, 90);
 
             xlWorkSheet.get_Range("A1", "A1").Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;

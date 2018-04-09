@@ -120,7 +120,7 @@
                     <materialDesign:Chip.Content>
                         <TextBlock FontSize="16">
                         <Run Text="{Binding SMSStatus}" />
-                        <Run Text="Please click here to resend." 
+                        <Run Text="Click here to resend." 
                              Foreground="#3D62B3"/>
                         </TextBlock>
                     </materialDesign:Chip.Content>

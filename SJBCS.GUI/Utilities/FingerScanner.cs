@@ -15,7 +15,7 @@ namespace SJBCS.GUI.Utilities
             {
                 Capturer = new DPFP.Capture.Capture();              // Create a capture operation.
 
-                if (null != Capturer)
+                if (Capturer != null)
                     Capturer.EventHandler = this;                   // Subscribe for capturing events.
             }
             catch(Exception error)
@@ -33,35 +33,29 @@ namespace SJBCS.GUI.Utilities
 
         protected void Start()
         {
-            if (null != Capturer)
+            try
             {
-                try
-                {
-                    Capturer.StartCapture();
-                }
-                catch (Exception error)
-                {
-                    LogError("Fatal error with the SDK. Please restart the application.");
-                    Logger.Error(error);
-                    System.Windows.Application.Current.Shutdown();
-                }
+                Capturer?.StartCapture();
+            }
+            catch (Exception error)
+            {
+                LogError("Fatal error with the SDK. Please restart the application.");
+                Logger.Error(error);
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
         protected void Stop()
         {
-            if (null != Capturer)
+            try
             {
-                try
-                {
-                    Capturer.StopCapture();
-                }
-                catch (Exception error)
-                {
-                    LogError("Fatal error with the SDK. Please restart the application.");
-                    Logger.Error(error);
-                    System.Windows.Application.Current.Shutdown();
-                }
+                Capturer?.StopCapture();
+            }
+            catch (Exception error)
+            {
+                LogError("Fatal error with the SDK. Please restart the application.");
+                Logger.Error(error);
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
