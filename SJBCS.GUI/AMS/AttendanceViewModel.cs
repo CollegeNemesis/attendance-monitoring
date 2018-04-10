@@ -160,6 +160,7 @@ namespace SJBCS.GUI.AMS
                                     {
                                         DateTime login = _attendance.TimeIn;
                                         DateTime logout = DateTime.Now;
+                                        logout = new DateTime(logout.Year, logout.Month, logout.Day, logout.Hour, logout.Minute, 0);
 
                                         if (logout > login.Add(new TimeSpan(1, 0, 0))) //Check if TimeSpan between login and logout is greater than allowed threshold
                                         {
@@ -170,9 +171,9 @@ namespace SJBCS.GUI.AMS
                                             _attendance.TimeOut = logout;
 
                                             //Check if student is overstay or undertime;
-                                            TimeSpan timeOut = _attendance.TimeIn.TimeOfDay;
+                                            TimeSpan timeOut = logout.TimeOfDay;
+                                            timeOut = new TimeSpan(timeOut.Hours, timeOut.Minutes, 0);
                                             TimeSpan endTime = _student.Section.EndTime;
-                                            TimeSpan outSpan = endTime.Subtract(timeOut);
 
                                             if (timeOut > endTime.Add(new TimeSpan(1, 0, 0)))
                                             {
@@ -207,11 +208,15 @@ namespace SJBCS.GUI.AMS
                                 }
                                 else
                                 {
+                                    DateTime login = DateTime.Now;
+                                    login = new DateTime(login.Year, login.Month, login.Day, login.Hour, login.Minute, 0);
                                     //Create new attendance record for the student.
-                                    _attendance = new Attendance();
-                                    _attendance.AttendanceID = Guid.NewGuid();
-                                    _attendance.StudentID = _student.StudentGuid;
-                                    _attendance.TimeIn = DateTime.Now;
+                                    _attendance = new Attendance
+                                    {
+                                        AttendanceID = Guid.NewGuid(),
+                                        StudentID = _student.StudentGuid,
+                                        TimeIn = login
+                                    };
 
                                     TimeSpan timeIn = _attendance.TimeIn.TimeOfDay;
                                     TimeSpan startTime = _student.Section.StartTime;
