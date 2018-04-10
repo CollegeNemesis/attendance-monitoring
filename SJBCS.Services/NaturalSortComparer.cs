@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SJBCS.Services.Repository
+namespace SJBCS.Services
 {
     public class NaturalSortComparer<T> : IComparer<string>, IDisposable
     {

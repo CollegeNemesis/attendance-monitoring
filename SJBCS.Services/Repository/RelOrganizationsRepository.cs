@@ -8,48 +8,61 @@ namespace SJBCS.Services.Repository
 {
     public class RelOrganizationsRepository : IRelOrganizationsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public RelOrganization AddRelOrganization(RelOrganization RelOrganization)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.RelOrganizations.Add(RelOrganization);
-            _context.SaveChanges();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.RelOrganizations.Add(RelOrganization);
+                _context.SaveChanges();
+            }
             return RelOrganization;
         }
 
         public void DeleteRelOrganization(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var RelOrganization = _context.RelOrganizations.FirstOrDefault(r => r.RelOrganizationID == id);
-            if (RelOrganization != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelOrganizations.Remove(RelOrganization);
+                var RelOrganization = _context.RelOrganizations.FirstOrDefault(r => r.RelOrganizationID == id);
+                _context.Entry(RelOrganization).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public RelOrganization GetRelOrganization(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelOrganizations.FirstOrDefault(r => r.RelOrganizationID == id);
+            RelOrganization RelOrganization;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                RelOrganization = _context.RelOrganizations.FirstOrDefault(r => r.RelOrganizationID == id);
+            }
+            return RelOrganization;
         }
 
         public List<RelOrganization> GetRelOrganizations()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelOrganizations.ToList();
+            List<RelOrganization> RelOrganizations;
+
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                RelOrganizations = _context.RelOrganizations.ToList();
+            }
+            return RelOrganizations;
         }
 
         public RelOrganization UpdateRelOrganization(RelOrganization RelOrganization)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.RelOrganizations.Local.Any(r => r.RelOrganizationID == RelOrganization.RelOrganizationID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelOrganizations.Attach(RelOrganization);
-            }
-            _context.Entry(RelOrganization).State = EntityState.Modified;
-            _context.SaveChanges();
+                if (!_context.RelOrganizations.Local.Any(r => r.RelOrganizationID == RelOrganization.RelOrganizationID))
+                {
+                    _context.RelOrganizations.Attach(RelOrganization);
+                }
+                _context.Entry(RelOrganization).State = EntityState.Modified;
+                _context.SaveChanges();
+            }                
             return RelOrganization;
         }
     }

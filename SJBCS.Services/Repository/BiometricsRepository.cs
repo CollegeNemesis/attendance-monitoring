@@ -8,49 +8,63 @@ namespace SJBCS.Services.Repository
 {
     public class BiometricsRepository : IBiometricsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public Biometric AddBiometric(Biometric Biometric)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.Biometrics.Add(Biometric);
-            _context.SaveChanges();
-            return Biometric;
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.Biometrics.Add(Biometric);
+                _context.SaveChanges();
+
+                return Biometric;
+            }
         }
 
         public void DeleteBiometric(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var Biometric = _context.Biometrics.FirstOrDefault(r => r.FingerID == id);
-            if (Biometric != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Biometrics.Remove(Biometric);
+                var Biometric = _context.Biometrics.FirstOrDefault(r => r.FingerID == id);
+                _context.Entry(Biometric).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public Biometric GetBiometric(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Biometrics.FirstOrDefault(r => r.FingerID == id);
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Biometric = _context.Biometrics
+                    .Include(biometric => biometric.RelBiometrics)
+                    .FirstOrDefault(r => r.FingerID == id);
+                return Biometric;
+            }
         }
 
         public List<Biometric> GetBiometrics()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Biometrics.ToList();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Biometrics = _context.Biometrics
+                    .Include(biometric => biometric.RelBiometrics)
+                    .ToList();
+                return Biometrics;
+            }
         }
 
         public Biometric UpdateBiometric(Biometric Biometric)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.Biometrics.Local.Any(r => r.FingerID == Biometric.FingerID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Biometrics.Attach(Biometric);
+                if (!_context.Biometrics.Local.Any(r => r.FingerID == Biometric.FingerID))
+                {
+                    _context.Biometrics.Attach(Biometric);
+                }
+                _context.Entry(Biometric).State = EntityState.Modified;
+                _context.SaveChanges();
+                return Biometric;
             }
-            _context.Entry(Biometric).State = EntityState.Modified;
-            _context.SaveChanges();
-            return Biometric;
         }
     }
 }

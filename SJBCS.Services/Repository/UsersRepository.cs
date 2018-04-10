@@ -7,49 +7,61 @@ namespace SJBCS.Services.Repository
 {
     public class UsersRepository : IUsersRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public User AddUser(User User)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.Users.Add(User);
-            _context.SaveChanges();
-            return User;
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                _context.Users.Add(User);
+                _context.SaveChanges();
+
+                return User;
+            }
         }
 
         public void DeleteUser(string Username)
         {
-            _context = ConnectionHelper.CreateConnection();
-            var User = _context.Users.FirstOrDefault(r => r.Username == Username);
-            if (User != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Users.Remove(User);
+                var User = _context.Users.FirstOrDefault(r => r.Username == Username);
+                _context.Entry(User).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public User GetUser(string Username)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Users.FirstOrDefault(r => r.Username == Username);
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var User = _context.Users.FirstOrDefault(r => r.Username == Username);
+                return User;
+            }
         }
 
         public List<User> GetUsers()
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.Users.ToList();
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var Users = _context.Users.ToList();
+
+                return Users;
+            }
         }
 
         public User UpdateUser(User User)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            if (!_context.Users.Local.Any(r => r.UserID == User.UserID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.Users.Attach(User);
+                if (!_context.Users.Local.Any(r => r.UserID == User.UserID))
+                {
+                    _context.Users.Attach(User);
+                }
+                _context.Entry(User).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return User;
             }
-            _context.Entry(User).State = EntityState.Modified;
-            _context.SaveChanges();
-            return User;
         }
     }
 }

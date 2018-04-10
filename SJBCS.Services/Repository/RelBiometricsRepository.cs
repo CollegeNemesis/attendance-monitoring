@@ -8,49 +8,68 @@ namespace SJBCS.Services.Repository
 {
     public class RelBiometricsRepository : IRelBiometricsRepository
     {
-        AmsModel _context = ConnectionHelper.CreateConnection();
+        AmsModel _context;
 
         public RelBiometric AddRelBiometric(RelBiometric relBiometric)
         {
-            //_context = ConnectionHelper.CreateConnection();
-            _context.RelBiometrics.Add(relBiometric);
-            _context.SaveChanges();
-            return relBiometric;
-        }
-
-        public  void DeleteRelBiometric(Guid id)
-        {
-            _context = ConnectionHelper.CreateConnection();
-            var relBiometric = _context.RelBiometrics.FirstOrDefault(r => r.FingerID == id);
-            if (relBiometric != null)
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelBiometrics.Remove(relBiometric);
+                _context.RelBiometrics.Add(relBiometric);
+                _context.SaveChanges();
+
+                return relBiometric;
             }
-            _context.SaveChanges();
         }
 
-        public  RelBiometric GetRelBiometric(Guid id)
+        public void DeleteRelBiometric(Guid id)
         {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelBiometrics.FirstOrDefault(r => r.FingerID == id);
-        }
-
-        public  List<RelBiometric> GetRelBiometrics()
-        {
-            _context = ConnectionHelper.CreateConnection();
-            return _context.RelBiometrics.ToList();
-        }
-
-        public  RelBiometric UpdateRelBiometric(RelBiometric relBiometric)
-        {
-           //_context = ConnectionHelper.CreateConnection();
-            if (!_context.RelBiometrics.Local.Any(r => r.RelBiometricID == relBiometric.RelBiometricID))
+            using (_context = ConnectionHelper.CreateConnection())
             {
-                _context.RelBiometrics.Attach(relBiometric);
+                var RelBiometric = _context.RelBiometrics.FirstOrDefault(r => r.FingerID == id);
+                _context.Entry(RelBiometric).State = EntityState.Deleted;
+                _context.SaveChanges();
             }
-            _context.Entry(relBiometric).State = EntityState.Modified;
-            _context.SaveChanges();
-            return relBiometric;
+        }
+
+        public RelBiometric GetRelBiometric(Guid id)
+        {
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var RelBiometric = _context.RelBiometrics
+                    .Include(relBiometric => relBiometric.Student)
+                    .Include(relBiometric => relBiometric.Biometric)
+                    .FirstOrDefault(r => r.FingerID == id);
+
+                return RelBiometric;
+            }
+        }
+
+        public List<RelBiometric> GetRelBiometrics()
+        {
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                var RelBiometrics = _context.RelBiometrics
+                    .Include(relBiometric => relBiometric.Student)
+                    .Include(relBiometric => relBiometric.Biometric)
+                    .ToList();
+
+                return RelBiometrics;
+            }
+        }
+
+        public RelBiometric UpdateRelBiometric(RelBiometric RelBiometric)
+        {
+            using (_context = ConnectionHelper.CreateConnection())
+            {
+                if (!_context.RelBiometrics.Local.Any(r => r.RelBiometricID == RelBiometric.RelBiometricID))
+                {
+                    _context.RelBiometrics.Attach(RelBiometric);
+                }
+                _context.Entry(RelBiometric).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return RelBiometric;
+            }
         }
     }
 }
