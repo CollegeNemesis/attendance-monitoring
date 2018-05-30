@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:SJBCS.GUI.Report"
+             xmlns:converters="clr-namespace:SJBCS.GUI.Converters"
              mc:Ignorable="d"
              d:DesignHeight="500"
              d:DesignWidth="1200">
+    <UserControl.Resources>
+        <converters:NegatableBooleanToVisibilityConverter x:Key="VisConverter" />
+    </UserControl.Resources>
     <Grid Background="White">
         <StackPanel>
             <Border BorderBrush="#B5B5B5"
@@ -229,7 +233,7 @@
                     <DataGrid x:Name="dgResults"
                               Visibility="Visible"
                               BorderBrush="#B5B5B5"
-                              BorderThickness=".5 0 .5 0"
+                              BorderThickness=".5 0 .5 .5"
                               ClipboardCopyMode="IncludeHeader"
                               HorizontalContentAlignment="Center"
                               HorizontalAlignment="Center"
@@ -247,6 +251,5 @@
                 
 
         </StackPanel>
-
     </Grid>
 </UserControl>

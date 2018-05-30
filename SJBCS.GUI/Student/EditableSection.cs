@@ -17,6 +17,7 @@ namespace SJBCS.GUI.Student
         public string OrigSectionName;
 
         private bool _editMode;
+
         public bool EditMode { get => _editMode; set => SetProperty(ref _editMode, value); }
 
 
@@ -43,7 +44,9 @@ namespace SJBCS.GUI.Student
                 TimeSpan end = DateTime.Parse(endTime).TimeOfDay;
 
                 if (start >= end)
+                {
                     return false;
+                }
                 return true;
             }
             catch
@@ -82,13 +85,12 @@ namespace SJBCS.GUI.Student
         private string startTime;
         [Required(ErrorMessage = "This field is required.")]
         [TimeValidation(ErrorMessage = "Invalid input format.")]
-        [AssertThat("IsInvalidSchedule(StartTime,EndTime)", ErrorMessage = "Invalid start time.")]
+        //[AssertThat("IsInvalidSchedule(StartTime,EndTime)", ErrorMessage = " ")]
         public string StartTime
         {
             get => startTime;
             set
             {
-                
                 SetProperty(ref startTime, value);
             }
         }
@@ -97,14 +99,12 @@ namespace SJBCS.GUI.Student
         private string endTime;
         [Required(ErrorMessage = "This field is required.")]
         [TimeValidation(ErrorMessage = "Invalid input format.")]
-        [AssertThat("IsInvalidSchedule(StartTime,EndTime)", ErrorMessage = "Invalid end time.")]
+        //[AssertThat("IsInvalidSchedule(StartTime,EndTime)", ErrorMessage = " ")]
         public string EndTime
         {
             get => endTime;
             set
             {
-                string temp = StartTime + "";
-                StartTime = temp;
                 SetProperty(ref endTime, value);
             }
         }

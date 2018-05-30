@@ -16,6 +16,7 @@ using System.Windows.Input;
 using SJBCS.GUI.Dialogs;
 using System.Configuration;
 using System.Reflection;
+using System.Threading;
 
 namespace SJBCS.GUI.Report
 {
@@ -266,7 +267,8 @@ namespace SJBCS.GUI.Report
             if (File.Exists(sfd.FileName) && !isPDF)
             {
                 CheckIfFileIsOpen(sfd);
-                System.Diagnostics.Process.Start(sfd.FileName);
+                //System.Diagnostics.Process.Start(sfd.FileName);
+                System.Diagnostics.Process.Start(Path.GetDirectoryName(sfd.FileName));
             }
         }
 
@@ -395,7 +397,7 @@ namespace SJBCS.GUI.Report
 
                 Microsoft.Office.Interop.Excel.Application excelApplication;
                 Microsoft.Office.Interop.Excel.Workbook excelWorkbook;
-                
+
                 excelApplication = new Microsoft.Office.Interop.Excel.Application();
                 excelApplication.ScreenUpdating = false;
                 excelApplication.DisplayAlerts = false;
@@ -443,7 +445,8 @@ namespace SJBCS.GUI.Report
                 if (System.IO.File.Exists(sfd.FileName))
                 {
                     CheckIfFileIsOpen(sfd);
-                    System.Diagnostics.Process.Start(sfd.FileName);
+                    //System.Diagnostics.Process.Start(sfd.FileName);
+                    System.Diagnostics.Process.Start(Path.GetDirectoryName(sfd.FileName));
                 }
 
             }

@@ -11,5 +11,10 @@ namespace SJBCS.GUI.Student
         {
             InitializeComponent();
         }
+
+        private void TimePicker_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Schedule.BindingGroup.CommitEdit();
+        }
     }
 }

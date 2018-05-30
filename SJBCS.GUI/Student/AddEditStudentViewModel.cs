@@ -429,7 +429,8 @@ namespace SJBCS.GUI.Student
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".jpg";
-            dlg.Filter = "JPG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif";
+            //dlg.Filter = "JPG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif";
+            dlg.Filter = "Image Files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
 
 
             // Display OpenFileDialog by calling ShowDialog method 

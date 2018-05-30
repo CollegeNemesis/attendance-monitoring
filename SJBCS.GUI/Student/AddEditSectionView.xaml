@@ -43,86 +43,109 @@
             <StackPanel Orientation="Horizontal">
                 <StackPanel DataContext="{Binding EditableSection}">
                     <StackPanel>
-
                         <TextBlock Foreground="#3D62B3"
                                    FontFamily="Segoe UI"
                                    FontWeight="Regular"
                                    FontSize="12">
                         <Run Text="Section Details" />
                         </TextBlock>
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0 20 0 0">
-                            <StackPanel>
-                                <TextBlock Text="Section Name"
-                                           Foreground="#B5B5B5"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="10" />
-                                <TextBox Style="{StaticResource MaterialDesignTextBox}"
-                                         HorizontalAlignment="Left"
-                                         Width="150">
-                                    <TextBox.Text>
-                                        <Binding Path="SectionName"
-                                                 UpdateSourceTrigger="PropertyChanged"
-                                                 ValidatesOnNotifyDataErrors="True"
-                                                 ValidatesOnExceptions="True" />
-                                    </TextBox.Text>
-                                </TextBox>
-                            </StackPanel>
-                            <TextBlock HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       Margin="10 25 0 0">
+                        <Border Margin="0 20 0 0"
+                                Padding="5 10">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <TextBlock Text="Section Name"
+                                               Foreground="#B5B5B5"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="10" />
+                                    <TextBox Style="{StaticResource MaterialDesignTextBox}"
+                                             HorizontalAlignment="Left"
+                                             Width="150">
+                                        <TextBox.Text>
+                                            <Binding Path="SectionName"
+                                                     UpdateSourceTrigger="PropertyChanged"
+                                                     ValidatesOnNotifyDataErrors="True"
+                                                     ValidatesOnExceptions="True" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <TextBlock HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Margin="10 25 0 0">
                         <Run Text="*"
-                                FontSize="16"
-                                Foreground="Red" />
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0 30 0 0">
-                            <StackPanel>
-                                <TextBlock Text="Start Time"
-                                           Foreground="#B5B5B5"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="10" />
-                                <materialDesign:TimePicker VerticalAlignment="Bottom"
-                                                           VerticalContentAlignment="Center"
-                                                           Width="150"
-                                                           Height="38"
-                                                           Margin="0 0 30 0"
-                                                           Is24Hours="False"
-                                                           HorizontalAlignment="Left">
-                                    <materialDesign:TimePicker.SelectedTime>
-                                        <Binding Path="StartTime"
-                                                 ValidatesOnNotifyDataErrors="True"
-                                                 UpdateSourceTrigger="PropertyChanged"
-                                                 Converter="{StaticResource TimeConverter}" />
-                                    </materialDesign:TimePicker.SelectedTime>
-                                </materialDesign:TimePicker>
+                                    FontSize="16"
+                                    Foreground="Red" />
+                                </TextBlock>
                             </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="End Time"
-                                           Foreground="#B5B5B5"
-                                           FontFamily="Segoe UI"
-                                           FontWeight="Regular"
-                                           FontSize="10" />
-                                <materialDesign:TimePicker VerticalAlignment="Bottom"
-                                                           VerticalContentAlignment="Center"
-                                                           Width="150"
-                                                           Height="38"
-                                                           Margin="0 0 30 0"
-                                                           Is24Hours="False"
-                                                           HorizontalAlignment="Left">
-                                    <materialDesign:TimePicker.SelectedTime>
-                                        <Binding Path="EndTime"
-                                                 ValidatesOnNotifyDataErrors="True"
-                                                 UpdateSourceTrigger="PropertyChanged"
-                                                 Converter="{StaticResource TimeConverter}" />
-                                    </materialDesign:TimePicker.SelectedTime>
-                                </materialDesign:TimePicker>
+                        </Border>
+                        <Border x:Name="Schedule"
+                                Margin="0 30 0 0"
+                                Padding="5 10">
+                            <Border.BindingGroup>
+                                <BindingGroup>
+                                    <BindingGroup.ValidationRules>
+                                        <validation:ScheduleValidation ValidationStep="ConvertedProposedValue" />
+                                    </BindingGroup.ValidationRules>
+                                </BindingGroup>
+                            </Border.BindingGroup>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <TextBlock Text="Start Time"
+                                               Foreground="#B5B5B5"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="10" />
+                                    <materialDesign:TimePicker x:Name="StartTime"
+                                                               VerticalAlignment="Bottom"
+                                                               VerticalContentAlignment="Center"
+                                                               Width="150"
+                                                               Height="38"
+                                                               Margin="0 0 30 0"
+                                                               Is24Hours="False"
+                                                               TextBoxBase.TextChanged="TimePicker_TextChanged"
+                                                               HorizontalAlignment="Left">
+                                        <materialDesign:TimePicker.SelectedTime>
+                                            <Binding Path="StartTime"
+                                                     ValidatesOnDataErrors="True"
+                                                     UpdateSourceTrigger="PropertyChanged"
+                                                     Converter="{StaticResource TimeConverter}" />
+                                        </materialDesign:TimePicker.SelectedTime>
+                                    </materialDesign:TimePicker>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="End Time"
+                                               Foreground="#B5B5B5"
+                                               FontFamily="Segoe UI"
+                                               FontWeight="Regular"
+                                               FontSize="10" />
+                                    <materialDesign:TimePicker x:Name="EndTime"
+                                                               VerticalAlignment="Bottom"
+                                                               VerticalContentAlignment="Center"
+                                                               Width="150"
+                                                               Height="38"
+                                                               Margin="0 0 30 0"
+                                                               Is24Hours="False"
+                                                               TextBoxBase.TextChanged="TimePicker_TextChanged"
+                                                               HorizontalAlignment="Left">
+                                        <materialDesign:TimePicker.SelectedTime>
+                                            <Binding Path="EndTime"
+                                                     ValidatesOnDataErrors="True"
+                                                     UpdateSourceTrigger="PropertyChanged"
+                                                     Converter="{StaticResource TimeConverter}" />
+                                        </materialDesign:TimePicker.SelectedTime>
+                                    </materialDesign:TimePicker>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
+                        </Border>
                     </StackPanel>
+                    <TextBlock Foreground="Red"
+                               FontFamily="Segoe UI"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Margin="0 20 0 0">
+                        <Run Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=Schedule}" />
+                    </TextBlock>
+
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Right"

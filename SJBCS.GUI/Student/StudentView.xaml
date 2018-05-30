@@ -114,7 +114,7 @@
                                                              VerticalAlignment="Center"
                                                              Margin="0 0 20 0"
                                                              Width="25"
-                                                             Height="25"/>
+                                                             Height="25" />
                                     <TextBlock Text="Student"
                                                FontSize="20"
                                                VerticalAlignment="Center" />
@@ -122,7 +122,7 @@
                             </Button>
                             <StackPanel materialDesign:RippleAssist.IsCentered="True"
                                         Orientation="Horizontal"
-                                        HorizontalAlignment="Right">                                
+                                        HorizontalAlignment="Right">
                                 <materialDesign:ColorZone Padding="8,4,8,4"
                                                           Panel.ZIndex="1"
                                                           CornerRadius="2"
@@ -182,15 +182,19 @@
                         </DockPanel>
                     </materialDesign:ColorZone>
                     <DataGrid x:Name="studentDataGrid"
-                              Width="1024"
+                              Width="1000"
+                              Height="650"
                               HorizontalAlignment="Center"
                               AutoGenerateColumns="False"
                               IsReadOnly="True"
                               ItemsSource="{Binding}"
+                              FrozenColumnCount="1"
                               SelectionMode="Single"
                               SelectionUnit="FullRow"
                               IsSynchronizedWithCurrentItem="False"
                               RowDetailsVisibilityMode="VisibleWhenSelected"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto"
                               RowDetailsTemplate="{StaticResource RowDetailTemplate}"
                               Style="{StaticResource MaterialDesignDataGrid}"
                               CellStyle="{StaticResource MaterialDesignDataGridCell}"
@@ -205,7 +209,7 @@
                                                                  Foreground="Black"
                                                                  Background="Transparent"
                                                                  Width="25"
-                                                                 Height="25"/>
+                                                                 Height="25" />
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
                                                          Value="True">

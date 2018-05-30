@@ -91,6 +91,11 @@
                                   BorderBrush="#B5B5B5"
                                   BorderThickness="0 0 .5 0">
             <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="../Image/logo-icon.png"
+                                Stretch="Uniform"
+                                Opacity=".15"/>
+                </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />

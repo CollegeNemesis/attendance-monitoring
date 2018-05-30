@@ -189,9 +189,9 @@ namespace SJBCS.GUI
                 _studentViewModel.LoadStudents();
                 _studentViewModel.OnClear();
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
                 Logger.Error(error);
             }
         }
@@ -214,7 +214,7 @@ namespace SJBCS.GUI
             }
             catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
                 Logger.Error(error);
             }
         }
@@ -232,13 +232,13 @@ namespace SJBCS.GUI
             }
             catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
                 Logger.Error(error);
             }
         }
 
         private void NavToEditStudent(Data.Student selectedStudent)
-        {            
+        {
             CurrentViewModel = _addEditStudentViewModel;
 
             try
@@ -250,7 +250,7 @@ namespace SJBCS.GUI
             }
             catch (Exception error)
             {
-                var result =  DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
+                var result = DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try again.");
                 Logger.Error(error);
             }
         }
@@ -267,7 +267,7 @@ namespace SJBCS.GUI
             }
             catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong. Please try restart the application.");
                 Logger.Error(error);
             }
         }
@@ -364,9 +364,9 @@ namespace SJBCS.GUI
                 ConnectionHelper.Config = config;
                 File.WriteAllText(ConfigurationManager.AppSettings["configPath"], json);
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                var result =  await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong setting up configuration files. Please check the logs.");
+                var result = await DialogHelper.ShowDialog(DialogType.Error, "Something went wrong setting up configuration files. Please check the logs.");
                 Logger.Error(error);
             }
         }

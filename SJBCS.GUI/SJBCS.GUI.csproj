@@ -276,6 +276,7 @@
     <Compile Include="Utilities\ValidatableBindablebase.cs" />
     <Compile Include="Validation\PHPhone.cs" />
     <Compile Include="Validation\RequiredIfAttribute.cs" />
+    <Compile Include="Validation\ScheduleValidation.cs" />
     <Compile Include="Validation\TimeValidation.cs" />
     <Compile Include="Validation\UniqueSectionName.cs" />
     <Compile Include="Wrapper\IContactWrapper.cs" />

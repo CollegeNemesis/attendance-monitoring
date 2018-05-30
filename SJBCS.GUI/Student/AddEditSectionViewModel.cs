@@ -13,7 +13,7 @@ namespace SJBCS.GUI.Student
         private ISectionsRepository _sectionsRepository;
         private IStudentsRepository _studentsRepository;
         private Section _editingSection;
-        
+
         private ObservableCollection<Level> _levels;
         public ObservableCollection<Level> Levels
         {
@@ -96,8 +96,18 @@ namespace SJBCS.GUI.Student
 
         private bool CanSave()
         {
-            if (string.IsNullOrEmpty(EditableSection.SectionName))
+            if (string.IsNullOrEmpty(EditableSection.SectionName) || string.IsNullOrEmpty(EditableSection.StartTime) || string.IsNullOrEmpty(EditableSection.EndTime))
+            {
                 return false;
+            }
+
+            TimeSpan start = DateTime.Parse(EditableSection.StartTime).TimeOfDay;
+            TimeSpan end = DateTime.Parse(EditableSection.EndTime).TimeOfDay;
+
+            if (start >= end)
+            {
+                return false;
+            }
 
             return !EditableSection.HasErrors;
         }
