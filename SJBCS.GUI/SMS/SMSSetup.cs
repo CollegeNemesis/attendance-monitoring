@@ -1,7 +1,8 @@
 ﻿using SJBCS.SMS;
+using SJBCS.Data;
+using SJBCS.Services.Repository;
 using System;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -32,12 +33,11 @@ namespace SJBCS.GUI.SMS
 
         public void StartSMSService()
         {
-            string ipAddress = GetIPAddress();
-            Uri baseAddress = new Uri(String.Format("http://{0}:54000/SMSService/", ipAddress));
-            serviceHost = new WebServiceHost(typeof(RESTService), baseAddress);
-
             try
             {
+                string ipAddress = GetIPAddress();
+                Uri baseAddress = new Uri(String.Format("http://{0}:54000/SMSService/", ipAddress));
+                serviceHost = new WebServiceHost(typeof(RESTService), baseAddress);
                 serviceHost.AddServiceEndpoint(typeof(IRESTService), new WebHttpBinding(), "");
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior
                 {
