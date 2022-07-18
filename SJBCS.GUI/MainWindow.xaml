@@ -114,7 +114,7 @@
                                    TextAlignment="Left"
                                    MaxWidth="200"
                                    TextWrapping="Wrap">
-                            <Run Text="SJBCS" />
+                            <Run Text="SMPCS" />
                             <LineBreak />
                             <Run Text="Attendance Monitoring"
                                  FontWeight="Regular"

@@ -325,7 +325,7 @@ namespace SJBCS.GUI.AMS
         {
             foreach (Contact contact in student.Contacts)
             {
-                string text = String.Format("STJOHNBCS Messaging:\nPlease be informed that {0} {1} St. John the Baptist Catholic School at {2:h:mm tt}.",
+                string text = String.Format("STMARTINPCS Messaging:\nPlease be informed that {0} {1} St. Martin de Porres Catholic School at {2:h:mm tt}.",
                     student.FirstName, isTimeIn ? "ENTERED" : "EXITED", time);
 
                 SMSUtility.SendSMS(text, contact.ContactNumber, attendanceID, isTimeIn, null, error =>
