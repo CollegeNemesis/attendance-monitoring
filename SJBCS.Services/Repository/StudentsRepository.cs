@@ -102,6 +102,9 @@ namespace SJBCS.Services.Repository
             {
                 if (!_context.Students.Local.Any(r => r.StudentGuid == Student.StudentGuid))
                 {
+                    Student.Level = null;
+                    Student.Section = null;
+
                     _context.Students.Attach(Student);
                 }
                 _context.Entry(Student).State = EntityState.Modified;
